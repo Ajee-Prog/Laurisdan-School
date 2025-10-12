@@ -17,6 +17,9 @@ class CreateTeachersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('employee_no')->nullable();
+            $table->string('email')->nullable();
+            $table->string('image')->nullable()->after('email');
+
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

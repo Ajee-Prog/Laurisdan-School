@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Term extends Model
 {
     use HasFactory;
+    protected $fillable = ['name', 'session_id', 'start_date', 'end_date'];
+
+    public function session(){
+        return $this->belongsTo(SessionModel::class, 'session_id');
+    }
 }

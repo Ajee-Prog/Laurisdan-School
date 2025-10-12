@@ -4,9 +4,18 @@ namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+use App\Models\Teacher;
+use App\Models\User;
+use App\Models\Student;
+
+use App\Models\ClassModel;
+
 
 class TeacherController extends Controller
 {
+    public function __construct(){ $this->middleware('auth'); }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +23,12 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        //
+        $teachers = Auth::user();
+        $teachers = Teacher::with('user')->paginate(12);
+        $students = Student::where('class_id', $teacher->teacher->class_id ?? null)->count();
+        $classes = ClassModel::count();
+
+        return view('teachers.index', compact('teachers', 'students', 'classes'));
     }
 
     /**
@@ -24,7 +38,7 @@ class TeacherController extends Controller
      */
     public function create()
     {
-        //
+        return view('teachers.create');
     }
 
     /**
@@ -35,7 +49,39 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'full_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'class_id' => 'required|exists:classes, id',
+            'employee_no' => 'nullable',
+            'phone' => 'nullable',
+            'image' => 'nullable|image|mimes:jpj,jpeg,png|max:2048',
+        ]);
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt('password'),
+            'role' => 'teacher'
+        ]);
+
+        Teacher::create([
+            'user_id' => $user->id,
+            'employee_no' => $data['employee_no'] ?? null,
+            'phone' => $data['phone'] ?? null
+        ]);
+
+
+        // $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time().'_'.$file->getClientOriginalName();
+            $file->move(public_path('uploads/students/'),$filename);
+            $data['image'] = 'uploads/students/'.$filename;
+        }
+
+        // Student::create($data);
+        return  redirect()->route('teachers.index')->with('success', 'Teacher created successfully.');
     }
 
     /**
@@ -55,9 +101,9 @@ class TeacherController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Teacher $teacher)
     {
-        //
+         return view('teachers.edit', compact('teacher'));
     }
 
     /**
@@ -67,9 +113,11 @@ class TeacherController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $r, Teacher $teacher)
     {
-        //
+        $data = $r->validate(['employee_no'=>'nullable','phone'=>'nullable']); 
+        $teacher->update($data); 
+        return redirect()->route('teachers.index')->with('success','Teacher updated.');
     }
 
     /**
@@ -78,8 +126,22 @@ class TeacherController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Teacher $teacher)
     {
-        //
+         if($teacher->user) $teacher->user->delete(); 
+         $teacher->delete(); 
+         return redirect()->route('teachers.index')->with('success','Teacher deleted.');
     }
+
+    
+    public function exportPdf(){
+        $teachers = Teacher::with('user')->get(); 
+        $pdf = PDF::loadView('teachers.pdf', compact('teachers'))->setPaper('a4','portrait'); 
+        return $pdf->download('teachers.pdf');
+    }
+
+    public function dashboard(){
+        return view('teacher.dashboard');
+    }
+
 }

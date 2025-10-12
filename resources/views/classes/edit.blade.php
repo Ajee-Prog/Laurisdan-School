@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div class="container">
+<div class="container" style="margin-top:80px;">
   <h2>Edit Class</h2>
   <form method="POST" action="{{ route('classes.update',$class) }}">
     @csrf @method('PUT')

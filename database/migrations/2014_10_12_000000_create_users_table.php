@@ -17,10 +17,10 @@ class CreateUsersTable extends Migration
             $table->id();
             // $table->string('role')->default('student');
             $table->string('name');
-            // $table->string('phone');
-            // $table->string('address');
-            // $table->string('photo');
-            // $table->string('student_code');
+             $table->enum('role', ['admin', 'teacher', 'student', 'parent'])->default('student');
+            $table->string('address');
+            $table->string('photo');
+            $table->string('student_code');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -36,6 +36,9 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        Schema::create('users', function (Blueprint $table) {
+            $table->dropColumn('role');
+        });
         Schema::dropIfExists('users');
     }
 }

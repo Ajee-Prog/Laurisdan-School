@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'class_id', 'parent_id', 'admission_no', 'date_of_birth', 'address', 'parent_contact'];
+    // protected $fillable = ['user_id', 'class_id', 'parent_id','email' ,'image', 'phone', "date_of_birth", "gender", "admission_no", "state", 'address', "nationality", 'parent_contact'];
+    protected $fillable = ['full_name', 'email', 'phone', 'class_id', 'parent_id', 'address', 'passport'];
 
 
     public function user(){
@@ -18,12 +19,12 @@ class Student extends Model
     public function class(){
         return $this->belongsTo(ClassModel::class, 'class_id');
     }
-
-    public function classroom(){
-        return $this->belongsTo(Models\ClassModel::class, 'class_id');
+    public function parent(){
+        return $this->belongsTo(ParentModel::class, 'parent_id');
+    }
+    public function examResults(){
+        return $this->hasMany(ExamResult::class);
     }
 
-    public function results(){
-        return $this->hasMany(Result::class, 'class_id');
-    }
+    
 }

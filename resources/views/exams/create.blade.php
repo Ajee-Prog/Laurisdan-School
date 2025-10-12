@@ -9,7 +9,7 @@
   <div class="mb-3"><label>Class</label>
     <select name="class_id" class="form-control">
       @foreach($classes as $c)
-        <option value="{{ $c->id }}">{{ $c->name }}</option>
+        <option value="{{ $c->id }}" {{old('class_id', $exam->class_id ?? '')==$c->id ? 'selected':''}} > {{ $c->name }}</option>
       @endforeach
     </select>
   </div>

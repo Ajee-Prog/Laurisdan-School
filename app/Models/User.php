@@ -32,7 +32,8 @@ class User extends Authenticatable
     public function isTeacher(){ return $this->role === 'teacher';}
     public function isParent(){ return $this->role === 'parent';}
     public function isStudent(){ return $this->role === 'student';}
-    public function isRole($role){ return $this->role === $role;}
+    // public function isRole($role){ return $this->role === $role;}
+    
 
     /**
      * The attributes that should be hidden for serialization.

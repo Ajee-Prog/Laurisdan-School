@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container " style="margin-top:80px;">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -58,6 +58,18 @@
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            </div>
+                        </div>
+                        <!-- Role Selection -->
+                        <div class="row mt-4 mb-3">
+                            <input-label for="role" :value="('Register As')" />
+
+                            <div class="col-md-6">
+                                <select id="role" name="role" class="block mt-1 w-full border-gray-300 rounded-md" required>
+                                    <option value="student">Student</option>
+                                    <option value="teacher">Teacher</option>
+                                    <option value="parent">Parent</option>
+                                </select>
                             </div>
                         </div>
 

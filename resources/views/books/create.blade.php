@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container" style="margin-top:80px">
     <h3>Add Book</h3>
 
     <form action="{{ route('books.store') }}" method="POST">
@@ -43,24 +43,3 @@
 @endsection
 
 
-<!-- 
-@extends('layouts.dashboard')
-
-@section('content')
-<h2>Add Book</h2>
-<form action="{{ route('books.store') }}" method="POST">
-  @csrf
-  <div class="mb-3"><label>Title</label><input type="text" name="title" class="form-control" required></div>
-  <div class="mb-3"><label>Author</label><input type="text" name="author" class="form-control"></div>
-  <div class="mb-3"><label>Subject</label><input type="text" name="subject" class="form-control"></div>
-  <div class="mb-3"><label>Class</label>
-    <select name="class_id" class="form-control">
-      @foreach($classes as $c)
-        <option value="{{ $c->id }}">{{ $c->name }}</option>
-      @endforeach
-    </select>
-  </div>
-  <button type="submit" class="btn btn-success">Save</button>
-</form>
-@endsection
- -->

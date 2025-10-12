@@ -15,12 +15,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Laurisdan School</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <!-- Chart js -->
+     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -30,7 +34,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <!-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     laurisdanschool
@@ -40,14 +44,14 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
+                    !-- Left Side Of Navbar --
                     <ul class="navbar-nav me-auto">
 
                     </ul>
 
-                    <!-- Right Side Of Navbar -->
+                    !-- Right Side Of Navbar --
                     <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
+                        !-- Authentication Links --
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
@@ -85,13 +89,13 @@
         </nav>
 
 
-        <!-- Plain Html start here -->
+        !-- Plain Html start here --
 
-         <!-- *** Website Container Start *** -->
+         !-- *** Website Container Start *** --
      <div class="website-container">
-        <!-- *** Home Section Start *** -->
+        !-- *** Home Section Start *** --
          <section class="home" id="home">
-            <!-- *** Main Nav start *** -->
+            !-- *** Main Nav start *** --
              <nav class="main-nav">
                 <a href="" class="logo">
                     <img src= "{{ asset('assets/images/laurisdanLogo1.jpg') }}"  alt="" width="40">
@@ -111,10 +115,10 @@
                 <div class="menu-btn">
                     <span></span>
                 </div>
-             </nav>
+             </nav> -->
             <!-- *** Main Nav Ends *** -->
             <!-- *** Banner starts  *** -->
-             <div class="banner">
+             <!-- <div class="banner">
                 <div class="banner-desc">
                     <h2> Start Learning with our Experts, anywhere, Anytime </h2>
                     <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Neque quod sit nihil ratione labore rem omnis itaque laudantium harum distinctio nesciunt officiis nisi, laborum quis in doloribus deserunt cumque? Accusantium.
@@ -140,16 +144,16 @@
                                     <span>284+</span>
                                     <span>Total Courses+</span>
                                 </div>
-                            </div>
+                            </div> -->
 
                              <!-- after span -->
-                             <div class="courses-ratings">
+                             <!-- <div class="courses-ratings">
                                 <span>4.7 <i class="fa-solid fa-star"></i></span>
                                 <span>Ratings (58k) <i class="fa-solid fa-star"></i></span>
-                             </div>
+                             </div>-->
                             <!-- after span ends -->
                              <!-- *** Banner starts  *** -->
-             <div class="banner">
+             <!-- <div class="banner">
                 <div class="banner-desc">
                     <h2> Start Learning with our Experts, anywhere, Anytime </h2>
                     <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Neque quod sit nihil ratione labore rem omnis itaque laudantium harum distinctio nesciunt officiis nisi, laborum quis in doloribus deserunt cumque? Accusantium.
@@ -174,36 +178,39 @@
                                     <span>284+</span>
                                     <span>Total Courses+</span>
                                 </div>
-                            </div>
+                            </div>-->
                             <!-- after span -->
-                             <div class="courses-ratings">
+                             <!-- <div class="courses-ratings">
                                 <span>4.7 <i class="fa-solid fa-star"></i></span>
                                 <span>Ratings (58k) <i class="fa-solid fa-star"></i></span>
-                             </div>
+                             </div> -->
                             <!-- after span ends -->
-                        </div>
+                        <!-- </div>
                     </div>
                 </div>
 
 
-             </div>
+             </div>-->
             <!-- *** Banner Ends  *** -->
-                        </div>
+                        <!-- </div>
 
                     </div>
                 </div>
-             </div>
+             </div> -->
             <!-- *** Banner Ends  *** -->
-         </section>
+         <!-- </section> -->
         <!-- *** Home Section Ends *** -->
-     </div>
+     <!-- </div> -->
     <!-- *** Website Container Ends *** -->
 
-         <!-- Plain Html navbar ends here -->
+         <!-- Plain Html navbar ends here --> 
+          @include('partials1.navbar')
 
         <main class="py-4">
             @yield('content')
         </main>
+
+        @include('partials1.footer')
     </div>
 
 
@@ -212,5 +219,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -9,6 +9,14 @@
     <input type="text" name="full_name" class="form-control" required>
   </div>
   <div class="mb-3">
+    <label>Email</label>
+    <input type="email" name="email" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label>Phone</label>
+    <input type="text" name="phone" class="form-control" required>
+  </div>
+  <div class="mb-3">
     <label>Student Code</label>
     <input type="text" name="student_code" class="form-control" required>
   </div>
@@ -27,6 +35,14 @@
         <option value="{{ $c->id }}">{{ $c->name }}</option>
       @endforeach
     </select>
+  </div>
+  <div class="mb-3">
+    <label>Address</label>
+    <input type="text" name="address" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Upload Image</label>
+    <input type="file" name="image" class="form-control" required>
   </div>
   <button type="submit" class="btn btn-success">Save</button>
 </form>

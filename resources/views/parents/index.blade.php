@@ -1,6 +1,8 @@
+@extends('layouts.dashboard')
 @extends('layouts.app')
+
 @section('content')
-<div class="container">
+<div class="container" style="margin-top: 70px;">
   <h2>Parents</h2>
   <a href="{{ route('parents.create') }}" class="btn btn-success mb-3">Add Parent</a>
   <table class="table table-bordered">

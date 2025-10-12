@@ -71,9 +71,9 @@ class SessionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(SessionModel $session)
     {
-        //
+        return view('session.edit', compact('session'));
     }
 
     /**

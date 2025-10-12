@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div class="container">
+<div class="container" style="margin-top:80px;">
   <h2>Classes</h2>
   <a href="{{ route('classes.create') }}" class="btn btn-success mb-3">Add Class</a>
   <table class="table table-bordered">

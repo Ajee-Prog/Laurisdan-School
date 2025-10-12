@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h3>Edit Book</h3>
+<div class="container " style="margin-top:70px" >
+    <h3 class="my-5 mt-4">Edit Book</h3>
 
     <form action="{{ route('books.update', $book) }}" method="POST">
         @csrf @method('PUT')
@@ -45,22 +45,4 @@
 
 
 
-<!-- @extends('layouts.dashboard')
 
-@section('content')
-<h2>Edit Book</h2>
-<form action="{{ route('books.update',$book->id) }}" method="POST">
-  @csrf @method('PUT')
-  <div class="mb-3"><label>Title</label><input type="text" name="title" class="form-control" value="{{ $book->title }}"></div>
-  <div class="mb-3"><label>Author</label><input type="text" name="author" class="form-control" value="{{ $book->author }}"></div>
-  <div class="mb-3"><label>Subject</label><input type="text" name="subject" class="form-control" value="{{ $book->subject }}"></div>
-  <div class="mb-3"><label>Class</label>
-    <select name="class_id" class="form-control">
-      @foreach($classes as $c)
-        <option value="{{ $c->id }}" {{ $book->class_id==$c->id ? 'selected':'' }}>{{ $c->name }}</option>
-      @endforeach
-    </select>
-  </div>
-  <button type="submit" class="btn btn-primary">Update</button>
-</form>
-@endsection -->

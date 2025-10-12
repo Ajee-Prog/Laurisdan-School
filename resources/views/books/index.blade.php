@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container" style="margin-top:60px" >
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
@@ -61,35 +61,3 @@
 @endsection
 
 
-<!-- @extends('layouts.dashboard')
-
-@section('content')
-<div class="d-flex justify-content-between mb-3">
-  <h2>Books</h2>
-  <a href="{{ route('books.create') }}" class="btn btn-primary">Add Book</a>
-</div>
-
-<table class="table table-bordered">
-  <thead>
-    <tr><th>ID</th><th>Title</th><th>Author</th><th>Subject</th><th>Class</th><th>Action</th></tr>
-  </thead>
-  <tbody>
-    @foreach($books as $b)
-      <tr>
-        <td>{{ $b->id }}</td>
-        <td>{{ $b->title }}</td>
-        <td>{{ $b->author }}</td>
-        <td>{{ $b->subject }}</td>
-        <td>{{ $b->class->name }}</td>
-        <td>
-          <a href="{{ route('books.edit',$b->id) }}" class="btn btn-sm btn-warning">Edit</a>
-          <form action="{{ route('books.destroy',$b->id) }}" method="POST" style="display:inline-block;">
-            @csrf @method('DELETE')
-            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-          </form>
-        </td>
-      </tr>
-    @endforeach
-    </tbody>
-</table>
-@endsection -->

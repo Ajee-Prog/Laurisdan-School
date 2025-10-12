@@ -1,5 +1,7 @@
 <ul class="nav flex-column">
-  <li class="nav-item"><a href="{{ route('dashboard') }}" class="nav-link text-white">Dashboard</a></li>
+  <li class="nav-item">
+    <a href="{{ route('dashboard') }}" class="nav-link text-white">Dashboard</a>
+  </li>
   <li class="nav-item"><a href="{{ route('students.index') }}" class="nav-link text-white">Students</a></li>
   <li class="nav-item"><a href="{{ route('teachers.index') }}" class="nav-link text-white">Teachers</a></li>
   <li class="nav-item"><a href="{{ route('parents.index') }}" class="nav-link text-white">Parents</a></li>
