@@ -10,7 +10,8 @@ use App\Models\ExamResult;
 use App\Models\ClassModel;
 use App\Models\Term;
 // use Illuminate\Http\Request;
-use PDF;
+// use PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class ExamController extends Controller
@@ -168,11 +169,11 @@ class ExamController extends Controller
         $exam->delete(); return redirect()->route('exams.index')->with('success','Exam deleted.'); 
     }
 
-//     public function exportPdf()
-//     {
-//         $exams = Exam::with('class','term')->orderBy('exam_date','desc')->get();
-//         $pdf = PDF::loadView('exams.pdf', compact('exams'))->setPaper('a4','portrait');
-//         return $pdf->download('exams.pdf');
-//     }
+   
+public function exportPdf(){
+    $exams = Exam::with('class','term')->orderBy('exam_date','desc')->get();
+        $pdf = PDF::loadView('exams.pdf', compact('exams'))->setPaper('a4','portrait');
+        return $pdf->download('exams.pdf');
+}
 
 }

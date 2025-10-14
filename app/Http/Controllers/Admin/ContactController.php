@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Contact;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ContactController extends Controller
 {
@@ -16,7 +17,7 @@ class ContactController extends Controller
     public function index()
     {
         $contacts = Contact::latest()->pagenate(10);
-        return view('admin.contacts.index', contact('contacts'));
+        return view('admin.contacts.index', compact('contacts'));
     }
 
     /**

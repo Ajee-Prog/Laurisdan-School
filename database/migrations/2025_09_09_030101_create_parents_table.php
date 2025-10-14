@@ -17,6 +17,7 @@ class CreateParentsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('relation')->nullable();
+            $table->string('address')->nullable();
             $table->string('email')->nullable();
             $table->string('image')->nullable()->after('email');
 

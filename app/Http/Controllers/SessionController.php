@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Models\SessionModel;
 // use Illuminate\Http\Request;
-use PDF;
+// use PDF;
+use Barryvdh\DomPDF\Facade\PDF;
 
 
 class SessionController extends Controller
@@ -43,7 +44,7 @@ class SessionController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $r->validate([
+        $data = $request->validate([
             'name'=>'required',
             'start_date'=>'nullable|date',
             'end_date'=>'nullable|date',
@@ -113,4 +114,13 @@ class SessionController extends Controller
     //      return $pdf->download('sessions.pdf'); 
     //     }
 
+        public function exportPdf(){
+            $sessions = SessionModel::orderBy('start_date','desc')->get(); 
+         $pdf = PDF::loadView('sessions.pdf', compact('sessions'))->setPaper('a4','portrait');
+         return $pdf->download('sessions.pdf');
+
+        }
+
 }
+
+

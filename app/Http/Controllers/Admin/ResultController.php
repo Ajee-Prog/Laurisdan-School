@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ExamResult;
 use Illuminate\Http\Request;
 
 use App\Models\Session;
+use App\Models\SessionModel;
 use App\Models\Term;
 use App\Models\Subject;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class ResultController extends Controller
 {
         public function index(Request $request)
     {
-        $sessions = Session::all();
+        $sessions = SessionModel::all();
         $terms = Term::all();
         $subjects = Subject::all();
 
@@ -51,7 +54,7 @@ class ResultController extends Controller
 
         $results = $query->get();
 
-        $pdf = \PDF::loadView('admin.results_pdf', compact('results'));
+        $pdf = PDF::loadView('admin.results_pdf', compact('results'));
         return $pdf->download('filtered_results.pdf');
     }
 

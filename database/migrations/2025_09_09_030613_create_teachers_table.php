@@ -16,7 +16,11 @@ class CreateTeachersTable extends Migration
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('class_id')->nullable();
+            $table->string('name')->nullable();
             $table->string('employee_no')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
             $table->string('email')->nullable();
             $table->string('image')->nullable()->after('email');
 

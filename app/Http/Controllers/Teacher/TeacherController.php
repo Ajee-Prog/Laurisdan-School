@@ -11,7 +11,8 @@ use App\Models\User;
 use App\Models\Student;
 
 use App\Models\ClassModel;
-
+// use Barryvdh\DomPDF\PDF;
+use Barryvdh\DomPDF\Facade\PDF;
 
 class TeacherController extends Controller
 {
@@ -52,11 +53,15 @@ class TeacherController extends Controller
         $data = $request->validate([
             'full_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
+            'subject' => 'required|string|max:255',
+            'user_id' => 'required|exists:users, id',
+            'address' => 'required|string|max:255',
             'class_id' => 'required|exists:classes, id',
             'employee_no' => 'nullable',
-            'phone' => 'nullable',
+            'phone' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpj,jpeg,png|max:2048',
         ]);
+        
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -64,21 +69,30 @@ class TeacherController extends Controller
             'role' => 'teacher'
         ]);
 
-        Teacher::create([
-            'user_id' => $user->id,
-            'employee_no' => $data['employee_no'] ?? null,
-            'phone' => $data['phone'] ?? null
-        ]);
-
-
-        // $data = $request->all();
-
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time().'_'.$file->getClientOriginalName();
             $file->move(public_path('uploads/students/'),$filename);
             $data['image'] = 'uploads/students/'.$filename;
         }
+
+        Teacher::create([
+            'user_id' => $user->id,
+            'employee_no' => $data['employee_no'] ?? null,
+            'phone' => $data['phone'] ?? null,
+            'subject' => $data['subject'] ?? null,
+            'address' => $data['address'] ?? null
+        ]);
+
+
+        // $data = $request->all();
+
+        // if ($request->hasFile('image')) {
+        //     $file = $request->file('image');
+        //     $filename = time().'_'.$file->getClientOriginalName();
+        //     $file->move(public_path('uploads/students/'),$filename);
+        //     $data['image'] = 'uploads/students/'.$filename;
+        // }
 
         // Student::create($data);
         return  redirect()->route('teachers.index')->with('success', 'Teacher created successfully.');
@@ -137,6 +151,7 @@ class TeacherController extends Controller
     public function exportPdf(){
         $teachers = Teacher::with('user')->get(); 
         $pdf = PDF::loadView('teachers.pdf', compact('teachers'))->setPaper('a4','portrait'); 
+        // PDF::loadView('teachers.pdf', compact('teachers'));
         return $pdf->download('teachers.pdf');
     }
 

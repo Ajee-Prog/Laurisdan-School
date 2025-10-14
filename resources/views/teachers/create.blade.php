@@ -16,15 +16,20 @@
     <div class="mb-3">
       <label>Phone</label>
       <input type="text" name="phone" class="form-control">
+    employee_no
     </div>
     <div class="mb-3">
       <label>Subject</label>
       <input type="text" name="subject" class="form-control">
     </div>
     <div class="mb-3">
-    <label class="form-label">>Address</label>
-    <input type="text" name="address" class="form-control" required>
-  </div>
+      <label class="form-label">>Address</label>
+      <input type="text" name="address" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">>Employee No:</label>
+      <input type="text" name="employee_no" class="form-control" required>
+    </div>
   <div class="mb-3">
     <label class="form-label">Upload Image</label>
     <input type="file" name="image" class="form-control" required>

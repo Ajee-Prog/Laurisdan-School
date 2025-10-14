@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Term;
 use App\Models\SessionModel;
 use Illuminate\Http\Request;
-use PDF;
+
+use Barryvdh\DomPDF\Facade\PDF;
 
 
 // use Illuminate\Http\Request;
@@ -48,10 +49,11 @@ class TermController extends Controller
         $term->delete(); 
         return redirect()->route('terms.index')->with('success','Term deleted.');
      }
-    // public function exportPdf(){ 
-    //     $terms = Term::with('session')->get(); 
-    //     $pdf = PDF::loadView('terms.pdf', compact('terms'))->setPaper('a4','portrait'); 
-    //     return $pdf->download('terms.pdf');
-    //  }
+    
+    public function exportPdf(){
+        $terms = Term::with('session')->get(); 
+        $pdf = PDF::loadView('terms.pdf', compact('terms'))->setPaper('a4','portrait'); 
+        return $pdf->download('terms.pdf');
+    }
 
 }

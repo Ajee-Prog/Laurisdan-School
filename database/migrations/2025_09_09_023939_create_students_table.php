@@ -26,9 +26,12 @@ class CreateStudentsTable extends Migration
             $table->string('nationality')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->string('parent_contact')->nullable();
             $table->string('religion')->nullable();
             $table->string('image')->nullable()->after('email');
             $table->timestamps();
+            
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('parent_id')->constrained('parent_models')->onDelete('cascade');

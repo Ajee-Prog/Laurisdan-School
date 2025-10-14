@@ -18,7 +18,7 @@ class Question extends Model
         return $this->belongsTo(Subject::class);
     }
     public function session(){
-        return $this->belongsTo(Session::class);
+        return $this->belongsTo(SessionModel::class);
     }
     public function term(){
         return $this->belongsTo(Term::class);

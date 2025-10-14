@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Parent;
 use App\Models\ParentModel;
 use App\Models\User;
 use Illuminate\Http\Request;
-use PDF;
+// use PDF;
+use Barryvdh\DomPDF\Facade\PDF;
 
 
 use App\Http\Controllers\Controller;

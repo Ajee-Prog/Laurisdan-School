@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\PDF;
 use App\Models\Book;
 
 class BookController extends Controller
@@ -127,11 +128,13 @@ class BookController extends Controller
     }
 
     // Optional: stream to browser instead of download
-//     public function streamPdf()
-//     {
-//         $books = Book::orderBy('title')->get();
-//         $pdf = PDF::loadView('books.pdf', compact('books'))->setPaper('a4', 'portrait');
-//         return $pdf->stream('laurisdanschool-books.pdf');
-//     }
+
+public function streamPdf(){
+    $books = Book::orderBy('title')->get();
+        $pdf = PDF::loadView('books.pdf', compact('books'))->setPaper('a4', 'portrait');
+        return $pdf->stream('laurisdanschool-books.pdf');
 
 }
+
+}
+

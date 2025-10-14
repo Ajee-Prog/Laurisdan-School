@@ -10,5 +10,5 @@ class Teacher extends Model
     use HasFactory;
     //protected $table = 'sessions';
 
-    protected $fillable = ['name','email','subject','user_id', 'employee_no', 'image'];
+    protected $fillable = ['name','email','subject','user_id','address','phone', 'class_id', 'employee_no', 'image'];
 }

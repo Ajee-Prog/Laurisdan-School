@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Activity;
 // use Illuminate\Http\Request;
-use PDF;
+// use PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class ActivityController extends Controller
@@ -94,18 +95,19 @@ class ActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Activity $activity)
     {
         $activity->delete();
          return redirect()->route('activities.index')->with('success','Activity deleted.');
     }
 
 
-//     public function exportPdf()
-//     {
-//         $activities = Activity::orderBy('activity_date','desc')->get();
-//         $pdf = PDF::loadView('activities.pdf', compact('activities'))->setPaper('a4','portrait');
-//         return $pdf->download('activities.pdf');
-//     }
+   
+public function exportPdf(){
+    $activities = Activity::orderBy('activity_date','desc')->get();
+        $pdf = PDF::loadView('activities.pdf', compact('activities'))->setPaper('a4','portrait');
+        return $pdf->download('activities.pdf');
+}
 
 }
+
