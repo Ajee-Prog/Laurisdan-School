@@ -6,6 +6,12 @@
   @csrf
   <div class="mb-3"><label>Title</label><input type="text" name="title" class="form-control" required></div>
   <div class="mb-3"><label>Date</label><input type="date" name="exam_date" class="form-control"></div>
+
+  <div class="form-group mb-3">
+    <label>Subject</label>
+    <input type="text" name="subject" class="form-control" required>
+</div>
+
   <div class="mb-3"><label>Class</label>
     <select name="class_id" class="form-control">
       @foreach($classes as $c)

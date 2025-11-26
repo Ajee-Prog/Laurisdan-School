@@ -13,10 +13,15 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $parent = Auth::user();
-        $children = Student::where('parent_contact', $parent->email->get());
-        $classes = ClassModel::count();
+        // $parent = Auth::user();
+        // $children = Student::where('parent_contact', $parent->email->get());
+        // $classes = ClassModel::count();
 
-        return view('parent.dashboard', compact('parent', 'children'));
+        // return view('parent.dashboard', compact('parent', 'children'));
+
+        $parent = Auth::user()->parentProfile; // relationship to ParentModel
+        $students = $parent->students()->with(['class', 'examResults'])->get();
+
+        return view('parents.dashboard', compact('parent', 'students'));
     }
 }

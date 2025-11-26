@@ -8,24 +8,83 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'class_id', 'parent_id','date_of_birth', 'email' ,'image', 'phone', 'gender', 'admission_no', 'state', 'nationality','address',  'parent_contact'];
+
+    protected $table = 'students';
+    
+
+    protected $fillable = [
+        'user_id',
+        'parent_id',
+        'name',
+        'email',
+        'password',
+        'class_id',
+        'image',
+        'gender',
+        'date_of_birth',
+        'address',
+        'parent_contact',
+        'state',
+        'nationality',
+        'religion',
+        'admission_no',
+        'student_code',
+        'phone',
+        
+    ];
+
+     
+
+     
+
+    protected $hidden = ['password'];
+    // protected $fillable = ['user_id', 'class_id', 'parent_id','date_of_birth', 'email' ,'image', 'phone', 'gender', 'admission_no', 'state', 'nationality','address',  'parent_contact'];
+    // protected $fillable = ['user_id', 'class_id', 'parent_id','date_of_birth', 'email' ,'image', 'phone', 'gender', 'admission_no', 'state', 'nationality','address',  'parent_contact','religion'];
+    // protected $fillable = ['user_id', 'class_id', 'parent_id', 'name','dob', 'address' ,'image',  'gender',  'state', 'nationality',  'parent_contact','religion'];
     // protected $fillable = ['full_name', 'email', 'phone', 'class_id', 'parent_id', 'address', 'passport'];
+    // protected $fillable = ['name', 'email', 'phone', 'class_id', 'parent_id', 'image', 'password'];
+    // protected $hidden = ['password'];
 
 
 
     public function user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id');
     }
 
+    
+
     public function class(){
-        return $this->belongsTo(ClassModel::class, 'class_id');
+        return $this->belongsTo(\App\Models\SchoolClass::class,'class_id');
     }
+    
+    
     public function parent(){
-        return $this->belongsTo(ParentModel::class, 'parent_id');
+        return $this->belongsTo(ParentModel::class,'parent_id');
     }
-    public function examResults(){
-        return $this->hasMany(ExamResult::class);
-    }
+    
+
+    
+    // public function examResults(){
+    //     return $this->hasMany(ExamResult::class);
+    // }
+    public function examResults()
+{
+    return $this->hasMany(ExamResult::class, 'student_id');
+}
+    // public function exams(){
+    //     return $this->belongsToMany(Exam::class, 'exam_student')->withPivot('score', 'status')->withTimestamps();
+    // }
+    
+
+    
+
+    // public function results()
+    // {
+    //     return $this->hasMany(Result::class);
+    // }
+
+
+    
 
     
 }

@@ -1,5 +1,6 @@
-@extends('layouts.dashboard')
+
 @extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('content')
 <div class="container" style="margin-top: 70px;">

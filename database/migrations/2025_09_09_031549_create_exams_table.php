@@ -14,15 +14,43 @@ class CreateExamsTable extends Migration
     public function up()
     {
         Schema::create('exams', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('teacher_id')->nullable();
             $table->unsignedBigInteger('class_id')->nullable();
-            $table->unsignedBigInteger('term_id')->nullable();
+            $table->string('title');
+            $table->string('subject')->nullable();
+            $table->integer('duration')->default(30); // minutes
+            
+            $table->string('term')->nullable();
+            $table->string('session')->nullable();
             $table->date('exam_date')->nullable();
+            // $table->unsignedBigInteger('class_id')->nullable();
+            // $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade');
+            // $table->foreignId('class_id')->constrained('classrooms')->onDelete('cascade');
+            
+            // $table->unsignedBigInteger('term_id')->nullable();
+            // $table->date('date');
+            // $table->integer('duration');
+            // $table->integer('total_marks');
+            
+            // $table->foreignId('term_id')->nullable();
+            
+            // $table->unsignedBigInteger('teacher_id');
+            // $table->unsignedBigInteger('class_id');
+            // $table->string('title');
+            // $table->string('subject');
+            // $table->string('term');
+            // $table->string('session');
             $table->timestamps();
 
-            $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade');
-            $table->foreign('term_id')->references('id')->on('terms')->onDelete('cascade');
+            // $table->index('teacher_id');
+            // $table->index('class_id');
+
+            $table->foreign('teacher_id')->references('id')->on('teachers')->onDelete('set null');
+            // $table->foreign('class_id')->references('id')->on('school_classes')->onDelete('cascade');
+
+            $table->foreign('class_id')->references('id')->on('classes')->onDelete('set null');
+            // $table->foreign('term_id')->references('id')->on('terms')->onDelete('cascade');
         });
     }
 

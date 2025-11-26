@@ -27,7 +27,7 @@
           <td>
             @foreach($q->options as $opt)
               <div>{{ $opt->option_text }} 
-                @if($opt->is_correct) ✅ @endif
+                @if($opt->is_correct) @endif
               </div>
             @endforeach
           </td>
@@ -46,6 +46,6 @@
     </tbody>
   </table>
 
-  {{ $questions->links() }}
+  <div class="mt-3">  {{ $questions->links() }}   </div>
 </div>
 @endsection

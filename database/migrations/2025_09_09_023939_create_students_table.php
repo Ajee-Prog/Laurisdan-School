@@ -14,28 +14,33 @@ class CreateStudentsTable extends Migration
     public function up()
     {
         Schema::create('students', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('class_id')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();
-            $table->date('date_of_birth')->nullable();
-            // $table->string('full_name');
-            $table->string('gender')->nullable();
+
             $table->string('admission_no')->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('phone')->nullable();
             $table->string('state')->nullable();
             $table->string('nationality')->nullable();
-            $table->string('email')->nullable();
-            $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->string('parent_contact')->nullable();
             $table->string('religion')->nullable();
-            $table->string('image')->nullable()->after('email');
+            $table->string('image')->nullable();
+
             $table->timestamps();
-            
+
+            $table->index('parent_id');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreignId('parent_id')->constrained('parent_models')->onDelete('cascade');
+            // $table->foreign('parent_id')->references('id')->on('parents')->onDelete('set null');
             $table->foreign('class_id')->references('id')->on('classes')->onDelete('set null');
+
+
+
         });
     }
 

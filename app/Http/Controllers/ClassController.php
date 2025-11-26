@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\ClassModel;
+use App\Models\SchoolClass;
 use Illuminate\Http\Request;
 
 
@@ -13,7 +13,7 @@ class ClassController extends Controller
 {
     public function index()
     {
-        $classes = ClassModel::all();
+        $classes = SchoolClass::all();
         return view('classes.index', compact('classes'));
     }
 
@@ -28,17 +28,17 @@ class ClassController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        ClassModel::create($request->all());
+        SchoolClass::create($request->all());
 
         return redirect()->route('classes.index')->with('success', 'Class created successfully.');
     }
 
-    public function edit(ClassModel $class)
+    public function edit(SchoolClass $class)
     {
         return view('classes.edit', compact('class'));
     }
 
-    public function update(Request $request, ClassModel $class)
+    public function update(Request $request, SchoolClass $class)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -49,7 +49,7 @@ class ClassController extends Controller
     }
 
 //     
-public function destroy(ClassModel $class){
+public function destroy(SchoolClass $class){
     $class->delete();
     return redirect()->route('classes.index')->with('success', 'Class deleted successfully.');
 }

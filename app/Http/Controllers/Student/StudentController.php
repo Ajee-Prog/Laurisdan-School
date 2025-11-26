@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Models\ClassModel;
 use App\Models\ParentModel;
 use App\Models\Question;
+use App\Models\SchoolClass;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
@@ -22,7 +23,8 @@ class StudentController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth', 'role:admin,teacher']);
+        // $this->middleware(['auth', 'role:admin,teacher']);
+        $this->middleware(['auth', 'role:student']);
     }
 
     /**
@@ -45,7 +47,7 @@ class StudentController extends Controller
     // Show form to create student
     public function create()
     {
-        $classes = ClassModel::all();
+        $classes = SchoolClass::all();
         $parents = ParentModel::all();
         return view('admin.students.create', compact('classes', 'parents'));
 
@@ -101,7 +103,7 @@ class StudentController extends Controller
     public function edit($id)
     {
         $student = Student::findOrFail($id);
-        $classes = ClassModel::all();
+        $classes = SchoolClass::all();
         $parents = ParentModel::all();
         return view('admin.students.edit', compact('student', 'classes', 'parents'));
 
@@ -151,7 +153,7 @@ class StudentController extends Controller
         ->limit(10)
         ->get();
 
-    return view('student.exam', compact('questions'));
+    return view('students.exam', compact('questions'));
 }
 
     /**

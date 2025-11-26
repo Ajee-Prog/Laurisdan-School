@@ -8,10 +8,13 @@ use App\Models\Exam;
 use App\Models\Question;
 use App\Models\ExamResult;
 use App\Models\ClassModel;
+use App\Models\SchoolClass;
+use App\Models\Student;
 use App\Models\Term;
 // use Illuminate\Http\Request;
 // use PDF;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 
 class ExamController extends Controller
@@ -24,17 +27,17 @@ class ExamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($subject)
+    public function index()
     {
         $student = auth()->user()->student;
         $exams = Exam::with('class','term')->orderBy('exam_date','desc')->paginate(12);
         // $exams = Exam::with('class','term')->latest()->get();
-        return view('exams.index', compact('exams'));
-        // return view('admin.exams.index', compact('exams'));
+        // return view('exams.index', compact('exams'));
+        return view('admin.exams.index', compact('exams'));
         // check if the student already took the exam
         $alreadyTaken = ExamResult::where('student_id',$tudent->id)->where('subject', $subject)->exists();
         if($alreadyTaken){
-            return redirect()->route('student.dashboard')->with('error', 'You have already taken this '.$subject.'exam.');
+            return redirect()->route('students.dashboard')->with('error', 'You have already taken this '.$subject.'exam.');
         }
 
         // Load 10 random questions
@@ -46,7 +49,7 @@ class ExamController extends Controller
         // 40-minute duration in seconds
         $examDuration = 40 * 60;
 
-        return view('student.exams.cbt', compact('questions','subject','examDuration'));
+        return view('students.exams.cbt', compact('questions','subject','examDuration'));
 
 
     }
@@ -59,7 +62,8 @@ class ExamController extends Controller
 
         // Prevent multiple submissions
         if (ExamResult::where('student_id',$student->id)->where('subject',$subject)->exists()) {
-            return redirect()->route('student.dashboard')->with('error', 'You already submitted this exam.');
+            // return redirect()->route('student.dashboard')->with('error', 'You already submitted this exam.');
+            return redirect()->route('dashboard.student')->with('error', 'You already submitted this exam.');
         }
 
          foreach ($answers as $id => $ans) {
@@ -77,7 +81,7 @@ class ExamController extends Controller
             'score' => $finalScore,
         ]);
 
-         return redirect()->route('student.dashboard')->with('success', 'Exam submitted successfully! Score: '.$finalScore);
+         return redirect()->route('dashboard.student')->with('success', 'Exam submitted successfully! Score: '.$finalScore);
 
 
 
@@ -91,7 +95,7 @@ class ExamController extends Controller
      */
     public function create()
     {
-         $classes = ClassModel::all();
+         $classes = SchoolClass::all();
         $terms = Term::all();
         return view('exams.create', compact('classes','terms'));
 
@@ -109,7 +113,9 @@ class ExamController extends Controller
             'title'=>'required|string|max:255',
         'class_id'=>'nullable|exists:classes,id',
         'term_id'=>'nullable|exists:terms,id',
-        'exam_date'=>'nullable|date']);
+        'exam_date'=>'nullable|date',
+        'subject' => 'required|string',
+    ]);
         Exam::create($data);
         return redirect()->route('exams.index')->with('success','Exam created.');
 
@@ -134,7 +140,7 @@ class ExamController extends Controller
      */
     public function edit(Exam $exam)
     {
-        $classes = ClassModel::all(); 
+        $classes = SchoolClass::all(); 
         $terms = Term::all(); 
         return view('exams.edit', compact('exam','classes','terms'));
     }
@@ -169,11 +175,208 @@ class ExamController extends Controller
         $exam->delete(); return redirect()->route('exams.index')->with('success','Exam deleted.'); 
     }
 
+
+    // New Exam.... Assign Exam to student
+    public function assignToStudent($exam_id){
+        $exam = Exam::findOrFail($exam_id);
+        $students = Student::where('class_id', $exam_id)->get();
+
+        foreach ($students as $student) {
+            $exam->students()->syncWithoutDetaching([$student->id => ['status' => 'pending']]);
+        }
+        return back()->with('success', 'Exam assigned to all students in this class!');
+    }
+
    
 public function exportPdf(){
     $exams = Exam::with('class','term')->orderBy('exam_date','desc')->get();
         $pdf = PDF::loadView('exams.pdf', compact('exams'))->setPaper('a4','portrait');
         return $pdf->download('exams.pdf');
 }
+
+public function studentExams($id)
+{
+    // $exam = Exam::all();
+    $exam = Exam::with('questions.options')->findOrFail($id);
+    // return view('exams.student-list', compact('exams'));
+
+    // Save exam start time
+    session(['exam_'.$id.'_start_time' => now()]);
+    return view('student-exam.cbt', compact('exam'));
+
+      
+
+    
+}
+
+
+// list for students
+    public function studentExamss()
+    {
+        $student = Student::where('user_id', Auth::id())->first();
+        $exams = $student ? Exam::where('class_id', $student->class_id)->get() : collect();
+        return view('student-exam.index', compact('exams'));
+    }
+
+    // view exam brief (not CBT page)
+    public function studentExamView($id)
+    {
+        $exam = Exam::findOrFail($id);
+        // return view('student-exam.exam', compact('exam'));
+        return view('exams.student-exam', compact('exam'));
+    }
+
+/**
+ * Load the exam page when a student clicks "Take Exam" (loads questions)
+ */
+public function startExamCBT($id)
+{
+    $exam = Exam::with('questions')->findOrFail($id);
+
+    // return view('exams.student-exam', compact('exam'));
+    // return view('student-exam.exam', compact('exam'));
+    // optional: verify student class matches exam->class_id
+        $student = Student::where('user_id', Auth::id())->first();
+        if ($student && $exam->class_id && $student->class_id != $exam->class_id) {
+            abort(403,'You cannot take this exam.');
+        }
+
+        return view('student-exam.cbt', compact('exam'));
+}
+
+// This inside ExamController
+/*
+    public function index(){ $exams = Exam::where('teacher_id', Auth::id())->with('class')->paginate(20); return view('teacher.exams.index', compact('exams')); }
+public function create(){ $classes = ClassModel::where('teacher_id', Auth::id())->orWhereNull('teacher_id')->get(); return view('teacher.exams.create', compact('classes')); }
+public function store(Request $r){ $r->validate(['title'=>'required','class_id'=>'nullable|exists:school_classes,id']); Exam::create(['title'=>$r->title,'teacher_id'=>Auth::id(),'class_id'=>$r->class_id,'duration'=>$r->duration]); return redirect()->route('exams.index')->with('success','Exam created'); }
+public function show(Exam $exam){ $exam->load('questions.options'); return view('teacher.exams.show', compact('exam')); }
+public function edit(Exam $exam){ $classes = ClassModel::all(); return view('teacher.exams.edit', compact('exam','classes')); }
+public function update(Request $r, Exam $exam){ $exam->update($r->only(['title','class_id','duration','subject','term','session'])); return redirect()->route('exams.index')->with('success','Updated'); }
+public function destroy(Exam $exam){ $exam->delete(); return back()->with('success','Deleted'); }
+ */
+
+
+
+
+// it inside ExamResultController
+
+/* 
+
+public function listAvailable(){
+$student = Auth::user();
+$classId = optional($student->studentProfile)->class_id;
+$exams = Exam::where('class_id', $classId)->get();
+return view('student.exams.list', compact('exams'));
+}
+
+
+public function startExam(Exam $exam){
+$questions = $exam->questions()->with('options')->get()->shuffle();
+return view('student.exams.start', compact('exam','questions'));
+}
+
+
+// public function submitExam(Request $r, Exam $exam){
+// $studentId = Auth::id();
+// $score = 0; $total = $exam->questions()->count();
+// foreach($exam->questions as $q){ $given = $r->input('question_'.$q->id); if(!$given) continue; $opt = Option::find($given); if($opt && $opt->is_correct) $score++; }
+// $result = ExamResult::create(['exam_id'=>$exam->id,'student_id'=>$studentId,'score'=>$score,'total_questions'=>$total]);
+// return redirect()->route('student.results')->with('success','Exam submitted');
+// }
+
+
+public function myResults(){ $results = ExamResult::where('student_id', Auth::id())->with('exam')->get(); return view('student.exams.results', compact('results')); }
+
+
+public function downloadPdf(ExamResult $result){ $pdf = Pdf::loadView('student.exams.result_pdf', compact('result')); return $pdf->download('result_'.$result->id.'.pdf'); }
+*/
+
+public function submitCBT(Request $request, $id)
+{
+    $exam = Exam::with('questions')->findOrFail($id);
+
+    // $answers = $request->input('answers', []); // answers[question_id] => selected option (A/B/C/D)
+    //     if (!is_array($answers)) $answers = [];
+
+    $score = 0;
+
+    foreach ($exam->questions as $question) {
+        $answer = $request->input('question_'.$question->id);
+
+        if ($answer == $question->correct_option_id) {
+            $score++;
+        }
+
+        /* 
+        $answers = $request->input('answers', []); // answers[question_id] => selected option (A/B/C/D)
+        if (!is_array($answers)) $answers = [];
+
+        $score = 0;
+
+        foreach ($exam->questions as $question) {
+            $qid = $question->id;
+            $given = $answers[$qid] ?? null;
+            // Adapt comparison to your schema; here assume correct option stored as 'answer' with values 'A'..'D'
+            if ($given && strtolower($given) === strtolower($question->answer)) {
+                $score++;
+            } 
+        }*/
+    }
+
+    return view('student-exam.result', [
+        'exam'  => $exam,
+        'score' => $score,
+        'total' => $exam->questions->count(),
+    ]);
+}
+
+//Submit exam answers
+    public function submitExam(Request $request){
+
+        if (!$request->exam_id) {
+        abort(400, "Exam ID missing.");
+    }
+
+        $exam = Exam::with('questions')->findOrFail($request->exam_id);
+
+        // Fix: if no answers submitted
+            $answers = $request->answers ?? [];
+
+            if (!is_array($answers)) {
+                $answers = [];
+            }
+            
+        $score = 0;
+
+
+        foreach ($request->answers as $question_id => $answer) {
+            $question = $exam->questions->find($question_id);
+            if ($question && $question->answer == $answer) $score++;
+        }
+
+        return view('students.result', compact('score', 'exam'));
+
+
+
+
+        // $total = count($request->answers ?? []);
+
+        // if ($request->answers) {
+        //     foreach ($request->answers as $question_id => $option_id) {
+        //         $option  =  Option::find($option_id);
+
+        //         if ($option && $option->is_correct) {
+        //             $score++;
+        //         }
+        //     }
+        // }
+        // return view('students.result', compact('score', 'total'));
+
+        // foreach ($request->answers as $question_id => $answer){
+        //     $question = Question::find($question_id);
+        //     if ($question->answer == $answer) $score++;
+        //     }
+        //     return view('student.exam-result', compact('score'));
+    }
 
 }

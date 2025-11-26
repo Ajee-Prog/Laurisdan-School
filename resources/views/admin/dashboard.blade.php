@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-        <!-- repeat other cards... -->
+        <!-- To repeat other cards later... -->
     </div>
 
 
@@ -73,7 +73,7 @@
 
 <!-- @section('content') -->
 <div class="container">
-    <h1 class="mb-4">Admin Dashboard</h1>
+    <h1 class="mb-4">Admin Dashboard --removeUpdate later---</h1>
 
     <div class="row">
         <!-- Cards -->

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-4">
+<div class="container py-4" style="margin-top: 85px;">
   <h2 class="mb-3">Computer-Based Test (CBT)</h2>
   <form action="{{ route('student.exam.submit') }}" method="POST">
     @csrf
@@ -36,9 +36,10 @@
   </div>
   <hr>
 
-  <form method="POST" id="examForm" action="{{ route('exam.submit') }}">
+  <form method="POST" id="examForm" action="{{ route('student.exam.submit') }}">
     @csrf
-    <input type="hidden" name="subject" value="{{ $subject }}">
+    <!-- <input type="hidden" name="subject" value="{{ $subject }}"> -->
+     <input type="hidden" name="exam_id" value="{{ $exam->id }}">
     @foreach($questions as $index => $q)
       <div class="card mb-3 p-3 shadow-sm">
         <h6>{{ $index+1 }}. {{ $q->question }}</h6>
@@ -55,14 +56,15 @@
 
 <script>
 // 40-minute timer (from controller)
-let duration = {{ $examDuration }};
+let duration = `{{ $examDuration }}`;
 let timerDisplay = document.getElementById('timer');
 let form = document.getElementById('examForm');
 
 function updateTimer() {
     let minutes = Math.floor(duration / 60);
     let seconds = duration % 60;
-    timerDisplay.innerHTML = Time Left: ${minutes}:${seconds.toString().padStart(2, '0')};
+    timerDisplay.innerHTML = `Time Left: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+
     if (duration <= 0) {
         alert("Time is up! Submitting your exam...");
         form.submit();

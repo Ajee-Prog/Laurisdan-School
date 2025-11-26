@@ -10,7 +10,7 @@ use App\Models\Teacher;
 use App\Models\User;
 use App\Models\Student;
 
-use App\Models\ClassModel;
+use App\Models\SchoolClass;
 // use Barryvdh\DomPDF\PDF;
 use Barryvdh\DomPDF\Facade\PDF;
 
@@ -27,7 +27,7 @@ class TeacherController extends Controller
         $teachers = Auth::user();
         $teachers = Teacher::with('user')->paginate(12);
         $students = Student::where('class_id', $teacher->teacher->class_id ?? null)->count();
-        $classes = ClassModel::count();
+        $classes = SchoolClass::count();
 
         return view('teachers.index', compact('teachers', 'students', 'classes'));
     }

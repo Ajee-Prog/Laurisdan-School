@@ -14,8 +14,9 @@ class CreateActivitiesTable extends Migration
     public function up()
     {
         Schema::create('activities', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('title');
+            $table->string('image')->nullable();
             $table->text('description')->nullable();
             $table->date('activity_date')->nullable();
             $table->timestamps();

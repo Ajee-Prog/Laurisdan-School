@@ -21,12 +21,25 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role'
+        'role',
+        'address',
+        'photo',
+        'student_code'
     ];
 
     public function student(){
-        return $this->hasOne(Student::class);
+        return $this->hasOne(Student::class, 'user_id');
     }
+
+    public function parentProfile()
+{
+    return $this->hasOne(\App\Models\ParentModel::class, 'email', 'email');
+}
+
+public function teacher()
+{
+    return $this->hasOne(\App\Models\Teacher::class, 'email', 'email');
+}
 
     public function isAdmin(){ return $this->role === 'admin';}
     public function isTeacher(){ return $this->role === 'teacher';}

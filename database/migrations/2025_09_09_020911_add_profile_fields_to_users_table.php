@@ -15,12 +15,12 @@ class AddProfileFieldsToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //  $table->id();
-            $table->string('role')->default('student');
-            // $table->string('name')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('address')->nullable();
-            $table->string('photo')->nullable();
-            $table->string('student_code')->nullable();
+            // $table->string('role')->default('student');
+            // // $table->string('name')->nullable();
+            // $table->string('phone')->nullable();
+            // $table->string('address')->nullable();
+            // $table->string('photo')->nullable();
+            // $table->string('student_code')->nullable();
         });
     }
 
@@ -31,8 +31,8 @@ class AddProfileFieldsToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        // Schema::table('users', function (Blueprint $table) {
+        //     //
+        // });
     }
 }

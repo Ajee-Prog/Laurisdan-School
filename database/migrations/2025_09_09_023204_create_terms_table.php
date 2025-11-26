@@ -14,7 +14,7 @@ class CreateTermsTable extends Migration
     public function up()
     {
         Schema::create('terms', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('name');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();

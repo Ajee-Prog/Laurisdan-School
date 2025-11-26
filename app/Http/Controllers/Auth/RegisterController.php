@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+// use App\Rules\UserRole;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request; //as HttpRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+// use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -25,6 +28,59 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
+    // new implementation start
+    public function showRegistrationForm()
+    {
+        return view('auth.register');
+    }
+
+    public function register(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email'=> 'required|email|unique:users',
+            'password'=>'required|min:6|confirmed',
+            'role'=>'required|in:admin,teacher,parent,student'
+        ]);
+
+        $user = User::create([
+            'name'=>$data['name'],
+            'email'=>$data['email'],
+            'password'=>Hash::make($data['password']),
+            'role'=>$data['role'],
+        ]);
+
+        Auth::login($user);
+
+        return redirect($this->redirectPath());
+    }
+
+
+     protected function redirectPath()
+    {
+        $role = Auth::user()->role;
+
+        // return match($role) {
+        //     'admin'   => '/admin/dashboard',
+        //     'teacher' => '/teacher/dashboard',
+        //     'parent'  => '/parent/dashboard',
+        //     default   => '/student/dashboard',
+        // };
+
+        // $role = Auth::user()->role;
+
+    switch ($role) {
+        case 'admin':
+            return '/admin/dashboard';
+        case 'teacher':
+            return '/teacher/dashboard';
+        case 'parent':
+            return '/parent/dashboard';
+        default:
+            return '/student/dashboard';
+    }
+    }
+    // new implementation ends
 
     /**
      * Where to redirect users after registration.
@@ -56,6 +112,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.user::class],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role' => ['required', 'in:admin, teacher, student, parent'],
+            // 'role' => ['required', 'string', new UserRole],
         ]);
     }
 
@@ -71,11 +128,11 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'role' => $data['role'],
+            'role' => $data['role']
         ]);
 
-        event(new Registered($user));
-        Auth::login($user);
-        return redirect(RouteServiceProvider::HOME);
+        // event(new Registered($user));
+        // Auth::login($user);
+        // return redirect(RouteServiceProvider::HOME);
     }
 }
