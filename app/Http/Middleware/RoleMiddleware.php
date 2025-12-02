@@ -67,15 +67,25 @@ class RoleMiddleware
         //     return redirect('/login'); // Return a redirect response
         // }
 
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
 
-         if (!auth()->check()) {
-                abort(403);
-            }
+        if (!in_array(Auth::user()->role, $roles)) {
+            abort(403, "Unauthorized");
+        }
 
-            if (!in_array(auth()->user()->role, $roles)) {
-                abort(403, 'Unauthorized');
-            }
+        return $next($request);
+// --------------------------------------------------
 
-            return $next($request);
+        //  if (!auth()->check()) {
+        //         abort(403);
+        //     }
+
+        //     if (!in_array(auth()->user()->role, $roles)) {
+        //         abort(403, 'Unauthorized');
+        //     }
+
+        //     return $next($request);
     }
 }

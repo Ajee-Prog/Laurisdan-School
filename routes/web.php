@@ -101,9 +101,20 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('sessions', SessionController::class);
         Route::resource('terms', TermController::class);
 
+        //     Route::get('/admin/questions', [QuestionController::class, 'index'])->name('questions.index');
+        // Route::get('/admin/questions/create', [QuestionController::class, 'create'])->name('questions.create');
+        // Route::post('/admin/questions/store', [QuestionController::class, 'store'])->name('questions.store');
+
         // Exams & Questions
         Route::resource('exams', ExamController::class);
-        Route::resource('questions', QuestionController::class);
+        
+        // Question Bank (linked to exam)
+        Route::get('/exams/{exam}/questions/create', [QuestionController::class, 'create'])->name('exams.questions.create');
+        Route::post('/exams/{exam}/questions', [QuestionController::class, 'store'])->name('exams.questions.store');
+
+        Route::resource('questions', QuestionController::class)->except(['create', 'store']);
+        
+
         Route::get('students-export-pdf', [App\Http\Controllers\StudentController::class, 'exportPdf'])->name('students.export.pdf');
         Route::get('books/export/pdf', [BookController::class, 'exportPdf'])->name('books.export.pdf');
         Route::get('session-export/pdf', [SessionController::class,'exportPdf'])->name('session.export.pdf');
@@ -129,7 +140,7 @@ Route::middleware(['auth'])->group(function () {
     | STUDENT ROUTES
     |--------------------------------------------------------------------------
     */
-    Route::middleware(['role:student'])->group(function () {
+    Route::middleware(['role:admin, student'])->group(function () {
 
         Route::get('/student/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
         // Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');

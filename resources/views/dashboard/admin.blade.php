@@ -59,7 +59,7 @@
             <div class="col-md-3">
                 <div class="card shadow-sm">
                     <div class="card-body text-center">
-                        <h4>{{ $exams }}</h4>
+                        <h4>{{ $examCnt }}</h4>
                         <h5 class="card-title">Exams</h5>
                         <p class="card-text">Setup and print exams</p>
                         <a href="{{ route('exams.index') }}" class="btn btn-primary btn-sm">View</a>
@@ -78,10 +78,17 @@
                 </div>
 
                 <li class="nav-item">
-    <a href="{{ route('questions.create') }}" class="nav-link">
-        ➕ Add CBT Question
-    </a>
-</li>
+                    @foreach($exams as $exam)
+                    <a href="{{ route('exams.questions.create', $exam->id) }}" class="nav-link">
+                        ➕ Add CBT Question to {{ \Illuminate\Support\Str::limit($exam->title, 30) }}
+                    </a>
+
+                    
+                    <!-- <a href="{{ route('exams.questions.create', $exam->id) }}" class="nav-link">
+                        Add Question to {{ \Illuminate\Support\Str::limit($exam->title, 30) }}
+                    </a> -->
+                    @endforeach
+                </li>
 
 <li class="nav-item">
     <a href="{{ route('questions.index') }}" class="nav-link">

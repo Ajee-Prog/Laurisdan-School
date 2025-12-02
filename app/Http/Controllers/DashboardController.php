@@ -20,11 +20,22 @@ class DashboardController extends Controller
 
 
         $user = Auth::user();
+        // $user = auth()->user();
 
         // If somehow no role exists
         if (!$user || !$user->role) {
             abort(403, 'No role assigned to this user.');
+            return redirect()->route('login');
         }
+
+        $role = $user->role;
+
+        // common stats
+    $students = \App\Models\Student::count();
+    $teachers = \App\Models\Teacher::count();
+    $classes  = \App\Models\SchoolClass::count();
+    $books    = \App\Models\Book::count();
+    $examsCnt = \App\Models\Exam::count();
 
         switch ($user->role) {
 
@@ -34,13 +45,15 @@ class DashboardController extends Controller
             |--------------------------------------------------------------------------
             */
             case 'admin':
+                $exams = \App\Models\Exam::orderBy('title')->get();
 
                 return view('dashboard.admin', [
                     'students' => Student::count(),
                     'teachers' => Teacher::count(),
                     'classes'  => SchoolClass::count(),
                     'books'    => Book::count(),
-                    'exams'    => Exam::count(),
+                    'examCnt'    => Exam::count(),
+                    'exams'    => Exam::orderBy('title')->get(),
                 ]);
 
             /*
