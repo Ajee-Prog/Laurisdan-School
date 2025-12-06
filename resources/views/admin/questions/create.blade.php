@@ -253,7 +253,7 @@
     <div class="mb-3">
       <label>Exam (optional)</label>
       <select name="exam_id" class="form-control">
-        <option value="">-- Select exam --</option>
+        <option value=""> -- Select exam -- </option>
 
                 
                 <!-- {{ @foreach($exam as $e)

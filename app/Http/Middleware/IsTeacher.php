@@ -17,10 +17,10 @@ class IsTeacher
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role === 'teacher') {
+    //     if (Auth::check() && Auth::user()->role === 'teacher') {
+    //     return $next($request);
+    // }
+    // return redirect('/')->with('error', 'Access denied.');
         return $next($request);
-    }
-    return redirect('/')->with('error', 'Access denied.');
-        // return $next($request);
     }
 }

@@ -206,6 +206,8 @@
          <!-- Plain Html navbar ends here --> 
           @include('partials1.navbar')
 
+          
+
         <main class="py-4">
             @yield('content')
         </main>

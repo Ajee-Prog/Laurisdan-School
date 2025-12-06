@@ -17,10 +17,10 @@ class IsParentRole
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role === 'parent') {
+    //     if (Auth::check() && Auth::user()->role === 'parent') {
+    //     return $next($request);
+    // }
+    // return redirect('/')->with('error', 'Access denied.');
         return $next($request);
-    }
-    return redirect('/')->with('error', 'Access denied.');
-        // return $next($request);
     }
 }

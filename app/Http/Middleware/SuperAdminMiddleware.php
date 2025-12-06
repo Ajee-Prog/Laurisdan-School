@@ -4,9 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class IsStudent
+class SuperAdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,10 +16,11 @@ class IsStudent
      */
     public function handle(Request $request, Closure $next)
     {
-    //     if (Auth::check() && Auth::user()->role === 'student') {
-    //     return $next($request);
-    // }
-    // return redirect('/')->with('error', 'Access denied.');
+        if (auth()->user()->role !== 'superadmin') {
+        abort(403, 'Unauthorized');
+    }
+
+    // return $next($request);
         return $next($request);
     }
 }

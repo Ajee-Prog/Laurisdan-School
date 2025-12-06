@@ -15,7 +15,8 @@ class TeacherController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth', 'role:admin,teacher']);
+        // $this->middleware(['auth', 'role:admin,teacher']);
+        $this->middleware(['auth', 'role:teacher,admin']);
         // $this->middleware(['auth', 'role:student']);
     }
     /**
@@ -28,7 +29,7 @@ class TeacherController extends Controller
         //  $teachers = Teacher::with(['class', 'parent'])->get();
         //  $teachers = Teacher::latest()->paginate(10);
         $teachers = User::where('role','teacher')->paginate(20);
-        return view('admin.teachers.index',compact('teachers'));
+        return view('teachers.index',compact('teachers'));
         // return view('students.index', compact('students'));
         // return view('admin.teachers.index', compact('teachers'));
     }
@@ -44,7 +45,8 @@ class TeacherController extends Controller
         // $classes = ClassModel::all();
         // $classes = Classroom::all();
         // return view('students.create', compact('parents','classes'));
-        return view('admin.teachers.create');
+        // return view('admin.teachers.create');
+        return view('teachers.create');
     }
 
     /**

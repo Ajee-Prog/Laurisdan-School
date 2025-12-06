@@ -19,8 +19,15 @@ use Illuminate\Support\Facades\Auth;
 
 class ExamController extends Controller
 {
-
-    public function __construct(){ $this->middleware('auth'); }
+    public function __construct()
+    {
+        // $this->middleware(['auth', 'role:admin,teacher']);
+        $this->middleware('auth');
+        // $this->middleware(['auth', 'role:parent,admin']);
+    }
+// public function __construct(){ $this->middleware(['auth', 'role:admin']); }
+    
+    
 
     /**
      * Display a listing of the resource.
@@ -30,6 +37,7 @@ class ExamController extends Controller
     public function index()
     {
         $student = auth()->user()->student;
+
         $exams = Exam::with('class','term')->orderBy('exam_date','desc')->paginate(12);
         // $exams = Exam::with('class','term')->latest()->get();
         // return view('exams.index', compact('exams'));
@@ -186,6 +194,7 @@ class ExamController extends Controller
         }
         return back()->with('success', 'Exam assigned to all students in this class!');
     }
+    
 
    
 public function exportPdf(){
@@ -194,15 +203,34 @@ public function exportPdf(){
         return $pdf->download('exams.pdf');
 }
 
+
+// teacher-specific listing
+    public function teacherExams(){
+        $user = Auth::user();
+        // if teacher has teacher model relation, filter by teacher_id
+        $exams = Exam::where('teacher_id', $user->id)->withCount('questions')->get();
+        return view('teacher.exams.index', compact('exams'));
+    }
+
+
 public function studentExams($id)
 {
+    $student = Student::where('user_id', Auth::id())->first();
+        if(!$student) abort(403, 'Student profile not found');
+        $exams = Exam::where('class_id', $student->class_id)->get();
+        // return view('student.exams.index', compact('exams'));
+
+
+
+
     // $exam = Exam::all();
     $exam = Exam::with('questions.options')->findOrFail($id);
     // return view('exams.student-list', compact('exams'));
 
     // Save exam start time
     session(['exam_'.$id.'_start_time' => now()]);
-    return view('student-exam.cbt', compact('exam'));
+    return view('student-exam.cbt', compact('exam', 'exams'));
+    // return view('student.exams.index', compact('exams'));
 
       
 

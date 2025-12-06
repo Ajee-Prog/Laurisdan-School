@@ -49,7 +49,8 @@ use App\Http\Controllers\Auth\ParentAuthController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\StudentAuthController;
 use App\Http\Controllers\Auth\TeacherAuthController;
-
+use App\Http\Controllers\FeeController;
+use App\Http\Controllers\SubjectController;
 
 // Route::get('/', function () {
 //     return view('laurisdan.welcomes');
@@ -73,6 +74,8 @@ Auth::routes();
 */
 Route::middleware(['auth'])->group(function () {
 
+    
+
     /*
     |--------------------------------------------------------------------------
     | MAIN DASHBOARD ROUTE (auto-redirect by role) redirect/entry (DashboardController handles role routing)
@@ -85,7 +88,7 @@ Route::middleware(['auth'])->group(function () {
     | ADMIN ROUTES (manage everything)
     |--------------------------------------------------------------------------
     */
-    Route::middleware(['role:admin'])->group(function () {
+    Route::middleware(['role:admin,super_admin'])->group(function(){
 
         Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
         // Route::get('/admin/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin.dashboard');
@@ -93,20 +96,21 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('students', StudentController::class);
         Route::resource('teachers', TeacherController::class);
         Route::get('/teachers/pdf', [TeacherController::class, 'exportPdf'])->name('teachers.pdf');
-
+        // Exams & Questions
+        Route::resource('exams', ExamController::class);
         Route::resource('parents', ParentController::class);
         Route::resource('classes', ClassController::class);
         Route::resource('books', BookController::class);
         Route::resource('activities', ActivityController::class);
         Route::resource('sessions', SessionController::class);
         Route::resource('terms', TermController::class);
+        Route::resource('subjects', SubjectController::class);
 
         //     Route::get('/admin/questions', [QuestionController::class, 'index'])->name('questions.index');
         // Route::get('/admin/questions/create', [QuestionController::class, 'create'])->name('questions.create');
         // Route::post('/admin/questions/store', [QuestionController::class, 'store'])->name('questions.store');
 
-        // Exams & Questions
-        Route::resource('exams', ExamController::class);
+        
         
         // Question Bank (linked to exam)
         Route::get('/exams/{exam}/questions/create', [QuestionController::class, 'create'])->name('exams.questions.create');
@@ -119,6 +123,17 @@ Route::middleware(['auth'])->group(function () {
         Route::get('books/export/pdf', [BookController::class, 'exportPdf'])->name('books.export.pdf');
         Route::get('session-export/pdf', [SessionController::class,'exportPdf'])->name('session.export.pdf');
         Route::get('exams-export/pdf', [ExamController::class,'exportPdf'])->name('exams.export.pdf');
+
+
+
+        // Admin & Superadmin fee routes
+        Route::get('/fees', [FeeController::class, 'index'])->name('fees.index');
+        Route::get('/fees/create', [FeeController::class, 'create'])->name('fees.create');
+        Route::post('/fees/store', [FeeController::class, 'store'])->name('fees.store');
+
+        // finance admin dashboard + csv import
+        Route::get('/fees/finance-dashboard', [FeeController::class, 'financeDashboard'])->name('fees.finance');
+        Route::post('/fees/import-csv', [FeeController::class, 'importCsv'])->name('fees.import.csv');
 
     });
 
@@ -140,7 +155,7 @@ Route::middleware(['auth'])->group(function () {
     | STUDENT ROUTES
     |--------------------------------------------------------------------------
     */
-    Route::middleware(['role:admin, student'])->group(function () {
+    Route::middleware(['role: student,admin'])->group(function () {
 
         Route::get('/student/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
         // Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
@@ -200,8 +215,56 @@ Route::middleware(['auth'])->group(function () {
         // Route::get('/parent/dashboard', [ParentController::class, 'index'])->name('parent.dashboard');
         Route::get('/parent/dashboard', [DashboardController::class, 'parentDashboard'])->name('parent.dashboard');
     });
-});
 
+
+
+    // Receipt starts
+
+    // receipt + pdf viewing (admins and students who own it)
+    Route::get('/fee/{id}/receipt', [FeeController::class, 'receipt'])->name('fee.receipt');
+    Route::get('/fee/{id}/receipt/pdf', [FeeController::class, 'receiptPdf'])->name('fee.receipt.pdf');
+
+    // student view of their fee history
+    Route::get('/student/fees', [FeeController::class, 'studentHistory'])->name('student.fee.history')->middleware('role:student');
+
+    // receipts ends
+}); //General auths admin ends here
+
+// // Subjects route here
+// Route::middleware(['auth','role:super_admin,admin'])->group(function () {
+//     Route::resource('subjects', SubjectController::class);
+// });
+
+// Receipt Fee
+Route::get('/fee/{id}/receipt', [FeeController::class, 'generateReceipt'])->middleware(['auth','role:super_admin,admin'])
+    ->name('fee.receipt');
+
+
+    // This should be add to the Student route group
+ Route::get('/student/fees', [FeeController::class, 'studentHistory'])->middleware(['auth','role:student'])->name('student.fee.history');
+
+
+//  New Fees to used well correct
+// Route::middleware(['auth'])->group(function () {
+//     // Admin & Superadmin fee routes
+//     Route::middleware(['role:admin,super_admin'])->group(function(){
+//         Route::get('/fees', [FeeController::class, 'index'])->name('fees.index');
+//         Route::get('/fees/create', [FeeController::class, 'create'])->name('fees.create');
+//         Route::post('/fees/store', [FeeController::class, 'store'])->name('fees.store');
+
+//         // finance admin dashboard + csv import
+//         Route::get('/fees/finance-dashboard', [FeeController::class, 'financeDashboard'])->name('fees.finance');
+//         Route::post('/fees/import-csv', [FeeController::class, 'importCsv'])->name('fees.import.csv');
+//     });
+
+//     // receipt + pdf viewing (admins and students who own it)
+//     Route::get('/fee/{id}/receipt', [FeeController::class, 'receipt'])->name('fee.receipt');
+//     Route::get('/fee/{id}/receipt/pdf', [FeeController::class, 'receiptPdf'])->name('fee.receipt.pdf');
+
+//     // student view of their fee history
+//     Route::get('/student/fees', [FeeController::class, 'studentHistory'])->name('student.fee.history')->middleware('role:student');
+// });
+// fee well correct ends
 // Now the Error will Disappeared ends here
 
 

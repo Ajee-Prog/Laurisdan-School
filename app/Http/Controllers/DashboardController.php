@@ -31,11 +31,11 @@ class DashboardController extends Controller
         $role = $user->role;
 
         // common stats
-    $students = \App\Models\Student::count();
-    $teachers = \App\Models\Teacher::count();
-    $classes  = \App\Models\SchoolClass::count();
-    $books    = \App\Models\Book::count();
-    $examsCnt = \App\Models\Exam::count();
+        $students = \App\Models\Student::count();
+        $teachers = \App\Models\Teacher::count();
+        $classes  = \App\Models\SchoolClass::count();
+        $books    = \App\Models\Book::count();
+        $examsCnt = \App\Models\Exam::count();
 
         switch ($user->role) {
 
@@ -205,13 +205,28 @@ class DashboardController extends Controller
     // each of these functions can be called inside switch
     public function adminDashboard()
     {
-        return view('dashboard.admin', [
+
+        $user = Auth::user();
+
+        $role = $user->role;
+
+        // common stats
+        $students = \App\Models\Student::count();
+        $teachers = \App\Models\Teacher::count();
+        $classes  = \App\Models\SchoolClass::count();
+        $books    = \App\Models\Book::count();
+        $examsCnt = \App\Models\Exam::count();
+
+        $exams = \App\Models\Exam::orderBy('title')->get();
+
+
+        return view('dashboard.admin', compact('students', 'teachers', 'classes', 'books', 'exams', 'examsCnt')/*, [
             'students' => Student::count(),
             'teachers' => Teacher::count(),
             'classes'  => SchoolClass::count(),
             'books'    => Book::count(),
-            'exams'    => Exam::count(),
-        ]);
+            'examsCnt'    => Exam::count(),
+        ]*/);
     }
 
     public function teacherDashboard()

@@ -5,6 +5,7 @@
     <div class="d-flex justify-content-between mb-3">
         <h3>Parents</h3>
         <a href="{{ route('parents.create') }}" class="btn btn-primary">Add Parent</a>
+        
     </div>
 
     @if(session('success'))

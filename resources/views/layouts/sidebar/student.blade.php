@@ -9,6 +9,9 @@
     <a href="{{ route('exams.index') }}" class="nav-link text-white">Exams</a>
   </li>
   <li class="nav-item">
+    <a href="{{ route('student.fee.history') }}" class="nav-link text-white">Fees History</a>
+  </li>
+  <li class="nav-item">
     <a href="{{ route('activities.index') }}" class="nav-link text-white">Activities</a>
   </li>
   <li class="nav-item">

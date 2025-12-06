@@ -15,7 +15,7 @@ class ParentController extends Controller
     public function __construct()
     {
         // $this->middleware(['auth', 'role:admin,teacher']);
-        $this->middleware(['auth', 'role:parent']);
+        $this->middleware(['auth', 'role:parent,admin']);
     }
     /**
      * Display a listing of the resource.
@@ -26,6 +26,7 @@ class ParentController extends Controller
     {
          $parents = ParentModel::with('students')->latest()->paginate(10);
         // return view('students.index', compact('students'));
+        // return view('parents.index', compact('parents'));
         return view('admin.parents.index', compact('parents'));
     }
 
@@ -40,7 +41,8 @@ class ParentController extends Controller
         // $classes = ClassModel::all();
         // $classes = Classroom::all();
         // return view('students.create', compact('parents','classes'));
-        return view('admin.parents.create', compact('students'));
+        // return view('admin.parents.create', compact('students'));
+        return view('parents.create', compact('students'));
     }
 
     /**
@@ -53,7 +55,7 @@ class ParentController extends Controller
     {
          $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:parent_models',
+            'email' => 'required|email|unique:parents',
             
             'phone' => 'required',
             'address' => 'required',
@@ -61,7 +63,7 @@ class ParentController extends Controller
             'student_id' => 'nullable|array',
             // 'parent_id' => 'nullable|exists:parent_models,id',
             // 'address' => 'nullable|string',
-            // 'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
 
         $user = User::create([
@@ -127,7 +129,8 @@ class ParentController extends Controller
     {
         $parent = ParentModel::findOrFail($id);
         $students = Student::all();
-        return view('admin.parents.edit', compact('parent', 'students'));
+        // return view('admin.parents.edit', compact('parent', 'students'));
+        return view('parents.edit', compact('parent', 'students'));
 
     }
 
