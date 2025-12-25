@@ -24,6 +24,7 @@ class CreateExamsTable extends Migration
             $table->string('term')->nullable();
             $table->string('session')->nullable();
             $table->date('exam_date')->nullable();
+            $table->boolean('is_active')->default(1);
             // $table->unsignedBigInteger('class_id')->nullable();
             // $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade');
             // $table->foreignId('class_id')->constrained('classrooms')->onDelete('cascade');

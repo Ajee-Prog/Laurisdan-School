@@ -20,13 +20,13 @@
                 @csrf
                 <div class="mb-3">
                     <label>Student Code</label>
-                    <input name="student_code" type="text" class="form-control" required>
+                    <input name="admission_no" type="text" class="form-control" placeholder="Admission Number" required>
                 </div>
                 <div class="mb-3">
                     <label>Password</label>
-                    <input name="password" type="password" class="form-control" required>
+                    <input name="password" type="password" class="form-control" placeholder="Password" required>
                 </div>
-                <button class="btn btn-primary w-100">Login</button>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
             </form>
         </div>
     </div>

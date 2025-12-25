@@ -37,7 +37,28 @@ class DashboardController extends Controller
         $books    = \App\Models\Book::count();
         $examsCnt = \App\Models\Exam::count();
 
+
+
+        
+
         switch ($user->role) {
+
+            /*
+            |--------------------------------------------------------------------------
+            | SUPER ADMIN DASHBOARD
+            |--------------------------------------------------------------------------
+            */
+            case 'superadmin':
+                $exams = \App\Models\Exam::orderBy('title')->get();
+
+                return view('dashboard.superadmin', [
+                    'students' => Student::count(),
+                    'teachers' => Teacher::count(),
+                    'classes'  => SchoolClass::count(),
+                    'books'    => Book::count(),
+                    'examCnt'    => Exam::count(),
+                    'exams'    => Exam::orderBy('title')->get(),
+                ]);
 
             /*
             |--------------------------------------------------------------------------

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\AdmissionHelper;
 use App\Models\Book;
 use App\Models\Student;
 use App\Models\ParentModel;
@@ -71,11 +72,15 @@ class StudentController extends Controller
      */
     public function create()
     {
+        
         $parents = ParentModel::all();
         $classes = \App\Models\SchoolClass::all();
         // $classes = Classroom::all();
-        // return view('students.create', compact('parents','classes'));
-        return view('admin.students.create', compact('classes','parents'));
+        
+        $generatedAdmissionNo = AdmissionHelper::generateAdmissionNo();
+        
+        return view('students.create', compact('parents','classes', 'generatedAdmissionNo'));
+        // return view('admin.students.create', compact('classes','parents', 'generatedAdmissionNo'));
 
         
 
@@ -85,6 +90,14 @@ class StudentController extends Controller
 
 
     }
+
+
+    // -----------==============------------
+    private function generateAdmissionNo()
+{
+    return 'LNPS-' . date('Y') . '-' . rand(1000, 9999);
+}
+
 
     /**
      * Store a newly created resource in storage.
@@ -97,12 +110,16 @@ class StudentController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'middle_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
             'date_of_birth' => 'required|date',
             'gender' => 'required',
-            'admission_no' => 'required',
-            'phone' => 'required|string|max:20',
+            // 'admission_no' => 'required',
+            // 'phone' => 'required|string|max:20',
+            'lga' => 'required|string|max:20',
             'state' => 'required',
             'nationality' => 'required',
             'religion' => 'required',
@@ -133,15 +150,25 @@ class StudentController extends Controller
         // $imagePath = $request->file('image') ? 
         // $request->file('image')->store('students', 'public') : null;
 
+        $admissionNo = $this->generateAdmissionNo();
+
         // Student::create($validated);
         Student::create([
             'user_id' => $user->id,
             'class_id' => $request->class_id,
             'parent_id' => $request->parent_id,
-            'admission_no' => $request->admission_no,
+            // 'admission_no' => $request->admission_no,
+
+            'admission_no' => $admissionNo,
+            'first_name'   => $request->first_name,
+            'last_name'    => $request->last_name,
+            'middle_name'    => $request->middle_name,
+            'LGA'    => $request->lga,
+            'password' => bcrypt($admissionNo), // default password
+
             'date_of_birth' => $request->date_of_birth,
             'gender' => $request->gender,
-            'phone' => $request->phone,
+            // 'phone' => $request->phone,
             'state' => $request->state,
             'nationality' => $request->nationality,
             'address' => $request->address,

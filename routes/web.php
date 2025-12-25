@@ -50,7 +50,9 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\StudentAuthController;
 use App\Http\Controllers\Auth\TeacherAuthController;
 use App\Http\Controllers\FeeController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\SuperAdminController;
 
 // Route::get('/', function () {
 //     return view('laurisdan.welcomes');
@@ -62,7 +64,21 @@ Route::get('/about', [LaurisdanPageController::class, 'about'])->name('about');
 Route::get('/contact', [LaurisdanPageController::class, 'contact'])->name('contact');
 Route::post('/contact', [LaurisdanPageController::class, 'sendContact'])->name('contact.send');
 
+Route::get('/school-news', [NewsController::class, 'publicNews'])->name('news.public');
+Route::get('/school-news/{id}', [NewsController::class, 'singleNews'])->name('news.single');
 
+
+
+Route::get('/superadmin/login', [SuperAdminController::class, 'loginForm'])->name('superadmin.login');
+
+Route::post('/superadmin/login', [SuperAdminController::class, 'login'])->name('superadmin.login.post');
+
+// Student Login
+Route::get('/student/login', [StudentAuthController::class,'showLoginForm'])->name('student.login');
+
+Route::post('/student/login', [StudentAuthController::class,'login'])->name('student.login.submit');
+
+Route::post('/student/logout', [StudentAuthController::class,'logout'])->name('student.logout');
 
 Auth::routes();
 
@@ -82,6 +98,49 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/dashboard', [DashboardController::class, 'index']) ->name('dashboard');
+    /*
+    |--------------------------------------------------------------------------
+    | SUPER ADMIN ROUTES (manage everything)
+    |--------------------------------------------------------------------------
+    */
+
+    Route::middleware(['auth', 'role:superadmin'])->group(function () {
+
+    Route::get('/superadmin/dashboard', [SuperAdminController::class, 'dashboard'])
+        ->name('superadmin.dashboard');
+
+    // Manage Admins
+    Route::resource('superadmin/admins', App\Http\Controllers\Admin\UserController::class);
+
+    // Manage Teachers
+    Route::resource('superadmin/teachers', App\Http\Controllers\TeacherController::class);
+
+    // Manage Students
+    Route::resource('superadmin/students', App\Http\Controllers\StudentController::class);
+
+    // Manage Parents
+    Route::resource('superadmin/parents', App\Http\Controllers\ParentController::class);
+
+    // Manage Classes
+    Route::resource('superadmin/classes', App\Http\Controllers\ClassController::class);
+
+    // Manage Sessions
+    Route::resource('superadmin/sessions', App\Http\Controllers\SessionController::class);
+
+    // Manage Terms
+    Route::resource('superadmin/terms', App\Http\Controllers\TermController::class);
+
+    // Manage Subjects
+    Route::resource('superadmin/subjects', App\Http\Controllers\SubjectController::class);
+
+    // Manage Exams
+    Route::resource('superadmin/exams', App\Http\Controllers\ExamController::class);
+
+    // Manage School Fees
+    Route::resource('superadmin/fees', App\Http\Controllers\FeeController::class);
+    Route::resource('news', NewsController::class);
+
+});
 
     /*
     |--------------------------------------------------------------------------
@@ -109,6 +168,8 @@ Route::middleware(['auth'])->group(function () {
         //     Route::get('/admin/questions', [QuestionController::class, 'index'])->name('questions.index');
         // Route::get('/admin/questions/create', [QuestionController::class, 'create'])->name('questions.create');
         // Route::post('/admin/questions/store', [QuestionController::class, 'store'])->name('questions.store');
+
+        Route::get('/exams/{id}/toggle-status', [ExamController::class, 'toggleStatus'])->name('exams.toggle');
 
         
         
@@ -142,7 +203,7 @@ Route::middleware(['auth'])->group(function () {
         | TEACHER ROUTES
         |--------------------------------------------------------------------------
         */
-        Route::middleware(['role:teacher'])->group(function () {
+        Route::middleware(['role:admin,super_admin,teacher'])->group(function () {
             Route::get('/teacher/dashboard', [TeacherController::class, 'index'])->name('teacher.dashboard');
             // Route::get('/teacher/dashboard', [DashboardController::class, 'teacherDashboard'])->name('teacher.dashboard');
 
@@ -214,6 +275,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:parent'])->group(function () {
         // Route::get('/parent/dashboard', [ParentController::class, 'index'])->name('parent.dashboard');
         Route::get('/parent/dashboard', [DashboardController::class, 'parentDashboard'])->name('parent.dashboard');
+        Route::get('/parent/results', [ParentController::class, 'childResults'])->name('parent.results');
     });
 
 

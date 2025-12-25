@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Contact;
@@ -13,7 +14,10 @@ class PageController extends Controller
 {
     public function home()
     {
-        return view('welcome');
+        return view('welcome', [
+        'activities' => Activity::latest()->take(6)->get(),
+        // 'news'       => News::latest()->take(5)->get(),
+    ] );
     }
 
     public function about()
@@ -50,3 +54,4 @@ public function sendContact(Request $request){
 
 
 }
+

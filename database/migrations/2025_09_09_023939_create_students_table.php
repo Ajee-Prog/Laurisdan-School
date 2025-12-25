@@ -20,11 +20,15 @@ class CreateStudentsTable extends Migration
             $table->unsignedBigInteger('class_id')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();
 
-            $table->string('admission_no')->nullable();
-            $table->date('date_of_birth')->nullable();
+            $table->string('admission_no')->unique();
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('middle_name');
+            $table->date('date_of_birth')->nullable();   
             $table->string('gender')->nullable();
-            $table->string('phone')->nullable();
+            $table->string('password')->nullable();
             $table->string('state')->nullable();
+            $table->string('LGA')->nullable();
             $table->string('nationality')->nullable();
             $table->string('address')->nullable();
             $table->string('parent_contact')->nullable();

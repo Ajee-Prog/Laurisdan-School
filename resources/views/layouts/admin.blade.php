@@ -21,6 +21,7 @@
             left: 0;
             padding-top: 60px;
             color: #fff;
+            overflow: auto;
         }
         .sidebar a {
             display: block;
@@ -70,6 +71,24 @@
     <a href="{{ route('terms.index') }}">📆 Terms</a>
     <a href="{{ route('sessions.index') }}">🗓 Sessions</a>
     <a href="{{ route('exams.index') }}">💻 CBT</a>
+    <li class="nav-item">
+    <a href="{{ route('fees.index') }}" class="nav-link text-white">Manage Fees</a>
+  </li>
+  <li class="nav-item">
+    <a href="{{ route('fees.create') }}">Record Payment</a>
+  </li>
+
+  <li class="nav-item">
+    <!-- <a href="{{ route('logout') }}" class="nav-link text-danger">Logout</a> -->
+     <hr>
+    <a href="#" class="text-danger d-block px-3 py-2" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        🚪 Logout
+    </a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+        @csrf
+    </form>
+  </li>
+
 </div>
 
 <div class="content">

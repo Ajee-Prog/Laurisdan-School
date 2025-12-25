@@ -10,10 +10,36 @@ use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class SuperAdminController extends Controller
 {
+
+    public function loginForm()
+{
+    return view('auth.superadmin-login');
+}
+
+public function login(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required'
+    ]);
+
+    if (Auth::attempt([
+        'email' => $request->email,
+        'password' => $request->password,
+        'role' => 'superadmin'
+    ])) {
+        return redirect()->route('superadmin.dashboard');
+    }
+
+    return back()->with('error', 'Invalid login credentials');
+}  
+
+
 
     public function dashboard()
     {

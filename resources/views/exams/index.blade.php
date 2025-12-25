@@ -4,6 +4,13 @@
 <div class="d-flex justify-content-between mb-3">
   <h2>Exams</h2>
   <a href="{{ route('exams.create') }}" class="btn btn-primary">Add Exam</a>
+  <!-- Enable / Disable buttons -->
+   @if($exam->is_active)
+    <a href="{{ route('exams.toggle', $exam->id) }}" class="btn btn-danger">Disable</a>
+    @else
+        <a href="{{ route('exams.toggle', $exam->id) }}" class="btn btn-success">Enable</a>
+   @endif
+<!-- Disable buttons ends here -->
 </div>
 
 <table class="table table-bordered">

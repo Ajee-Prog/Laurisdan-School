@@ -187,4 +187,15 @@ class ParentController extends Controller
         return $pdf->download('parents-list.pdf');
 
     }
+
+
+    public function childResults()
+{
+    // $parent = auth()->user();
+    $parent = ParentModel::all();
+
+    $students = $parent->students()->with('results.exam')->get();
+
+    return view('parents.results', compact('students'));
+}
 }

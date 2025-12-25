@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Student;
 
+use App\Helpers\AdmissionHelper;
 use App\Http\Controllers\Controller;
 
 use App\Models\Student;
@@ -49,7 +50,11 @@ class StudentController extends Controller
     {
         $classes = SchoolClass::all();
         $parents = ParentModel::all();
-        return view('admin.students.create', compact('classes', 'parents'));
+        
+        $generatedAdmissionNo = AdmissionHelper::generateAdmissionNo();
+     
+        // return view('admin.students.create', compact('classes', 'generatedAdmissionNo', 'parents'));
+        return view('students.create', compact('classes', 'generatedAdmissionNo', 'parents'));
 
     }
 
@@ -70,11 +75,44 @@ class StudentController extends Controller
             'address' => 'nullable|string',
             'passport' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
-        if ($request->hasFile('passport')) {
-            $validated['passport'] = $request->file('passport')->store('students', 'public');
+
+
+        $image = null;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image')->store('students', 'public');
         }
 
-        Student::create($validated);
+
+        // if ($request->hasFile('passport')) {
+        //     $validated['passport'] = $request->file('passport')->store('students', 'public');
+        // }
+
+         $admissionNo = AdmissionHelper::generateAdmissionNo();
+
+                $user = User::create([
+                    'name'         => $request->name,
+                    'admission_no' => $admissionNo,
+                    'password'     => bcrypt($request->password),
+                    'role_id'      => 'student', // student
+                ]);
+
+        // Student::create($validated);
+        // Student::create($validated);
+        Student::create([
+            'user_id' => $user->id,
+            'class_id' => $request->class_id,
+            'parent_id' => $request->parent_id,
+            'admission_no' => $request->admission_no,
+            'date_of_birth' => $request->date_of_birth,
+            'gender' => $request->gender,
+            'phone' => $request->phone,
+            'state' => $request->state,
+            'nationality' => $request->nationality,
+            'address' => $request->address,
+            'parent_contact' => $request->parent_contact,
+            'religion' => $request->religion,
+            'image' => $image
+        ]);
 
         return redirect()->route('students.index')->with('success', 'Student added successfully!');
 

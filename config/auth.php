@@ -40,18 +40,18 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-         'teacher' => [
-        'driver' => 'session',
-        'provider' => 'teachers',
-    ],
+    //      'teacher' => [
+    //     'driver' => 'session',
+    //     'provider' => 'teachers',
+    // ],
     'student' => [
         'driver' => 'session',
         'provider' => 'students',
     ],
-    'parent' => [
-        'driver' => 'session',
-        'provider' => 'parents',
-    ],
+    // 'parent' => [
+    //     'driver' => 'session',
+    //     'provider' => 'parents',
+    // ],
 
 
 
@@ -88,17 +88,17 @@ return [
         'teachers' => [
         'driver' => 'eloquent',
         'model' => App\Models\Teacher::class,
-    ],
+        ],
 
-    'students' => [
-        'driver' => 'eloquent',
-        'model' => App\Models\Student::class,
-    ],
+        'students' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Student::class,
+        ],
 
-'parents' => [
-    'driver' => 'eloquent',
-    'model' => App\Models\ParentModel::class,
-],
+        'parents' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\ParentModel::class,
+        ],
 
     ],
 
@@ -124,6 +124,15 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+
+
+        
+        'students' => [
+        'provider' => 'students',
+        'table' => 'password_resets',
+        'expire' => 60,
+        'throttle' => 60,
+    ],
     ],
 
     /*

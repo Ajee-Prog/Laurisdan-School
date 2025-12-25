@@ -43,14 +43,17 @@ class LoginController extends Controller
         $role = Auth::user()->role;
 
     switch ($role) {
+        case 'superadmin':
+            return '/dashboard/superadmin';
         case 'admin':
-            return '/admin/dashboard';
+            return '/dashboard/admin';
         case 'teacher':
-            return '/teacher/dashboard';
+            return '/dashboard/teacher';
         case 'parent':
-            return '/parent/dashboard';
+            return '/dashboard/parent';
         default:
-            return '/student/dashboard';
+            // return '/student/dashboard';
+            return '/';
     }
     }
 

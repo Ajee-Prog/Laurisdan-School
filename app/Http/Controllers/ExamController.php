@@ -21,13 +21,20 @@ class ExamController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware(['auth', 'role:admin,teacher']);
-        $this->middleware('auth');
+        $this->middleware(['auth', 'role:admin|teacher']);
+        // $this->middleware('auth');
         // $this->middleware(['auth', 'role:parent,admin']);
     }
 // public function __construct(){ $this->middleware(['auth', 'role:admin']); }
     
-    
+    public function toggleStatus($id)
+    {
+        $exam = Exam::findOrFail($id);
+        $exam->is_active = !$exam->is_active;
+        $exam->save();
+
+        return back()->with('success', 'Exam status updated');
+    }
 
     /**
      * Display a listing of the resource.

@@ -60,6 +60,13 @@
     h2 {
       color: navy;
     }
+    .carousel-bg {
+    height: 90vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url( "/public/assets/images/laurisdan3.jpg" );
+}
   </style>
 
 
@@ -132,90 +139,92 @@
   </section>
   <!-- 2 copied -->
    <!-- Carousel new section start -->
-   <section class="p5">
+  <section class="p5">
     
 
 
 
       <!-- HERO CAROUSEL -->
-  <section id="home" class="mb-5">
-    <div id="schoolCarousel" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
+    <section id="home" class="mb-5">
+      <div id="schoolCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
 
-        <div class="carousel-item active" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c');">
-          <div class="carousel-caption">
-            <h1>Welcome to Laurisdan School</h1>
-            <p>Building Bright Futures Through Learning and Care.</p>
-            <a href="#about" class="btn btn-custom mt-2">Discover More</a>
+          <div class="carousel-item active" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c');">
+            <div class="carousel-caption">
+              <h1>Welcome to Laurisdan School</h1>
+              <p>Building Bright Futures Through Learning and Care.</p>
+              <a href="#about" class="btn btn-custom mt-2">Discover More</a>
+            </div>
           </div>
+
+          <div class="carousel-item" style="background-image: url({{ asset('assets/images/laurisdan3.jpg') }});">
+          <!-- <div class="carousel-item" > -->
+            
+            <div class="carousel-caption">
+              <h1>Quality Education for Every Child</h1>
+              <p>Empowering students with creativity, knowledge, and discipline.</p>
+              <a href="#classes" class="btn btn-custom mt-2">Our Classes</a>
+            </div>
+          </div>
+
+          <div class="carousel-item" style="background-image: url({{ asset('assets/images/laurisdan3.jpg') }});">
+            <div class="carousel-caption">
+              <h1>Inspiring Teachers, Amazing Students</h1>
+              <p>Learn from the best in a supportive environment.</p>
+              <a href="#teachers" class="btn btn-custom mt-2">Meet Teachers</a>
+            </div>
+          </div>
+
         </div>
 
-        <div class="carousel-item" style="background-image: url({{ asset('assets/images/laurisdan3.jpg') }});">
-          <div class="carousel-caption">
-            <h1>Quality Education for Every Child</h1>
-            <p>Empowering students with creativity, knowledge, and discipline.</p>
-            <a href="#classes" class="btn btn-custom mt-2">Our Classes</a>
-          </div>
-        </div>
-
-        <div class="carousel-item" style="background-image: url({{ asset('assets/images/laurisdan3.jpg') }});">
-          <div class="carousel-caption">
-            <h1>Inspiring Teachers, Amazing Students</h1>
-            <p>Learn from the best in a supportive environment.</p>
-            <a href="#teachers" class="btn btn-custom mt-2">Meet Teachers</a>
-          </div>
-        </div>
-
+        <button class="carousel-control-prev" type="button" data-bs-target="#schoolCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#schoolCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
       </div>
+    </section>
 
-      <button class="carousel-control-prev" type="button" data-bs-target="#schoolCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#schoolCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-      </button>
-    </div>
-  </section>
+    <!-- Heuro Carousel end -->
 
-<!-- Heuro Carousel end -->
-
-<!-- TEACHERS SECTION -->
-  <section id="teachers" class="py-5">
-    <div class="container text-center">
-      <h2 class="section-title">Meet Our Teachers</h2>
-      <div class="row g-4 mt-4">
-        <div class="col-md-3">
-          <div class="card border-0 shadow-sm p-3">
-            <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle mx-auto" width="100">
-            <h5 class="mt-3">Mrs. Irriferigoma Johnson</h5>
-            <p class="text-muted mb-0">Head Teacher</p>
+    <!-- TEACHERS SECTION -->
+    <section id="teachers" class="py-5">
+      <div class="container text-center">
+        <h2 class="section-title">Meet Our Teachers</h2>
+        <div class="row g-4 mt-4">
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3">
+              <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle mx-auto" width="100">
+              <h5 class="mt-3">Mrs. Irriferigoma Johnson</h5>
+              <p class="text-muted mb-0">Head Teacher</p>
+            </div>
           </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card border-0 shadow-sm p-3">
-            <img src="https://randomuser.me/api/portraits/men/35.jpg" class="rounded-circle mx-auto" width="100">
-            <h5 class="mt-3">Mr. Emmanuel Okoro</h5>
-            <p class="text-muted mb-0">Mathematics</p>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3">
+              <img src="https://randomuser.me/api/portraits/men/35.jpg" class="rounded-circle mx-auto" width="100">
+              <h5 class="mt-3">Mr. Emmanuel Okoro</h5>
+              <p class="text-muted mb-0">Mathematics</p>
+            </div>
           </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card border-0 shadow-sm p-3">
-            <img src="https://randomuser.me/api/portraits/women/65.jpg" class="rounded-circle mx-auto" width="100">
-            <h5 class="mt-3">Mrs. Kemi Oyebanjo</h5>
-            <p class="text-muted mb-0">Science</p>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3">
+              <img src="https://randomuser.me/api/portraits/women/65.jpg" class="rounded-circle mx-auto" width="100">
+              <h5 class="mt-3">Mrs. Kemi Oyebanjo</h5>
+              <p class="text-muted mb-0">Science</p>
+            </div>
           </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card border-0 shadow-sm p-3">
-            <img src="https://randomuser.me/api/portraits/men/50.jpg" class="rounded-circle mx-auto" width="100">
-            <h5 class="mt-3">Mr. Yusuf Kareem</h5>
-            <p class="text-muted mb-0">ICT Instructor</p>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3">
+              <img src="https://randomuser.me/api/portraits/men/50.jpg" class="rounded-circle mx-auto" width="100">
+              <h5 class="mt-3">Mr. Yusuf Kareem</h5>
+              <p class="text-muted mb-0">ICT Instructor</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-<!-- Teachers 2nd ends -->
+    </section>
+      <!-- Teachers 2nd ends -->
 
 
       <!-- Marketing messaging and featurettes
@@ -290,7 +299,7 @@
         <!-- /END THE FEATURETTES -->
 
       </div><!-- /.container -->
-   </section>
+  </section>
    <!-- Carousel new section ends -->
     <!-- CLASSES SECTION -->
   <section id="classes" class="py-5 bg-light">
@@ -310,7 +319,7 @@
           <div class="card border-0 shadow-sm">
             <img src="https://images.unsplash.com/photo-1600353061113-9ecdc501f5c6" class="card-img-top">
             <div class="card-body">
-              <h5 class="card-title">Primary 1–3</h5>
+              <h5 class="card-title">Primary 1-3</h5>
               <p class="card-text">Fostering curiosity and teamwork through exciting lessons and projects.</p>
             </div>
           </div>
@@ -319,10 +328,42 @@
           <div class="card border-0 shadow-sm">
             <img src="https://images.unsplash.com/photo-1596495577886-d920f1fb7238" class="card-img-top">
             <div class="card-body">
-              <h5 class="card-title">Primary 4–6</h5>
+              <h5 class="card-title">Primary 4-6</h5>
               <p class="card-text">Preparing students for future success with leadership and excellence.</p>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="py-5 bg-light">
+    <div class="container text-center">
+      <h2 class="section-title">Latest News</h2>
+      <div class="row g-4 mt-4">
+        <!-- <div class="col-md-3"> -->
+
+        <h3 class="mt-5 text-center">Latest Activities</h3>
+        <div class="row">
+        @foreach($activities as $act)
+            <div class="col-md-4">
+                <div class="card shadow mb-3">
+                    <img src="{{ asset('uploads/activities/'.$act->image) }}" class="card-img-top">
+                    <div class="card-body">
+                        <h5>{{ $act->title }}</h5>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+        </div>
+
+        <h3 class="mt-5">News & Announcements</h3>
+        {{-- <ul>
+        @foreach($news as $n)
+            <li>{{ $n->title }}</li>
+        @endforeach
+        </ul> --}}
+
+
         </div>
       </div>
     </div>

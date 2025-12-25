@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\FrontHomePage;
 
 use App\Http\Controllers\Controller;
+use App\Models\Activity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -12,7 +13,10 @@ class LaurisdanPageController extends Controller
     public function index(){
         // return view('laurisdan.index');
         // return view('laurisdan.welcomes');
-        return view('pages.welcome');
+        return view('pages.welcome', [
+        'activities' => Activity::latest()->take(6)->get(),
+        // 'news'       => News::latest()->take(5)->get(),
+    ]);
     }
 
     public function about(){

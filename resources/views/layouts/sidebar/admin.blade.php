@@ -32,15 +32,14 @@
   <li class="nav-item">
     <a href="{{ route('terms.index') }}" class="nav-link text-white">Terms</a>
   </li>
+  
   <li class="nav-item">
     <a href="{{ route('fees.index') }}" class="nav-link text-white">Manage Fees</a>
   </li>
   <li class="nav-item">
     <a href="{{ route('fees.create') }}">Record Payment</a>
   </li>
-  <!-- <li class="nav-item">
-    <a href="{{ route('fee.receipt') }}" class="nav-link text-white">Generate Receipt</a>
-  </li> -->
+  
   
   
   <li class="nav-item">

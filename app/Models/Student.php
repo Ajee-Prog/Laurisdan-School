@@ -4,10 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Student extends Model
+
+
+// class Student extends Model
+class Student extends Authenticatable
 {
     use HasFactory;
+    protected $guard = 'student';
 
     protected $table = 'students';
     
@@ -16,7 +21,7 @@ class Student extends Model
         'user_id',
         'parent_id',
         'name',
-        'email',
+        
         'password',
         'class_id',
         'image',
@@ -29,7 +34,7 @@ class Student extends Model
         'religion',
         'admission_no',
         'student_code',
-        'phone',
+        // 'phone',
         
     ];
 
@@ -82,6 +87,7 @@ class Student extends Model
     // {
     //     return $this->hasMany(Result::class);
     // }
+    
 
 
     
