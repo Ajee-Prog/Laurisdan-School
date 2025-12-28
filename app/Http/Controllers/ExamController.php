@@ -21,7 +21,7 @@ class ExamController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'role:admin|teacher']);
+        $this->middleware(['auth', 'role:admin,teacher']);
         // $this->middleware('auth');
         // $this->middleware(['auth', 'role:parent,admin']);
     }

@@ -104,6 +104,13 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
 
+    Route::middleware(['role:admin,superadmin,teacher'])->group(function () {
+        Route::resource('exams', ExamController::class);
+    });
+
+
+    
+
     Route::middleware(['auth', 'role:superadmin'])->group(function () {
 
     Route::get('/superadmin/dashboard', [SuperAdminController::class, 'dashboard'])
@@ -147,8 +154,9 @@ Route::middleware(['auth'])->group(function () {
     | ADMIN ROUTES (manage everything)
     |--------------------------------------------------------------------------
     */
-    Route::middleware(['role:admin,super_admin'])->group(function(){
+    Route::middleware(['role:admin,superadmin'])->group(function(){
 
+        // Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
         // Route::get('/admin/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin.dashboard');
 
@@ -203,7 +211,7 @@ Route::middleware(['auth'])->group(function () {
         | TEACHER ROUTES
         |--------------------------------------------------------------------------
         */
-        Route::middleware(['role:admin,super_admin,teacher'])->group(function () {
+        Route::middleware(['role:teacher'])->group(function () {
             Route::get('/teacher/dashboard', [TeacherController::class, 'index'])->name('teacher.dashboard');
             // Route::get('/teacher/dashboard', [DashboardController::class, 'teacherDashboard'])->name('teacher.dashboard');
 

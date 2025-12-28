@@ -16,9 +16,11 @@ class CreateTermsTable extends Migration
         Schema::create('terms', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->unsignedBigInteger('session_id')->nullable();
+            $table->boolean('active')->default(false);
 
             $table->foreign('session_id')->references('id')->on('sessions')->onDelete('set null');
             $table->timestamps();

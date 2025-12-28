@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
+
      public function showLoginForm()
     {
         return view('auth.login');
@@ -44,16 +49,19 @@ class LoginController extends Controller
 
     switch ($role) {
         case 'superadmin':
-            return '/dashboard/superadmin';
+            // return '/dashboard/superadmin';
+            return route('superadmin.dashboard');
         case 'admin':
-            return '/dashboard/admin';
+            return route('admin.dashboard');
         case 'teacher':
-            return '/dashboard/teacher';
+            return route('teacher.dashboard');
+
         case 'parent':
-            return '/dashboard/parent';
+            // return '/dashboard/parent';
+            return route('parent.dashboard');
         default:
             // return '/student/dashboard';
-            return '/';
+            return route('student.dashboard');
     }
     }
 
@@ -89,10 +97,10 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('guest')->except('logout');
+    // }
 
     // protected function redirectTo(){
     //     $role = auth()->user()->role;

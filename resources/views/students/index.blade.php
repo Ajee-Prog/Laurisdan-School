@@ -10,19 +10,38 @@
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
-      <th>ID</th><th>Name</th><th>Class</th> <th>Phone</th> <th>Parent</th> <th>Passport</th><th>Action</th>
+      <th>ID</th>
+      <th>Admission No</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Middle Name</th>
+      <th>Class</th> 
+      <th>Age</th>
+       <th>Parent</th> 
+       <th>Parent Contact</th> 
+       <th>Passport</th>
+       <th>Action</th>
     </tr>
   </thead>
   <tbody>
+  
+
+        <!-- I dont need the above code -->
+
     @foreach($students as $student)
       <tr>
         <td>{{ $student->id }}</td>
-        <td>{{ $student->full_name }}</td>
+        <td>{{ $student->admission_no }}</td>
+        <td>{{ $student->first_name }}</td>
+        <td>{{ $student->last_name }}</td>
+        <td>{{ $student->middle_name }}</td>
         <td>{{ $student->class->name ?? 'N/A' }}</td>
-        <td>{{ $student->phone }}</td>
-        <td>{{ $student->parentModel->full_name }}</td>
-        <td>@if($student->passport)
-          <img src="{{asset('storage/'.$student->passport) }}" width="60" class="rounded" alt="">
+        <td>{{ $student->age }} Years</td>
+        
+        <td>{{ $student->parent->full_name ?? '' }}</td>
+        <td>{{ $student->parent_contact }}</td>
+        <td>@if($student->image)
+          <img src="{{asset('storage/'.$student->image) }}" width="60" class="rounded" alt="">
           @endif
         </td>
 
@@ -39,3 +58,14 @@
   </tbody>
 </table>
 @endsection
+
+
+
+
+
+
+
+
+
+
+

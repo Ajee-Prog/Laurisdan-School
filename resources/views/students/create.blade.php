@@ -7,7 +7,7 @@
 </div>
 
 
-<form action="{{ route('students.store') }}" method="POST">
+<form action="{{ route('students.store') }}" method="POST" enctype="multipart/form-data">
   @csrf
   <div class="row mb-3">
     <div class="col">
@@ -82,6 +82,7 @@
         <div class="col">
             <label>Admission Number (Auto-Generated)</label>
             <input type="text" class="form-control" value="{{ $generatedAdmissionNo }}" readonly>
+            <input type="hidden" name="admission_no" value="{{ $generatedAdmissionNo }}">
 
             <div class="mb-3">
              
@@ -106,7 +107,7 @@
    <div class="row mb-3">
     <div class="col">
       <label>Date of Birth</label>
-      <input type="date" name="date_of_birth" class="form-control" required>
+      <input type="date" name="date_of_birth" id="dob" class="form-control" required>
     </div>
 
     <div class="col">
@@ -117,7 +118,7 @@
     <!-- Auto-generated admission number -->
         <div class="col">
             <label>Age Number (Auto-Calculated)</label>
-            <input type="text" class="form-control" value="Auto-generated " readonly>
+            <input type="text" class="form-control" id="age" value="Auto-generated " readonly>
 
             <div class="mb-3">
              
@@ -128,27 +129,10 @@
             </div>
         </div>
 
-        <!-- <div class="col">
-            <label>Password (Admin chooses or default)</label>
-            <input type="password" name="password" class="form-control" placeholder="Password / surname" required>
-        </div> -->
-
+       
   </div>
    <!-- DOB ends -->
-
-
-  
-
-        <!-- <div class="mb-3">
-            <label>Select Class Admin chooses</label>
-            <select name="class_id" class="form-control" required>
-                @foreach($classes as $class)
-                    <option value="{{ $class->id }}">{{ $class->class_name }}</option>
-                @endforeach
-            </select>
-        </div> -->
-
-
+    
   <div class="row mb-3">
     <div class="col">
       <label>Parent</label>
@@ -231,6 +215,26 @@
   </div>
   <button type="submit" class="btn btn-success">Save</button>
 </form>
+
+
+
+
+<!-- AGE Calculation  -->
+
+<script>
+document.getElementById('dob').addEventListener('change', function () {
+    let dob = new Date(this.value);
+    let today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    let m = today.getMonth() - dob.getMonth();
+
+    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+        age--;
+    }
+
+    document.getElementById('age').value = age + ' years';
+});
+</script>
 @endsection
 
 

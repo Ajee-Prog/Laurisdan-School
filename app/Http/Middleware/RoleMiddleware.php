@@ -19,6 +19,22 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next,  ...$roles)
     {
 
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+
+        if (!in_array(Auth::user()->role, $roles)) {
+            abort(403, "Unauthorized USER");
+        }
+
+        return $next($request);
+
+
+        // if (!auth()->check() || !in_array(auth()->user()->role, $roles)) {
+        //     abort(403);
+        // }
+        // return $next($request);
+
         //  if ($role === 'teacher' && !auth('teacher')->check()) {
         //     return redirect('/teacher/login');
         // }
@@ -67,15 +83,7 @@ class RoleMiddleware
         //     return redirect('/login'); // Return a redirect response
         // }
 
-        if (!Auth::check()) {
-            return redirect('/login');
-        }
-
-        if (!in_array(Auth::user()->role, $roles)) {
-            abort(403, "Unauthorized USER");
-        }
-
-        return $next($request);
+       
 // --------------------------------------------------
 
 

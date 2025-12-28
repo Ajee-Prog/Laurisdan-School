@@ -100,6 +100,32 @@
               <li><a class="dropdown-item" href="{{ route('classes.show', 6) }}">Primary 6</a></li>
             </ul>
           </li>
+
+
+
+          <!-- Student login portal -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="classesDropdown" role="button" data-bs-toggle="dropdown">Student Portal</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ route('student.login') }}">Student Login</a></li>
+              <li><a class="dropdown-item" href="{{ route('classes.index') }}">All Classes</a></li>
+              <li><a class="dropdown-item" href="{{ route('classes.show', 1) }}">Primary 1</a></li>
+              <li><a class="dropdown-item" href="{{ route('classes.show', 2) }}">Primary 2</a></li>
+              <li><a class="dropdown-item" href="{{ route('classes.show', 3) }}">Primary 3</a></li>
+              <li><a class="dropdown-item" href="{{ route('classes.show', 4) }}">Primary 4</a></li>
+              <li><a class="dropdown-item" href="{{ route('classes.show', 5) }}">Primary 5</a></li>
+              <li><a class="dropdown-item" href="{{ route('classes.show', 6) }}">Primary 6</a></li>
+            </ul>
+          </li>
+          <!-- Student portal end -->
+
+
+
+
+
+         
+
+    
           <li class="nav-item"><a class="nav-link" href="{{ route('books.index') }}">Books</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('activities.index') }}">Activities</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('teachers.index') }}">Teachers</a></li>

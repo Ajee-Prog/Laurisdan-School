@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use Carbon\Carbon;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,29 +21,45 @@ class Student extends Authenticatable
     protected $fillable = [
         'user_id',
         'parent_id',
-        'name',
+        // 'name',
+        'last_name',
+        'first_name',
+        'middle_name',
         
         'password',
         'class_id',
         'image',
         'gender',
         'date_of_birth',
+        'place_birth',
         'address',
         'parent_contact',
         'state',
+        'lga',
         'nationality',
         'religion',
         'admission_no',
         'student_code',
+        'medical_Att',
         // 'phone',
         
     ];
+
+
 
      
 
      
 
     protected $hidden = ['password'];
+
+    // Age Autocalculate
+    public function getAgeAttribute()
+    {
+        return $this->date_of_birth
+            ? Carbon::parse($this->date_of_birth)->age
+            : null;
+    }
     // protected $fillable = ['user_id', 'class_id', 'parent_id','date_of_birth', 'email' ,'image', 'phone', 'gender', 'admission_no', 'state', 'nationality','address',  'parent_contact'];
     // protected $fillable = ['user_id', 'class_id', 'parent_id','date_of_birth', 'email' ,'image', 'phone', 'gender', 'admission_no', 'state', 'nationality','address',  'parent_contact','religion'];
     // protected $fillable = ['user_id', 'class_id', 'parent_id', 'name','dob', 'address' ,'image',  'gender',  'state', 'nationality',  'parent_contact','religion'];

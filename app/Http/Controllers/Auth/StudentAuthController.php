@@ -31,7 +31,8 @@ class StudentAuthController extends Controller
             'password'     => $request->password
         ])) {
             $request->session()->regenerate();
-            return redirect()->route('students.dashboard');
+            // return redirect()->route('students.dashboard');
+            return redirect()->route('dashboard.student');
         }
 
         return back()->withErrors([

@@ -17,10 +17,11 @@ class CreateUsersTable extends Migration
             $table->id();
             // $table->string('role')->default('student');
             $table->string('name');
-            $table->enum('role', ['super_admin','admin', 'teacher', 'student', 'parent'])->default('student');
+            $table->enum('role', ['superadmin','admin', 'teacher', 'student', 'parent'])->default('student');
             $table->string('address')->nullable();
             $table->string('photo')->nullable();
             $table->string('student_code')->nullable();
+            $table->string('admission_no')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

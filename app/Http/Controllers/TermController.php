@@ -22,18 +22,26 @@ class TermController extends Controller
         $sessions = SessionModel::all(); 
         return view('terms.create', compact('sessions'));
      }
+
+
     public function store(Request $r){
          $data = $r->validate([
             'name'=>'required',
             'session_id'=>'nullable|exists:sessions,id',
             'start_date'=>'nullable|date',
-            'end_date'=>'nullable|date']); 
+            'end_date'=>'nullable|date',
+            'active'=>'nullable|boolean']); 
+
+            if(isset($data['active']) && $data['active'])
+                { Term::query()->update(['active'=>false]); } 
+            // SessionModel::create($data); 
 
          Term::create($data); 
          return redirect()->route('terms.index')->with('success','Term created.'); 
         }
+
     public function edit(Term $term){
-         $sessions = SessionModel::all();
+         $sessions = Term::all();
           return view('terms.edit', compact('term','sessions'));
          }
     public function update(Request $r, Term $term){
@@ -41,7 +49,14 @@ class TermController extends Controller
             'name'=>'required',
             'session_id'=>'nullable',
             'start_date'=>'nullable|date',
-            'end_date'=>'nullable|date']);
+            'end_date'=>'nullable|date',
+            'active'=>'nullable|boolean']);
+            
+
+            if(isset($data['active']) && $data['active'])
+                { Term::query()->update(['active'=>false]); } 
+
+                
              $term->update($data); 
              return redirect()->route('terms.index')->with('success','Term updated.'); 
             }

@@ -108,15 +108,60 @@ class StudentController extends Controller
     public function store(Request $request)
     {
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
+        $admissionNo = $this->generateAdmissionNo();
+        // Neww simple Store save start
+        /*
+
+        $data = $request->validate([
+            'admission_no'   => 'required|unique:students,admission_no',
+            'student_code'   => 'required|unique:students,student_code',
+            'first_name'     => 'required',
+            'last_name'      => 'required',
+            'middle_name'    => 'required',
+            'date_of_birth'  => 'required|date',
+            'place_birth'    => 'required',
+            'gender'         => 'required',
+            'password'       => 'required',
+            'class_id'       => 'nullable',
+            'parent_id'      => 'nullable',
+            'state'          => 'required',
+            'lga'            => 'required',
+            'nationality'    => 'required',
+            'address'        => 'required',
+            'medical_Att'    => 'required',
+            'parent_contact' => 'required',
+            'religion'       => 'required',
+            'image'          => 'required|image|max:2048',
+        ]);
+    
+        // Upload image
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('students', 'public');
+        }
+
+        
+    
+        // Hash password
+        $data['password'] = Hash::make($data['password']);
+    
+        Student::create($data);  */
+
+        
+    
+        // Neww store ends
+
+        $validatedData = $request->validate([
+            'admission_no'   => 'required|unique:students,admission_no',
+            'student_code'   => 'required|unique:students,student_code',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'middle_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            // 'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
             'date_of_birth' => 'required|date',
-            'gender' => 'required',
+            'place_birth' => 'nullable|string',
+            // 'student_code' => 'nullable|string',
+            'gender' => 'required|string',
             // 'admission_no' => 'required',
             // 'phone' => 'required|string|max:20',
             'lga' => 'required|string|max:20',
@@ -127,67 +172,85 @@ class StudentController extends Controller
             'class_id' => 'required|exists:classes,id',
             'parent_id' => 'nullable|exists:parents,id',
             'address' => 'nullable|string',
+            'medical_Att' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
 
-        $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'role' => 'student'
-                ]);
+        // $user = User::create([
+        //         'name' => $request->name,
+        //         'email' => $request->email,
+        //         'password' => Hash::make($request->password),
+        //         'role' => 'student'
+        //         ]);
 
         // state
-
-        $image = null;
+        // Upload image
         if ($request->hasFile('image')) {
-            $image = $request->file('image')->store('students', 'public');
+            $validatedData['image'] = $request->file('image')->store('students', 'public');
         }
-        // if ($request->hasFile('passport')) {
-        //     $validated['passport'] = $request->file('passport')->store('students', 'public');
+
+        // Hash password
+        $validatedData['password'] = Hash::make($validatedData['password']);
+        
+        Student::create($validatedData);
+        
+
+        // $image = null;
+        // if ($request->hasFile('image')) {
+        //     $image = $request->file('image')->store('students', 'public');
         // }
+        
+        
+        // ENDS
 
-        // $imagePath = $request->file('image') ? 
-        // $request->file('image')->store('students', 'public') : null;
+        
 
-        $admissionNo = $this->generateAdmissionNo();
+        // $admissionNo = $this->generateAdmissionNo();
+
+    //     $year = date('Y');
+    // $count = Student::whereYear('created_at', $year)->count() + 1;
+
+    // $admissionNo = "LNPS/$year/" . str_pad($count, 4, '0', STR_PAD_LEFT);
+
+    
 
         // Student::create($validated);
-        Student::create([
+
+        // THis was first Start here..
+       /* Student::create([
             'user_id' => $user->id,
             'class_id' => $request->class_id,
             'parent_id' => $request->parent_id,
             // 'admission_no' => $request->admission_no,
 
             'admission_no' => $admissionNo,
+            'student_code' => $request->student_code,
             'first_name'   => $request->first_name,
             'last_name'    => $request->last_name,
             'middle_name'    => $request->middle_name,
-            'LGA'    => $request->lga,
-            'password' => bcrypt($admissionNo), // default password
+            'lga'    => $request->lga,
+            // 'password' => bcrypt($admissionNo), // default password
+            'password' => Hash::make($request->password),
 
             'date_of_birth' => $request->date_of_birth,
+            'place_birth' => $request->place_birth,
             'gender' => $request->gender,
             // 'phone' => $request->phone,
             'state' => $request->state,
             'nationality' => $request->nationality,
             'address' => $request->address,
+            'medical_Att' => $request->medical_Att,
             'parent_contact' => $request->parent_contact,
             'religion' => $request->religion,
             'image' => $image
-        ]);
+        ]);   
+        
+        */
+        // This was first ENDs here..
+   
 
         // return redirect()->route('admin.students.index')->with('success', 'Student Registered successfully!');
-
-
-
-        // $request->validate([
-        //     'full_name' => 'required',
-        //     'student_code' => 'required|unique:students',
-        //     'parent_id' => 'required',
-        //     'class_id' => 'required'
-        // ]);
-
+   
         // Student::create($request->all());
         return redirect()->route('students.index')->with('success','Student added successfully');
 

@@ -21,16 +21,19 @@ class CreateStudentsTable extends Migration
             $table->unsignedBigInteger('parent_id')->nullable();
 
             $table->string('admission_no')->unique();
+            $table->string('student_code')->unique();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('middle_name');
             $table->date('date_of_birth')->nullable();   
+            $table->string('place_birth')->nullable();   
             $table->string('gender')->nullable();
             $table->string('password')->nullable();
             $table->string('state')->nullable();
-            $table->string('LGA')->nullable();
+            $table->string('lga')->nullable();
             $table->string('nationality')->nullable();
             $table->string('address')->nullable();
+            $table->string('medical_Att')->nullable();
             $table->string('parent_contact')->nullable();
             $table->string('religion')->nullable();
             $table->string('image')->nullable();
@@ -48,7 +51,11 @@ class CreateStudentsTable extends Migration
         });
     }
 
+    
+
     /**
+     * 
+    
      * Reverse the migrations.
      *
      * @return void
