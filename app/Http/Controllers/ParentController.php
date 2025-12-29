@@ -26,8 +26,8 @@ class ParentController extends Controller
     {
          $parents = ParentModel::with('students')->latest()->paginate(10);
         // return view('students.index', compact('students'));
-        // return view('parents.index', compact('parents'));
-        return view('admin.parents.index', compact('parents'));
+        return view('parents.index', compact('parents'));
+        // return view('admin.parents.index', compact('parents'));
     }
 
     /**
@@ -60,25 +60,42 @@ class ParentController extends Controller
             'phone' => 'required',
             'address' => 'required',
             'password' => 'required|min:6',
-            'student_id' => 'nullable|array',
+            'relation' => 'required',
+            // 'student_id' => 'nullable|array',
             // 'parent_id' => 'nullable|exists:parent_models,id',
             // 'address' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
 
+          /**  Check if user already exists */
+    $user = User::where('email', $request->email)->first();
+
+    if (!$user) {
+        // Create user only if not exists
         $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'role' => 'parent'
-                ]);
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+            'role'     => 'parent',
+        ]);
+    }
+        // ----------------
+        // Upload image if exists
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('parents', 'public');
+        }
 
-        // if ($request->hasFile('passport')) {
-        //     $validated['passport'] = $request->file('passport')->store('students', 'public');
-        // }
+        // Ends_-----------------
 
-        $imagePath = $request->file('image') ? 
-        $request->file('image')->store('parent', 'public') : null;
+        // $user = User::create([
+        //         'name' => $request->name,
+        //         'email' => $request->email,
+        //         'password' => Hash::make($request->password),
+        //         'role' => 'parent'
+        //         ]);
+
+        
 
         // Student::create($validated);
        $parent = ParentModel::create([

@@ -54,7 +54,7 @@ class StudentController extends Controller
         //  $students = Student::with(['class', 'parent'])->paginate(10);
         $users = User::paginate(20);
         // $students = Student::with('user', 'class')->paginate(20);
-        $students = Student::with('user', 'class')->get();
+        $students = Student::with('class', 'parent')->get();
         return view('students.index', compact('students'));
 
         //  $students = Student::with(['class', 'parent'])->get();
@@ -93,10 +93,10 @@ class StudentController extends Controller
 
 
     // -----------==============------------
-    private function generateAdmissionNo()
-{
-    return 'LNPS-' . date('Y') . '-' . rand(1000, 9999);
-}
+//     private function generateAdmissionNo()
+// {
+//     return 'LNPS-' . date('Y') . '-' . rand(1000, 9999);
+// }
 
 
     /**

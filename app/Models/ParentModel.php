@@ -9,7 +9,10 @@ class ParentModel extends Model
 {
     use HasFactory;
     protected $table = 'parents';
-    protected $fillable = ['name','email','password','phone'];
+    protected $fillable = ['user_id','name','relation', 'email', 'phone', 'address', 'image', 'password'];
+    
+
+
     protected $hidden = ['password'];
 
 

@@ -38,7 +38,7 @@
         <td>{{ $student->class->name ?? 'N/A' }}</td>
         <td>{{ $student->age }} Years</td>
         
-        <td>{{ $student->parent->full_name ?? '' }}</td>
+        <td>{{ $student->parent->full_name ?? '  -  ' }}</td>
         <td>{{ $student->parent_contact }}</td>
         <td>@if($student->image)
           <img src="{{asset('storage/'.$student->image) }}" width="60" class="rounded" alt="">

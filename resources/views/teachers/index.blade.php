@@ -24,6 +24,8 @@
       <th>Email</th>
       <th>Phone</th>
       <th>Subject</th>
+      <th>Class</th>
+      <th>Address</th>
       <th>Actions</th>
     </tr>
   </thead >
@@ -32,7 +34,7 @@
     <tr>
       <td>{{ $t->id }}</td>
       <td>{{ $t->name }}</td>
-      <td>{{ $t->image }}
+      <td>
         @if($t->image)
                         <img src="{{ asset('storage/'.$t->image) }}" width="50" height="50" class="rounded-circle">
           @endif
@@ -40,6 +42,8 @@
       <td>{{ $t->email }}</td>
       <td>{{ $t->phone }}</td>
       <td>{{ $t->subject }}</td>
+      <td>{{ $t->class->name ?? 'N/A' }}</td>
+      <td>{{ $t->address }}</td>
       <td>
         <!-- <a href="{{ route('teachers.edit',$t) }}" class="btn btn-warning btn-sm">Edit</a> -->
         <a href="{{ route('teachers.edit',$t->id) }}" class="btn btn-warning btn-sm">Edit</a>

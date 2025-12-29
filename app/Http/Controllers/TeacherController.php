@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Teacher;
 use App\Models\Student;
+use App\Models\SchoolClass;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -28,7 +29,8 @@ class TeacherController extends Controller
     {
         //  $teachers = Teacher::with(['class', 'parent'])->get();
         //  $teachers = Teacher::latest()->paginate(10);
-        $teachers = User::where('role','teacher')->paginate(20);
+        // $teachers = User::where('role','teacher')->paginate(20);
+        $teachers = Teacher::with('class')->latest()->get();
         return view('teachers.index',compact('teachers'));
         // return view('students.index', compact('students'));
         // return view('admin.teachers.index', compact('teachers'));
@@ -42,11 +44,12 @@ class TeacherController extends Controller
     public function create()
     {
         // $teachers = Teacher::all();
-        // $classes = ClassModel::all();
+        // $classes = SchoolClass::all();
         // $classes = Classroom::all();
         // return view('students.create', compact('parents','classes'));
         // return view('admin.teachers.create');
-        return view('teachers.create');
+        $classes = SchoolClass::all();
+        return view('teachers.create', compact('classes'));
     }
 
     /**
@@ -58,6 +61,51 @@ class TeacherController extends Controller
     public function store(Request $request)
     {
 
+        $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'nullable|email|unique:teachers',
+            'phone'    => 'nullable',
+            'subject'  => 'nullable|string',
+            'class_id' => 'nullable|exists:classes,id',
+            'address'  => 'nullable|string',
+            'password' => 'required|min:6',
+            'image'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        /**  Check if user already exists */
+    $user = User::where('email', $request->email)->first();
+
+    if (!$user) {
+        // Create user only if not exists
+        $user = User::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+            'role'     => 'teacher',
+        ]);
+    }
+        
+
+        // Upload image
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('teachers', 'public');
+        }
+
+        Teacher::create([
+            'user_id' => $user->id,
+            'class_id' => $request->class_id,
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'phone'    => $request->phone,
+            'subject'  => $request->subject,
+            'address'  => $request->address,
+            'image'    => $imagePath,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('teachers.index')->with('success', 'Teacher created successfully');
+
 
 //         $r->validate(['name'=>'required','email'=>'required|email|unique:users','password'=>'required|min:6']);
 // $user = User::create(['name'=>$r->name,'email'=>$r->email,'password'=>Hash::make($r->password),'role'=>'teacher']);
@@ -67,52 +115,52 @@ class TeacherController extends Controller
 
 
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:teachers',
-            'phone' => 'required',
-            'address' => 'required',
+        // $validated = $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'email' => 'required|email|unique:teachers',
+        //     'phone' => 'required',
+        //     'address' => 'required',
             
-            'password' => 'required|min:6',
-            // 'phone' => 'required|string|max:20',
-            // 'class_id' => 'required|exists:school_classes,id',
-            // 'parent_id' => 'nullable|exists:parent_models,id',
-            // 'address' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
-        ]);
+        //     'password' => 'required|min:6',
+        //     // 'phone' => 'required|string|max:20',
+        //     // 'class_id' => 'required|exists:school_classes,id',
+        //     // 'parent_id' => 'nullable|exists:parent_models,id',
+        //     // 'address' => 'nullable|string',
+        //     'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+        // ]);
 
 
 
 
-        $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'role' => 'teacher'
-                ]);
+        // $user = User::create([
+        //         'name' => $request->name,
+        //         'email' => $request->email,
+        //         'password' => Hash::make($request->password),
+        //         'role' => 'teacher'
+        //         ]);
 
-        // if ($request->hasFile('passport')) {
-        //     $validated['passport'] = $request->file('passport')->store('students', 'public');
-        // }
+        // // if ($request->hasFile('passport')) {
+        // //     $validated['passport'] = $request->file('passport')->store('students', 'public');
+        // // }
 
-        $imagePath = $request->hasFile('image') ? 
-        $request->file('image')->store('teachers', 'public') : null;
+        // $imagePath = $request->hasFile('image') ? 
+        // $request->file('image')->store('teachers', 'public') : null;
 
-        // Student::create($validated);
-        Teacher::create([
-            'user_id' => $user->id,
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'class_id' => $request->class_id,
-            // 'parent_id' => $request->parent_id,
-            'subject'=>$request->subject,
-            'image' => $imagePath,
-            'password' => Hash::make($request->password)
-        ]);
+        // // Student::create($validated);
+        // Teacher::create([
+        //     'user_id' => $user->id,
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'phone' => $request->phone,
+        //     'address' => $request->address,
+        //     'class_id' => $request->class_id,
+        //     // 'parent_id' => $request->parent_id,
+        //     'subject'=>$request->subject,
+        //     'image' => $imagePath,
+        //     'password' => Hash::make($request->password)
+        // ]);
 
-        return redirect()->route('teachers.index')->with('success', 'Teacher Registered successfully!');
+        // return redirect()->route('teachers.index')->with('success', 'Teacher Registered successfully!');
 
 
     }
