@@ -1,3 +1,9 @@
+@php
+    $admin   = Auth::guard('web')->user();
+    $student = Auth::guard('student')->user();
+@endphp
+
+
 @extends('layouts.dashboard')
 
 @section('content')
@@ -6,13 +12,13 @@
   <h2>Student Dashboard</h2>
 
   @if(auth()->check())
-    <p>Hello {{ auth()->user()->name }}!</p>
-  @endif
+    <p>Hello {{ auth()->user()->first_name }}!</p>
+  @endif 
 
   @if(isset($student))
-    <h3>Welcome, {{ $student->name }}</h3>
+    <h3>Welcome, {{ $student->first_name }}</h3>
   @else
-    <h3>Welcome, {{ auth()->user()->name ?? 'Student' }}</h3>
+    <h3>Welcome, {{ $student->name ?? 'Student' }}</h3>
     <p>Your student profile is not linked yet.</p>
   @endif
 
@@ -42,7 +48,7 @@
     <div class="col-md-4 mb-3">
       <div class="card shadow-sm">
         <div class="card-body text-center">
-          <h5 class="card-title">My Exams</h5>
+          <h5 class="card-title">My Exams</h5>---------------,,,,,,,,,,
 
           @if(isset($exams) && $exams->count())
             @foreach($exams as $exam)
@@ -59,7 +65,7 @@
                     </div>
                     <!-- testing the second method ends here and remove if any error -->
                 @else
-                  <a href="#" class="btn btn-success btn-sm disabled" title="Route student.exam not defined">Take Exam</a>
+                  <a href="#" class="btn btn-success btn-sm disabled" title="Route student.exam not defined">Take No Exam</a>
                 @endif
               </div>
             @endforeach
@@ -104,7 +110,7 @@
 
   <div class="card shadow-sm mt-4">
     <div class="card-body">
-      <h5>Your Profile</h5>
+      <h5>Your Profile ====</h5>
       <p class="mb-1"><strong>Email:</strong> {{ auth()->user()->email ?? 'N/A' }}</p> <br>
       <p class="mb-1"><strong>Class:</strong> {{ $student->schoolClass->name ?? ($student->class->name ?? 'N/A') }}</p> <br>
       <p class="mb-0"><strong>Parent Contact:</strong> {{ $student->parent_contact ?? 'N/A' }}</p>
@@ -115,22 +121,19 @@
 
 
 
-
-
-
-
-
-  <!-- Not used -->
+  <!-- Not used But its Duplicating -->
     {{-- ================== PROFILE CARD ================== --}}
     <div class="card shadow-sm mb-3">
         <div class="card-body">
-            <h5>Your Profile</h5>
+            <h5>Your Profile ====****</h5>
 
-            <p>Email: {{ Auth::user()->email }}</p>
-            <p>Class: {{ $student->class->name ?? 'N/A' }}</p>
-            <p>Parent Contact: {{ $student->parent_contact ?? 'N/A' }}</p>
+            <p>Email: {{ $student->email ?? 'N/A' }}</p>
+            <p><strong> Admission No: </strong> {{ $student->admission_no }}</p>
+            <p><strong> Student Code: </strong> {{ $student->student_code }}</p>
+            <p> <strong>Class: </strong> {{ $student->class->name ?? 'N/A' }}</p>
+            <p> <strong>Parent Contact: </strong> {{ $student->parent_contact ?? 'N/A' }}</p>
 
-            <a href="" class="btn btn-info btn-sm">View Profile</a>
+            <a href="{{route('profile.show')}}" class="btn btn-info btn-sm">View Profile</a>
         </div>
     </div>
 
@@ -138,7 +141,7 @@
     <div class="row">
 
         {{-- ================== MY EXAMS ================== --}}
-        <div class="col-md-4 mb-3">
+      <div class="col-md-4 mb-3">
             <div class="card shadow-sm">
                 <div class="card-body text-center">
                     <h5 class="card-title">My Exams</h5>
@@ -164,7 +167,11 @@
             <div class="card shadow-sm">
                 <div class="card-body text-center">
                     <h5 class="card-title">Attempt Exams</h5>
+                    @forelse ($exams as $exam)
                     <a href="{{ route('exam.start', $exam->id) }}" class="btn btn-primary btn-sm">Start Exam</a>
+                     @empty
+                        <p class="text-muted">No exams available.</p>
+                    @endforelse
                 </div>
             </div>
         </div>

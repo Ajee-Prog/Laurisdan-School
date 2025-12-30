@@ -1,3 +1,9 @@
+@php
+    $admin   = Auth::guard('web')->user();
+    $student = Auth::guard('student')->user();
+@endphp
+
+
 @extends('layouts.dashboard')
 
 @section('content')

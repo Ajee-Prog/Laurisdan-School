@@ -1,3 +1,8 @@
+@php
+    $admin   = Auth::guard('web')->user();
+    $student = Auth::guard('student')->user();
+@endphp
+
 @extends('layouts.student')
 
 
@@ -16,7 +21,7 @@
 <div class="container">
     <!-- <h1> Hello, {{ Auth::user()->name }} (Student) </h1> -->
 
-    <h1>Welcome, {{ Auth::user()->name }} (Student)</h1>
+    <h1>Welcome, {{ Auth::user()->name }} (Student)  thisssssssssss</h1>
 
     <div class="row mt-4">
         <div class="col-md-4">

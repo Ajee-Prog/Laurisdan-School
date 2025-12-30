@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ClassModel;
 use App\Models\ParentModel;
+use App\Models\SchoolClass;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -24,7 +25,7 @@ class UserController extends Controller
 
     public function create()
     {
-         $classes = ClassModel::all();
+         $classes = SchoolClass::all();
         $parents = ParentModel::all();
         return view('admin.users.create', compact('classes', 'parents'));
 
@@ -37,7 +38,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6| confirmed',
-            'role' => 'required|in:admin,teacher,student,parent',
+            'role' => 'required|in:superadmin,admin,teacher,student,parent',
             'class_id' => 'nullable|exists:classes,id',
             'parent_id' => 'nullable|exists:parents,id',
         ]);

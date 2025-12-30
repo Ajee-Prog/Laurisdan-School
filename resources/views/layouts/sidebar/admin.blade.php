@@ -1,3 +1,8 @@
+@php
+    $admin   = Auth::guard('web')->user();
+    $student = Auth::guard('student')->user();
+@endphp
+
 <ul class="nav flex-column">
   <li class="nav-item">
     <a href="{{ route('dashboard') }}" class="nav-link text-white">Dashboard</a>

@@ -9,6 +9,8 @@ use App\Http\Controllers\FrontHomePage\LaurisdanPageController;
 use App\Http\Controllers\DashboardController;
 
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentDashboardController;
+
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ParentController;
 use App\Http\Controllers\ClassController;
@@ -19,28 +21,11 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TermController;
 use App\Http\Controllers\QuestionController;
 
-// use App\Http\Controllers\BookController;
-// use App\Http\Controllers\ExamController;
-// use App\Http\Controllers\AdminController;
-// use App\Http\Controllers\Teacher\TeacherController;
-// use App\Http\Controllers\StudentController;
-// use App\Http\Controllers\Parent\ParentController;
-// use App\Http\Controllers\ActivityController;
-// use App\Http\Controllers\SessionController;
-// use App\Http\Controllers\ClassController;
+
 
 use App\Http\Controllers\HomeController;
 
-// use App\Http\Controllers\Admin\DashboardController;
-// use App\Http\Controllers\Admin\ClassController;
 
-// use App\Http\Controllers\Admin\StudentController;
-// use App\Http\Controllers\Admin\TeacherController;
-// use App\Http\Controllers\Admin\ParentController;
-
-// // use App\Http\Controllers\Admin\ExamController;
-// use App\Http\Controllers\Admin\StudentController;
-// use App\Http\Controllers\TermController;
 
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\UserController;
@@ -109,45 +94,45 @@ Route::middleware(['auth'])->group(function () {
     });
 
 
-    
+
 
     Route::middleware(['auth', 'role:superadmin'])->group(function () {
 
-    Route::get('/superadmin/dashboard', [SuperAdminController::class, 'dashboard'])
-        ->name('superadmin.dashboard');
+        Route::get('/superadmin/dashboard', [SuperAdminController::class, 'dashboard'])
+            ->name('superadmin.dashboard');
 
-    // Manage Admins
-    Route::resource('superadmin/admins', App\Http\Controllers\Admin\UserController::class);
+        // Manage Admins
+        Route::resource('superadmin/admins', App\Http\Controllers\Admin\UserController::class);
 
-    // Manage Teachers
-    Route::resource('superadmin/teachers', App\Http\Controllers\TeacherController::class);
+        // Manage Teachers
+        Route::resource('superadmin/teachers', App\Http\Controllers\TeacherController::class);
 
-    // Manage Students
-    Route::resource('superadmin/students', App\Http\Controllers\StudentController::class);
+        // Manage Students
+        Route::resource('superadmin/students', App\Http\Controllers\StudentController::class);
 
-    // Manage Parents
-    Route::resource('superadmin/parents', App\Http\Controllers\ParentController::class);
+        // Manage Parents
+        Route::resource('superadmin/parents', App\Http\Controllers\ParentController::class);
 
-    // Manage Classes
-    Route::resource('superadmin/classes', App\Http\Controllers\ClassController::class);
+        // Manage Classes
+        Route::resource('superadmin/classes', App\Http\Controllers\ClassController::class);
 
-    // Manage Sessions
-    Route::resource('superadmin/sessions', App\Http\Controllers\SessionController::class);
+        // Manage Sessions
+        Route::resource('superadmin/sessions', App\Http\Controllers\SessionController::class);
 
-    // Manage Terms
-    Route::resource('superadmin/terms', App\Http\Controllers\TermController::class);
+        // Manage Terms
+        Route::resource('superadmin/terms', App\Http\Controllers\TermController::class);
 
-    // Manage Subjects
-    Route::resource('superadmin/subjects', App\Http\Controllers\SubjectController::class);
+        // Manage Subjects
+        Route::resource('superadmin/subjects', App\Http\Controllers\SubjectController::class);
 
-    // Manage Exams
-    Route::resource('superadmin/exams', App\Http\Controllers\ExamController::class);
+        // Manage Exams
+        Route::resource('superadmin/exams', App\Http\Controllers\ExamController::class);
 
-    // Manage School Fees
-    Route::resource('superadmin/fees', App\Http\Controllers\FeeController::class);
-    Route::resource('news', NewsController::class);
+        // Manage School Fees
+        Route::resource('superadmin/fees', App\Http\Controllers\FeeController::class);
+        Route::resource('news', NewsController::class);
 
-});
+    });
 
     /*
     |--------------------------------------------------------------------------
@@ -224,56 +209,39 @@ Route::middleware(['auth'])->group(function () {
     | STUDENT ROUTES
     |--------------------------------------------------------------------------
     */
-    Route::middleware(['role: student,admin'])->group(function () {
+    // Route::middleware(['auth:student'])->group(function () {
 
-        Route::get('/student/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
-        // Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
+    //     // Route::get('/student/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
+    //     // Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('dashboard.student');
+    //     Route::get('/dashboard/student', [StudentDashboardController::class, 'dashboard'])->name('dashboard.student');
+    //     // Route::get('/student/dashboard', [DashboardController::class, 'index'])->name('dashboard.student');
+        
 
-        // Route::get('/student/exam/select', function () {
-        //     return view('student.exam-select');
-        // })->name('student.exam.select');
+    //     // Student exam list & open
+    //     Route::get('/student/exams', [ExamController::class, 'studentExamss'])->name('student.exams');
+    //     Route::get('/student/exam/{id}', [ExamController::class, 'studentExamView'])->name('student.exam.view');
 
-        // Student exam list & open
-        Route::get('/student/exams', [ExamController::class, 'studentExamss'])->name('student.exams');
-        Route::get('/student/exam/{id}', [ExamController::class, 'studentExamView'])->name('student.exam.view');
+    //     // CBT start & submit (POST)
+    //     // real exam start below route because route points unto it
+    //     Route::get('/student/exam/{id}/start', [ExamController::class, 'startExamCBT'])->name('student.exam.start');
+    //     // Route::post('/student/exam/{id}/submit', [ExamController::class, 'submitCBT'])->name('student.exam.submit');
 
-        // CBT start & submit (POST)
-        // real exam start below route because route points unto it
-        Route::get('/student/exam/{id}/start', [ExamController::class, 'startExamCBT'])->name('student.exam.start');
-        // Route::post('/student/exam/{id}/submit', [ExamController::class, 'submitCBT'])->name('student.exam.submit');
+    //     // Route::get('/student/exam', [ExamController::class, 'studentExams'])->name('student.exam');
+    //     Route::get('/student/exam/{subject}', [ExamController::class, 'studentExams'])->name('student.exam');
+    //     // real exam start below route
+    //     Route::get('/student/exam/start/{subject}', [ExamController::class, 'startExams'])->name('exam.start');
+    //     Route::post('/student/exam/submit', [ExamController::class, 'submitExam'])->name('exam.submit');
 
-        // Route::get('/student/exam', [ExamController::class, 'studentExams'])->name('student.exam');
-        Route::get('/student/exam/{subject}', [ExamController::class, 'studentExams'])->name('student.exam');
-        // real exam start below route
-        Route::get('/student/exam/start/{subject}', [ExamController::class, 'startExams'])->name('exam.start');
-        Route::post('/student/exam/submit', [ExamController::class, 'submitExam'])->name('exam.submit');
+    //     Route::get('/student/books', [BookController::class, 'studentBooks'])->name('student.books');
+    //     Route::get('/student/results', [StudentController::class, 'results'])->name('student.results');
 
-        Route::get('/student/books', [BookController::class, 'studentBooks'])->name('student.books');
-        Route::get('/student/results', [StudentController::class, 'results'])->name('student.results');
-
-        // ------------------------------------ Tryin new method-----------------------
+    //     // ------------------------------------ Tryin new method-----------------------
         
 
 
 
-        // std exams route
-
-
-        // // -------- EXAMS LIST (ALL EXAMS) --------
-        // Route::get('/student/exams', [ExamController::class, 'studentExams'])->name('student.exams');
-
-        // // -------- START SPECIFIC EXAM (Take Exam button) --------
-        // Route::get('/student/exam/{id}', [ExamController::class, 'startExam'])->name('student.exam');
-
-        // // -------- CBT SYSTEM --------
-        // Route::get('/exam/start', [ExamController::class, 'start'])->name('exam.start');
-
-        // // -------- BOOKS --------
-        // Route::get('/student/books', [BookController::class, 'studentBooks'])->name('student.books');
-
-        // // -------- RESULTS --------
-        // Route::get('/student/results', [StudentController::class, 'results'])->name('student.results');
-    });
+       
+    // });
 
     /*
     |--------------------------------------------------------------------------
@@ -300,10 +268,44 @@ Route::middleware(['auth'])->group(function () {
     // receipts ends
 }); //General auths admin ends here
 
-// // Subjects route here
-// Route::middleware(['auth','role:super_admin,admin'])->group(function () {
-//     Route::resource('subjects', SubjectController::class);
-// });
+// Student with Admission No
+    Route::middleware(['auth:student'])->group(function () {
+
+        // Route::get('/student/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
+        // Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('dashboard.student');
+        Route::get('/dashboard/student', [StudentDashboardController::class, 'dashboard'])->name('dashboard.student');
+        // Route::get('/student/dashboard', [DashboardController::class, 'index'])->name('dashboard.student');
+        
+
+        // Student exam list & open
+        Route::get('/student/exams', [ExamController::class, 'studentExamss'])->name('student.exams');
+        Route::get('/student/exam/{id}', [ExamController::class, 'studentExamView'])->name('student.exam.view');
+
+        // CBT start & submit (POST)
+        // real exam start below route because route points unto it
+        Route::get('/student/exam/{id}/start', [ExamController::class, 'startExamCBT'])->name('student.exam.start');
+        // Route::post('/student/exam/{id}/submit', [ExamController::class, 'submitCBT'])->name('student.exam.submit');
+
+        // Route::get('/student/exam', [ExamController::class, 'studentExams'])->name('student.exam');
+        Route::get('/student/exam/{subject}', [ExamController::class, 'studentExams'])->name('student.exam');
+        // real exam start below route
+        Route::get('/student/exam/start/{subject}', [ExamController::class, 'startExams'])->name('exam.start');
+        Route::post('/student/exam/submit', [ExamController::class, 'submitExam'])->name('exam.submit');
+
+        Route::get('/student/books', [BookController::class, 'studentBooks'])->name('student.books');
+        Route::get('/student/results', [StudentController::class, 'results'])->name('student.results');
+        
+        Route::get('/student/profile', [StudentController::class, 'profile'])->name('profile.show');
+
+        // ------------------------------------ Tryin new method-----------------------
+        
+
+
+
+       
+    });
+// Student with Admission ends here...........................
+
 
 // Receipt Fee
 Route::get('/fee/{id}/receipt', [FeeController::class, 'generateReceipt'])->middleware(['auth','role:super_admin,admin'])

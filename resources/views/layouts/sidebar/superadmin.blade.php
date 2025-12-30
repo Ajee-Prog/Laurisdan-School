@@ -1,3 +1,8 @@
+@php
+    $admin   = Auth::guard('web')->user();
+    $student = Auth::guard('student')->user();
+@endphp
+
 @if(auth()->user()->role == 'superadmin')
 <li class="nav-item">
     <a href="{{ route('superadmin.dashboard') }}" class="nav-link">Dashboard</a>

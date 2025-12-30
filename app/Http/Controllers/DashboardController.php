@@ -95,7 +95,7 @@ class DashboardController extends Controller
             | STUDENT DASHBOARD
             |--------------------------------------------------------------------------
             */
-            case 'student':
+            /*case 'student':
 
                 $student = Student::where('user_id', $user->id)->first();
                 // $student = Student::where('user_id', $user->id)->with('schoolClass')->first();
@@ -105,7 +105,7 @@ class DashboardController extends Controller
                 return view('dashboard.student', [
                     'student' => $student,
                     'exams'   => $exams
-                ]);
+                ]);*/
 
             /*
             |--------------------------------------------------------------------------

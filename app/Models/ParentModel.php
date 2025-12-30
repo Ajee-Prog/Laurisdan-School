@@ -15,21 +15,14 @@ class ParentModel extends Model
 
     protected $hidden = ['password'];
 
-
-
-    // protected $table = 'parents';
-    // protected $fillable = ['name', 'email', 'phone', 'address', 'image', 'password'];
-    // // protected $fillable = ['user_id', 'relation', 'address', 'email', 'image', 'phone'];
+    protected $casts = [
+        'student_id' => 'array',
+    ];
+   
 
     // protected $hidden = ['password', 'remember_token'];
 
-    // public function students()
-    // {
-    //     return $this->hasMany(Student::class);
-    // }
-
-
-
+    
     public function user(){
         return $this->belongsTo(User::class);
     }
@@ -38,7 +31,5 @@ class ParentModel extends Model
         return $this->hasMany(Student::class, 'parent_id');
     }
 
-    // public function students(){
-    //     return $this->belongsToMany(Student::class, 'parent_student', 'parent_id', 'student_id');
-    // }
+    
 }

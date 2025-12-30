@@ -1,3 +1,7 @@
+@php
+    $admin   = Auth::guard('web')->user();
+    $student = Auth::guard('student')->user();
+@endphp
 <!-- <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -71,6 +75,10 @@
             @endif
 
             <a href="{{ route('profile.show') }}">Profile</a>
+
+            
+
+            
             <a href="{{ route('logout') }}"
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 Logout
@@ -133,8 +141,25 @@
 <body>
   <!-- Sidebar -->
   <div class="sidebar">
-    <h4 class="text-center text-light mb-4">{{ ucfirst(Auth::user()->role) }} Panel</h4>
-    @if(Auth::user()->role == 'admin')
+    <h4 class="text-center text-light mb-4">
+      
+    {{-- @if($p->image)
+                        <img src="{{ asset('storage/'.$p->image) }}" width="60" height="60" style="border-radius:50%;">
+                    @else
+                        <span>No Image</span>
+                    @endif --}}
+                    
+
+      @if($admin) 
+      {{ ucfirst($admin->role) }} 
+      @elseif($student) <img src="{{ asset('storage/'.$student->image) }}" width="60" height="60" style="border-radius:50%;">
+      {{ ucfirst($student->middle_name) }} 
+      @endif Panel
+      
+    </h4>
+
+
+    @if($admin == 'admin')
       <a href="{{ route('dashboard') }}" class="active">Dashboard</a>
       <a href="{{ route('students.index') }}">Students</a>
       <a href="{{ route('teachers.index') }}">Teachers</a>
@@ -145,7 +170,7 @@
       <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
         @csrf
       </form>
-    @elseif(Auth::user()->role == 'teacher')
+    @elseif($admin == 'teacher')
       <a href="{{ route('dashboard') }}" class="active">Dashboard</a>
       <a href="#">My Classes</a>
       <a href="#">Exams</a>
@@ -155,17 +180,27 @@
       <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
         @csrf
       </form>
-    @elseif(Auth::user()->role == 'student')
+    @elseif($student)
       <a href="{{ route('dashboard') }}" class="active">Dashboard</a>
+
+      <a href="{{ route('profile.show') }}">👤 My Profile</a>
+    <a href="{{ route('student.exams') }}">🧠 Take Exam (CBT)</a>
+    <a href="{{ route('student.results') }}">📊 My Results</a>
+    <a href="{{ route('student.books') }}">📚 Study Materials</a>
+    <a href="#">🎯 Activities</a>
+    <a href="#">🔔 Notifications</a>
+      
+      <a href="{{ route('student.exams') }}">My Exams</a>
+      <a href="{{ route('student.books') }}">Books</a>
       <a href="#">My Subjects</a>
       <a href="#">Results</a>
       <a href="#">Assignments</a>
       <a href="{{ route('logout') }}"
          onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-      <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+      <form id="logout-form" action="{{ route('student.logout') }}" method="POST" class="d-none">
         @csrf
       </form>
-    @elseif(Auth::user()->role == 'parent')
+    @elseif($admin == 'parent')
       <a href="{{ route('dashboard') }}" class="active">Dashboard</a>
       <a href="#">My Children</a>
       <a href="#">Reports</a>
@@ -179,10 +214,16 @@
   </div>
 
   <!-- Main Content -->
+
   <div class="content">
     <div class="topbar">
-      <h5>Welcome, {{ Auth::user()->name }}</h5>
-      <span class="badge bg-primary text-capitalize">{{ Auth::user()->role }}</span>
+      @if($admin)
+        <h5>Welcome, {{ $admin->name }}</h5>
+        <span class="badge bg-primary text-capitalize">{{ $admin->role }}</span>
+      @elseif($student)
+        <h5>Welcome {{ $student->first_name }}</h5>
+        <span class="badge bg-primary text-capitalize">{{ $student->admission_no }}</span>
+      @endif
     </div>
 
     <div class="mt-4">

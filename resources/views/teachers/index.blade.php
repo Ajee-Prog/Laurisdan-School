@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @extends('layouts.dashboard')
+
 @section('content')
 <div class="container-fluid mt-5" style="margin-top:80px;">
   <div class="d-flex justify-content-between mb-3">

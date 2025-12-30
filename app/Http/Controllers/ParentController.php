@@ -175,6 +175,9 @@ class ParentController extends Controller
             'email'     => $request->email,
             'phone'     => $request->phone,
             'address'   => $request->address,
+            'student_id' => $request->student_id 
+                            ? json_encode($request->student_id) 
+                            : null,
         ]);
 
         $parent->students()->sync($request->student_id ?? []);
@@ -182,6 +185,9 @@ class ParentController extends Controller
         return redirect()->route('parents.index')->with('success', 'Parent updated successfully.');
 
     }
+
+
+    
 
     /**
      * Remove the specified resource from storage.

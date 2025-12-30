@@ -304,8 +304,12 @@ class StudentController extends Controller
         $student = Student::findOrFail($id);
 
         $validated = $request->validate([
-            'full_name' => 'required|string|max:255',
-            'email' => 'nullable|email|unique:students,email,' . $student->id,
+            'first_name' => 'required|string|max:255',
+            'last_name'  => 'required|string|max:255',
+            'middle_name'  => 'required|string|max:255',
+            'gender'     => 'required',
+            
+            // 'email' => 'nullable|email|unique:students,email,' . $student->id,
             'phone' => 'required|string|max:20',
             // 'class_id' => 'required|exists:school_classes,id',
             'class_id' => 'required|exists:classes,id',
@@ -314,17 +318,18 @@ class StudentController extends Controller
             'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
 
+        $data = $request->except(['password', 'image']);
 
-        $user = $student->user;
-                $user->update(['name' => $request->name, 'email' => $request->email]);
+        if ($request->password) {
+            $data['password'] = bcrypt($request->password);
+        }
 
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('students','public');
+        }
 
-
-                // if ($request->hasFile('photo')) {
-                // if ($student->photo) Storage::disk('public')->delete($student->photo);
-                // $student->photo = $request->file('photo')->store('students', 'public');
-                // }
-
+        $student->update($data);
+         
 
                 // $student->update([
                 //                     'class_id' => $request->class_id, 
@@ -332,19 +337,9 @@ class StudentController extends Controller
                 //                     'dob' => $request->dob, 
                 //                     'gender' => $request->gender
                 //                 ]);
+    
 
-
-
-
-
-         if ($request->hasFile('image')) {
-                    if ($student->image) {
-                        Storage::disk('public')->delete($student->image);
-                    }
-            $validated['image'] = $request->file('image')->store('students', 'public');
-        }
-
-        $student->update($validated);
+        // $student->update($validated);
         return redirect()->route('students.index')->with('success', 'Student updated successfully!');
 
 
@@ -378,6 +373,11 @@ class StudentController extends Controller
 
 
     }
+    // Student Profile
+    public function profile(){
+        $student = Auth::guard('student')->user();
+        return view('students.profile', compact('student'));
+    }
 
      public function exportPdf()
     {
@@ -388,10 +388,13 @@ class StudentController extends Controller
 
 
     public function dashboard(){
-        $student = auth()->user()->student; // assuming 1:1 with User
+        // $student = auth()->user()->student; // assuming 1:1 with User
+        $student = Auth()->user()->student; // assuming 1:1 with User
             $exams = $student->examResults()->latest()->take(5)->get();
             return view('students.dashboard', compact('student', 'exams'));
     }
+
+    
 
 
     //Show Exam all questions

@@ -1,3 +1,7 @@
+@php
+    $admin   = Auth::guard('web')->user();
+    $student = Auth::guard('student')->user();
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>

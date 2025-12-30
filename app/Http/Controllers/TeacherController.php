@@ -107,13 +107,6 @@ class TeacherController extends Controller
         return redirect()->route('teachers.index')->with('success', 'Teacher created successfully');
 
 
-//         $r->validate(['name'=>'required','email'=>'required|email|unique:users','password'=>'required|min:6']);
-// $user = User::create(['name'=>$r->name,'email'=>$r->email,'password'=>Hash::make($r->password),'role'=>'teacher']);
-// return redirect()->route('teachers.index')->with('success','Teacher added');
-
-
-
-
 
         // $validated = $request->validate([
         //     'name' => 'required|string|max:255',
@@ -199,14 +192,26 @@ class TeacherController extends Controller
     public function update(Request $request, $id)
     {
         $teacher = Teacher::findOrFail($id);
+        $user = $teacher->user;
 
         $request->validate([
             'name'      => 'required|string|max:255',
-            'email'     => 'required|email|unique:teachers,email,'.$teacher->id,
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            // 'email'     => 'required|email|unique:teachers,email,'.$teacher->id,
             'phone'     => 'required',
             'address'   => 'required',
+            'class_id' => 'nullable',
+            'subject' => 'nullable',
             'image'     => 'nullable|image|max:2048',
         ]);
+
+        
+
+        // Update user (login account)
+    $user->update([
+        'name'  => $request->name,
+        'email' => $request->email,
+    ]);
 
         $imagePath = $teacher->image;
         if ($request->hasFile('image')) {
@@ -214,11 +219,14 @@ class TeacherController extends Controller
             $imagePath = $request->file('image')->store('teachers', 'public');
         }
 
+        // Update teacher profile
         $teacher->update([
             'name'      => $request->name,
             'email'     => $request->email,
             'phone'     => $request->phone,
             'address'   => $request->address,
+            'class_id' => $request->class_id,
+            'subject'  => $request->subject,
             'image'     => $imagePath,
         ]);
 

@@ -1,4 +1,7 @@
-
+@php
+    $admin   = Auth::guard('web')->user();
+    $student = Auth::guard('student')->user();
+@endphp
 
 
 <!-- Admin Dashboard 2 blade -->
