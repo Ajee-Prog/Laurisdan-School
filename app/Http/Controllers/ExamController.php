@@ -264,19 +264,72 @@ public function studentExams($id)
 /**
  * Load the exam page when a student clicks "Take Exam" (loads questions)
  */
-public function startExamCBT($id)
+// public function startExamCBT($id)
+public function startExamCBT($examId)
 {
-    $exam = Exam::with('questions')->findOrFail($id);
+    $student = Auth::guard('student')->user();
+    $exam = Exam::findOrFail($examId);
+
+    $result = ExamResult::firstOrCreate(
+        [
+            'student_id' => $student->id,
+            'exam_id' => $exam->id
+        ],
+        [
+            'started_at' => now()
+        ]
+    );
+
+    // ❌ Already submitted
+    if ($result->is_submitted) {
+        return redirect()->route('student.exams')->with('error', 'You have already submitted this exam.');
+    }
+
+    //  Time expired
+    $endTime = $result->started_at->addMinutes($exam->duration);
+    if (now()->gt($endTime)) {
+        $result->update([
+            'is_submitted' => true,
+            'submitted_at' => now()
+        ]);
+
+        return redirect()->route('student.exams')->with('error', 'Exam time elapsed.');
+    }
+
+    // return view('exams.cbt', compact('exam', 'result'));
+    return view('students.cbt', compact('exam', 'result'));
+
+    // $exam = Exam::with('questions')->findOrFail($id);
 
     // return view('exams.student-exam', compact('exam'));
     // return view('student-exam.exam', compact('exam'));
     // optional: verify student class matches exam->class_id
-        $student = Student::where('user_id', Auth::id())->first();
+        // $student = Student::where('user_id', Auth::id())->first();
+
+        /*
+        This can also be used................
+
         if ($student && $exam->class_id && $student->class_id != $exam->class_id) {
             abort(403,'You cannot take this exam.');
         }
+        // New add starts here to test it.......
+         // Prevent re-entry
+    $existing = ExamResult::where('exam_id', $exam->id)
+        ->where('student_id', $student->id)
+        ->first();
 
-        return view('student-exam.cbt', compact('exam'));
+    if ($existing) {
+        return redirect()->route('student.exams')
+            ->with('error', 'You have already taken this exam.');
+    }
+
+    session([
+        'exam_end_time' => now()->addMinutes($exam->duration)->timestamp
+    ]);
+
+    return view('students.cbt', compact('exam'));  */
+
+        // return view('student-exam.cbt', compact('exam'));
 }
 
 // This inside ExamController
@@ -368,6 +421,54 @@ public function submitCBT(Request $request, $id)
 //Submit exam answers
     public function submitExam(Request $request){
 
+        $student = Auth::guard('student')->user();
+
+        $result = ExamResult::where('student_id', $student->id)->where('exam_id', $request->exam_id)->firstOrFail();
+
+//         if ($result->is_submitted) {
+//     abort(403, 'Exam already submitted');
+// }
+
+        // ❌ Already submitted
+    if ($result->is_submitted) {
+        return redirect()->route('student.exams')->with('error', 'Exam already submitted.');
+    }
+
+    // ⏰ Time check
+    $exam = Exam::findOrFail($request->exam_id);
+    $endTime = $result->started_at->addMinutes($exam->duration);
+
+    if (now()->gt($endTime)) {
+        $result->update([
+            'is_submitted' => true,
+            'submitted_at' => now()
+        ]);
+
+        return redirect()->route('student.exams')->with('error', 'Time elapsed. Exam auto-submitted.');
+    }
+
+    // ✅ Mark answers & calculate score
+    $score = 0; // calculate here
+
+    $result->update([
+        'score' => $score,
+        'is_submitted' => true,
+        'submitted_at' => now()
+    ]);
+
+    return redirect()->route('student.results')->with('success', 'Exam submitted successfully.');
+
+// ================
+        ExamResult::create([
+        'student_id' => $student->id,
+        'exam_id'    => $request->exam_id,
+        'score'      => $score,
+        'submitted_at' => now(),
+    ]);
+    // return redirect()->route('student.results')->with('success', 'Exam submitted successfully');
+
+    /*
+
         if (!$request->exam_id) {
         abort(400, "Exam ID missing.");
     }
@@ -391,7 +492,7 @@ public function submitCBT(Request $request, $id)
 
         return view('students.result', compact('score', 'exam'));
 
-
+        */
 
 
         // $total = count($request->answers ?? []);

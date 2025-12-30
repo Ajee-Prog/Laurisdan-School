@@ -28,6 +28,9 @@ class CreateExamResultsTable extends Migration
             // $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->integer('score')->default(0);
             $table->integer('total_questions')->default(0);
+            $table->timestamp('started_at')->nullable();
+            $table->timestamp('submitted_at')->nullable();
+            $table->boolean('is_submitted')->default(false);
             $table->timestamps();
             $table->foreign('exam_id')->references('id')->on('exams')->onDelete('cascade');
             $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade');

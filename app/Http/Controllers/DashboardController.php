@@ -115,9 +115,7 @@ class DashboardController extends Controller
             case 'parent':
 
                 $parent = ParentModel::where('user_id', $user->id)->first();
-                // $children = Student::where('parent_id', optional($parent)->id)->get();
-
-                
+                // $children = Student::where('parent_id', optional($parent)->id)->get();              
                 $children = $parent ? Student::where('parent_id', $parent->id)->get() : collect();
 
                 return view('dashboard.parent', [

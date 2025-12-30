@@ -53,5 +53,25 @@
             document.querySelector("form").submit();
         }
     }, 1000);
+
+
+
+    // New js programming for the exam timer
+    let endTime = `{{ session('exam_end_time') }}`;
+let timer = setInterval(() => {
+    let now = Math.floor(Date.now() / 1000);
+    let diff = endTime - now;
+
+    if (diff <= 0) {
+        clearInterval(timer);
+        document.getElementById('examForm').submit();
+    }
+
+    let minutes = Math.floor(diff / 60);
+    let seconds = diff % 60;
+    document.getElementById('timer').innerHTML =
+        minutes + " : " + seconds;
+}, 1000);
+
 </script>
 @endsection
