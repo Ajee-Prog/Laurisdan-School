@@ -80,8 +80,8 @@ class QuestionController extends Controller
        
     }
 
-    // public function store(Request $request, $exam_id)
-    public function store(Request $request, Exam $exam)
+    public function store(Request $request, $examId)
+    // public function store(Request $request, Exam $exam)
     {
         $request->validate([
         'question_text'   => 'required|string',
@@ -90,10 +90,15 @@ class QuestionController extends Controller
         'correct_option'  => 'required|in:0,1,2,3',
         'subject'         => 'required|string',
         'subject_id'      => 'nullable|exists:subjects,id',
+        // 'exam_id'      => 'nullable|exists:exams,id',
     ]);
 
+    $options = $request->options;
+    $correctIndex = $request->correct_option;
+
     Question::create([
-        'exam_id'        => $exam->id,
+        // 'exam_id'        => $exam->id,
+        'exam_id'        => $examId,
         'subject'        => $request->subject,
         'subject_id'     => $request->subject_id,
         'question_text'  => $request->question_text,
@@ -101,7 +106,8 @@ class QuestionController extends Controller
         'option_b'       => $request->options[1],
         'option_c'       => $request->options[2],
         'option_d'       => $request->options[3],
-        'correct_option' => $request->correct_option,
+        // 'correct_option' => $request->correct_option,
+        'correct_option' => ['A','B','C','D'][$correctIndex],
     ]);
 
         // New detect and matching db Question and its Options
@@ -153,7 +159,8 @@ class QuestionController extends Controller
         // return redirect()->route('admin.exams.show', $exam_id)->with('success', 'Question added successfully!');
 
         // return redirect()->route('admin.questions.index', compact('exam_id => $question->exam_id'))->with('success', 'Question added successfully.');
-        return redirect()->route('exams.show', $exam->id)->with('success', 'Question added successfully!');
+        // return redirect()->route('exams.show', $examId)->with('success', 'Question added successfully!');
+        return redirect()->route('questions.index')->with('success', 'Question created successfully!');
         // New detect ends here............
 
         

@@ -8,12 +8,16 @@
     <tr>
       <th>ID</th>
       <th>Name</th>
+      <th>Slug</th>
+      <th>Description</th>
       <th>Actions</th>
     </tr>
     @foreach($classes as $c)
     <tr>
       <td>{{ $c->id }}</td>
       <td>{{ $c->name }}</td>
+      <td>{{ $c->slug }}</td>
+      <td>{{ $c->description }}</td>
       <td>
         <a href="{{ route('classes.edit',$c) }}" class="btn btn-warning btn-sm">Edit</a>
         <form action="{{ route('classes.destroy',$c) }}" method="POST" class="d-inline">

@@ -24,6 +24,7 @@ class ExamController extends Controller
         $this->middleware(['auth', 'role:admin,teacher']);
         // $this->middleware('auth');
         // $this->middleware(['auth', 'role:parent,admin']);
+        // $this->middleware(['auth', 'role:admin']);
     }
 // public function __construct(){ $this->middleware(['auth', 'role:admin']); }
     
@@ -47,8 +48,8 @@ class ExamController extends Controller
 
         $exams = Exam::with('class','term')->orderBy('exam_date','desc')->paginate(12);
         // $exams = Exam::with('class','term')->latest()->get();
-        // return view('exams.index', compact('exams'));
-        return view('admin.exams.index', compact('exams'));
+        return view('exams.index', compact('exams'));
+        // return view('admin.exams.index', compact('exams'));
         // check if the student already took the exam
         $alreadyTaken = ExamResult::where('student_id',$tudent->id)->where('subject', $subject)->exists();
         if($alreadyTaken){
@@ -144,7 +145,8 @@ class ExamController extends Controller
      */
     public function show($id)
     {
-        //
+        $exam = Exam::with('questions')->findOrFail($id);
+        return view('exams.show', compact('exam'));
     }
 
     /**

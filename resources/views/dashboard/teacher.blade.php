@@ -10,8 +10,8 @@
 <h2>Teacher Dashboard</h2>
 <p>Welcome, {{ Auth::user()->name }}!</p>
 <ul>
-  <!-- <li>Assigned Classes: {{ $myClasses->count() }}</li>
-  <li>Upcoming Exams: {{ $upcomingExams->count() }}</li> -->
+  {{-- <li>Assigned Classes: {{ $myClasses->count() }}</li>
+  <li>Upcoming Exams: {{ $upcomingExams->count() }}</li> --}}
 
    @if(isset($teacher))
   <h2>Welcome, {{ $teacher->name }}</h2>

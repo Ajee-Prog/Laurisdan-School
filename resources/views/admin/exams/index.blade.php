@@ -23,6 +23,7 @@
         <td>{{ $e->exam_date }}</td>
         <td>{{ $e->class->name ?? '' }}</td>
         <td>
+          <a href="{{ route('exams.show', $e->id) }}" class="btn btn-sm btn-info">View</a>
           <a href="{{ route('exams.edit',$e->id) }}" class="btn btn-sm btn-warning">Edit</a>
           <form action="{{ route('exams.destroy',$e->id) }}" method="POST" style="display:inline-block;">
             @csrf @method('DELETE')

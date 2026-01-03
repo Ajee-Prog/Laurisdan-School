@@ -31,7 +31,7 @@ class CreateQuestionsTable extends Migration
             $table->unsignedBigInteger('subject_id')->nullable()->constrained('subjects')->onDelete('set null');
             // $table->unsignedBigInteger('session_id')->nullable();
             // $table->unsignedBigInteger('term_id')->nullable();
-            // $table->timestamps();
+            $table->timestamps();
 
             // $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('set null');
             // $table->foreign('session_id')->references('id')->on('sessions')->onDelete('set null');

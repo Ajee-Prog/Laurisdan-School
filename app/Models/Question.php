@@ -12,7 +12,7 @@ class Question extends Model
     // protected $fillable = ['subject','question','subject_id','session_id','term_id', 'option_a', 'option_b', 'option_c', 'option_d', 'correct_answer'];
     // protected $fillable = ['exam_id','question_text'];
     protected $fillable = [
-        'exam_id', 'question_text', 'option_a', 'option_b', 'option_c', 'option_d', 'correct_option','subject_id'
+        'exam_id','subject', 'question_text', 'option_a', 'option_b', 'option_c', 'option_d', 'correct_option','subject_id'
     ];
     // protected $fillable = [
     //     'class_id', 'subject_id', 'question', 'correct_option'
@@ -33,10 +33,10 @@ class Question extends Model
     // public function subject(){
     //     return $this->belongsTo(Subject::class);
     // }
-    // public function session(){
-    //     return $this->belongsTo(SessionModel::class);
-    // }
-    // public function term(){
-    //     return $this->belongsTo(Term::class);
-    // }
+    public function session(){
+        return $this->belongsTo(SessionModel::class);
+    }
+    public function term(){
+        return $this->belongsTo(Term::class);
+    }
 }

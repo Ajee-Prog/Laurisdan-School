@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\SchoolClass;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 
 
@@ -19,13 +20,18 @@ class ClassController extends Controller
 
     public function create()
     {
-        return view('classes.create');
+        $teachers = Teacher::all();
+        return view('classes.create', compact('teachers'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'teacher_id' => 'nullable',
+            
         ]);
 
         SchoolClass::create($request->all());

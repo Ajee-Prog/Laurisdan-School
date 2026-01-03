@@ -89,9 +89,9 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    Route::middleware(['role:admin,superadmin,teacher'])->group(function () {
-        Route::resource('exams', ExamController::class);
-    });
+    // Route::middleware(['role:admin,superadmin,teacher'])->group(function () {
+    //     Route::resource('exams', ExamController::class);
+    // });
 
 
 
@@ -196,7 +196,7 @@ Route::middleware(['auth'])->group(function () {
         | TEACHER ROUTES
         |--------------------------------------------------------------------------
         */
-        Route::middleware(['role:teacher'])->group(function () {
+        Route::middleware(['role:teacher,admin'])->group(function () {
             Route::get('/teacher/dashboard', [TeacherController::class, 'index'])->name('teacher.dashboard');
             // Route::get('/teacher/dashboard', [DashboardController::class, 'teacherDashboard'])->name('teacher.dashboard');
 

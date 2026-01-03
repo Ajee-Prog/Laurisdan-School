@@ -5,11 +5,11 @@
   <h2>Exams</h2>
   <a href="{{ route('exams.create') }}" class="btn btn-primary">Add Exam</a>
   <!-- Enable / Disable buttons -->
-   @if($exam->is_active)
+   {{-- @if($exams->is_active)
     <a href="{{ route('exams.toggle', $exam->id) }}" class="btn btn-danger">Disable</a>
     @else
         <a href="{{ route('exams.toggle', $exam->id) }}" class="btn btn-success">Enable</a>
-   @endif
+   @endif --}}
 <!-- Disable buttons ends here -->
 </div>
 
@@ -30,6 +30,7 @@
         <td>{{ $e->exam_date }}</td>
         <td>{{ $e->class->name ?? '' }}</td>
         <td>
+          <a href="{{ route('exams.show', $e->id) }}" class="btn btn-sm btn-info">View</a>
           <a href="{{ route('exams.edit',$e->id) }}" class="btn btn-sm btn-warning">Edit</a>
           <form action="{{ route('exams.destroy',$e->id) }}" method="POST" style="display:inline-block;">
             @csrf @method('DELETE')

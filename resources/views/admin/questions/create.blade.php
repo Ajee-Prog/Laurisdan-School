@@ -14,6 +14,9 @@
             <label>Exam (optional)</label>
             <select name="exam_id" class="form-control">
                 <option value="">-- Select exam --</option>
+                @foreach($exams as $ex)
+                    <option value="{{ $ex->id }}">{{ $ex->name }}</option>
+                @endforeach
                 
             </select>
         </div>
@@ -256,9 +259,9 @@
         <option value=""> -- Select exam -- </option>
 
                 
-                <!-- {{ @foreach($exam as $e)
+                {{-- {{ @foreach($exam as $e)
                 <option value="{{ $e->id }}" >{{ $e->title }}</option>
-                @endforeach }} -->
+                @endforeach }} --}}
            
 
 

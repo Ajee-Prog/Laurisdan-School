@@ -15,7 +15,7 @@ class Exam extends Model
     //     'teacher_id', 'class_id', 'title', 'subject', 'term', 'session'
     // ];
 
-    protected $fillable = ['title','teacher_id','class_id','duration','subject','term','session'];
+    protected $fillable = ['title','teacher_id','class_id','term_id','duration','subject','term','session_id', 'exam_date'];
 
     public function class(){
         return $this->belongsTo(SchoolClass::class, 'class_id');
@@ -23,6 +23,9 @@ class Exam extends Model
 
     public function term(){
         return $this->belongsTo(Term::class, 'term_id');
+    }
+    public function session(){
+        return $this->belongsTo(SessionModel::class, 'session_id');
     }
     public function teacher(){
         return $this->belongsTo(Teacher::class);

@@ -313,7 +313,7 @@ class StudentController extends Controller
             'phone' => 'required|string|max:20',
             // 'class_id' => 'required|exists:school_classes,id',
             'class_id' => 'required|exists:classes,id',
-            'parent_id' => 'nullable|exists:parent_models,id',
+            'parent_id' => 'nullable|exists:parents,id',
             'address' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
