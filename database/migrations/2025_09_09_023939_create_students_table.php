@@ -19,6 +19,7 @@ class CreateStudentsTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('class_id')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();
+            $table->unsignedBigInteger('Teacher_id')->nullable();
 
             $table->string('admission_no')->unique();
             $table->string('student_code')->unique();

@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Models\ParentModel;
 use App\Models\SchoolClass;
 // use App\Models\ClassModel;
+// use app/Models/Student.php;
 use App\Models\Classroom;
 use App\Models\Exam;
 use App\Models\Option;
@@ -38,7 +39,7 @@ class StudentController extends Controller
         // $this->middleware(['auth', 'role:admin,teacher']);
         $this->middleware(['auth', 'role:admin,student']);
     }
-    
+
 
     /**
      * Display a listing of the resource.
@@ -64,25 +65,27 @@ class StudentController extends Controller
 
     }
 
-    
+
     /**
      * Show the form for creating a new resource.
+     *
+     * generateAdmissionNo()
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        
+
         $parents = ParentModel::all();
         $classes = \App\Models\SchoolClass::all();
         // $classes = Classroom::all();
-        
+
         $generatedAdmissionNo = AdmissionHelper::generateAdmissionNo();
-        
+
         return view('students.create', compact('parents','classes', 'generatedAdmissionNo'));
         // return view('admin.students.create', compact('classes','parents', 'generatedAdmissionNo'));
 
-        
+
 
         //  $classes = ClassModel::all();
         // $parents = ParentModel::all();
@@ -108,7 +111,10 @@ class StudentController extends Controller
     public function store(Request $request)
     {
 
-        $admissionNo = $this->generateAdmissionNo();
+        // $admissionNo = $this->generateAdmissionNo();
+        $generatedAdmissionNo = AdmissionHelper::generateAdmissionNo();
+        // $studentAdmissionNo = Student::generateAdmissionNo();
+
         // Neww simple Store save start
         /*
 
@@ -133,24 +139,24 @@ class StudentController extends Controller
             'religion'       => 'required',
             'image'          => 'required|image|max:2048',
         ]);
-    
+
         // Upload image
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('students', 'public');
         }
 
-        
-    
+
+
         // Hash password
         $data['password'] = Hash::make($data['password']);
-    
+
         Student::create($data);  */
 
-        
-    
+
+
         // Neww store ends
 
-        $validatedData = $request->validate([
+        $validated = $request->validate([
             'admission_no'   => 'required|unique:students,admission_no',
             'student_code'   => 'required|unique:students,student_code',
             'first_name' => 'required|string|max:255',
@@ -175,13 +181,25 @@ class StudentController extends Controller
             'medical_Att' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
+        // *******************
 
-        // $user = User::create([
-        //         'name' => $request->name,
-        //         'email' => $request->email,
-        //         'password' => Hash::make($request->password),
-        //         'role' => 'student'
-        //         ]);
+        // $email = strtolower($request->admission_no) . '@laurisdanschool.com';
+
+        /*
+        *
+        // *********************
+
+
+
+        $user = User::create([
+    'name'          => $request->first_name,
+    'email' => $email, //A fake email to allow user table works perfectly without any error
+    'admission_no'  => $request->admission_no,
+    'password' => Hash::make($request->password),
+    'role' => 'student'
+]);
+
+
 
         // state
         // Upload image
@@ -191,68 +209,75 @@ class StudentController extends Controller
 
         // Hash password
         $validatedData['password'] = Hash::make($validatedData['password']);
-        
-        Student::create($validatedData);
-        
-
-        // $image = null;
-        // if ($request->hasFile('image')) {
-        //     $image = $request->file('image')->store('students', 'public');
-        // }
-        
-        
-        // ENDS
-
-        
-
-        // $admissionNo = $this->generateAdmissionNo();
-
-    //     $year = date('Y');
-    // $count = Student::whereYear('created_at', $year)->count() + 1;
-
-    // $admissionNo = "LNPS/$year/" . str_pad($count, 4, '0', STR_PAD_LEFT);
-
-    
-
-        // Student::create($validated);
-
-        // THis was first Start here..
-       /* Student::create([
-            'user_id' => $user->id,
-            'class_id' => $request->class_id,
-            'parent_id' => $request->parent_id,
-            // 'admission_no' => $request->admission_no,
-
-            'admission_no' => $admissionNo,
-            'student_code' => $request->student_code,
-            'first_name'   => $request->first_name,
-            'last_name'    => $request->last_name,
-            'middle_name'    => $request->middle_name,
-            'lga'    => $request->lga,
-            // 'password' => bcrypt($admissionNo), // default password
-            'password' => Hash::make($request->password),
-
-            'date_of_birth' => $request->date_of_birth,
-            'place_birth' => $request->place_birth,
-            'gender' => $request->gender,
-            // 'phone' => $request->phone,
-            'state' => $request->state,
-            'nationality' => $request->nationality,
-            'address' => $request->address,
-            'medical_Att' => $request->medical_Att,
-            'parent_contact' => $request->parent_contact,
-            'religion' => $request->religion,
-            'image' => $image
-        ]);   
-        
+        // Admission Number
+        $validatedData['admission_no'] = $generatedAdmissionNo;
         */
-        // This was first ENDs here..
-   
+
+       DB::beginTransaction();
+
+    try {
+
+        // Auto generate internal email
+        $email = strtolower(str_replace('/', '', $validated['admission_no'])) . '@laurisdanschool.com';
+
+        // Create User
+        $user = User::create([
+            'name'         => $validated['first_name'],
+            'email'        => $email,
+            'admission_no' => $validated['admission_no'],
+            'password'     => Hash::make($validated['password']),
+            'role'         => 'student'
+        ]);
+
+        // Upload image if exists
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('students', 'public');
+        }
+
+        // Create Student
+        Student::create([
+            'user_id'       => $user->id,
+            'admission_no'  => $validated['admission_no'],
+            'student_code'  => $validated['student_code'],
+            'first_name'    => $validated['first_name'],
+            'last_name'     => $validated['last_name'],
+            'middle_name'   => $validated['middle_name'],
+            'class_id'      => $validated['class_id'],
+            'parent_id'     => $validated['parent_id'],
+            'date_of_birth' => $validated['date_of_birth'],
+            'place_birth'   => $validated['place_birth'],
+            'gender'        => $validated['gender'],
+            'lga'           => $validated['lga'],
+            'state'         => $validated['state'],
+            'nationality'   => $validated['nationality'],
+            'address'       => $validated['address'],
+            'medical_Att'   => $validated['medical_Att'],
+            'parent_contact'=> $validated['parent_contact'],
+            'religion'      => $validated['religion'],
+            'image'         => $imagePath
+        ]);
+
+        DB::commit();
+
+        return redirect()->route('students.index')->with('success', 'Student added successfully');
+
+    } catch (\Exception $e) {
+
+        DB::rollBack();
+        return back()->with('error', $e->getMessage());
+    }
+
+
+        // Student::create($validatedData);
+
+
+
 
         // return redirect()->route('admin.students.index')->with('success', 'Student Registered successfully!');
-   
+
         // Student::create($request->all());
-        return redirect()->route('students.index')->with('success','Student added successfully');
+        // return redirect()->route('students.index')->with('success','Student added successfully');
 
     }
 
@@ -284,7 +309,7 @@ class StudentController extends Controller
         $student = Student::findOrFail($student);
         $classes = \App\Models\SchoolClass::all();
         $parents = ParentModel::all();
-        
+
         return view('admin.students.edit', compact('student', 'classes', 'parents'));
 
 
@@ -308,7 +333,7 @@ class StudentController extends Controller
             'last_name'  => 'required|string|max:255',
             'middle_name'  => 'required|string|max:255',
             'gender'     => 'required',
-            
+
             // 'email' => 'nullable|email|unique:students,email,' . $student->id,
             'phone' => 'required|string|max:20',
             // 'class_id' => 'required|exists:school_classes,id',
@@ -329,15 +354,15 @@ class StudentController extends Controller
         }
 
         $student->update($data);
-         
+
 
                 // $student->update([
-                //                     'class_id' => $request->class_id, 
-                //                     'admission_no' => $request->admission_no, 
-                //                     'dob' => $request->dob, 
+                //                     'class_id' => $request->class_id,
+                //                     'admission_no' => $request->admission_no,
+                //                     'dob' => $request->dob,
                 //                     'gender' => $request->gender
                 //                 ]);
-    
+
 
         // $student->update($validated);
         return redirect()->route('students.index')->with('success', 'Student updated successfully!');
@@ -394,12 +419,12 @@ class StudentController extends Controller
             return view('students.dashboard', compact('student', 'exams'));
     }
 
-    
+
 
 
     //Show Exam all questions
     public function exam($examId){
-        // $questions = Question::with('options')->inRandomOrder()->get(); //10 Random questions... 
+        // $questions = Question::with('options')->inRandomOrder()->get(); //10 Random questions...
         // return view('students.exam', compact('questions'));
 
 
@@ -508,7 +533,7 @@ public function results(Request $request)
 
     $query = Exam::where('class_id', $student->class_id);
 
-    
+
 
     // $results = DB::table('exam_results')
     //     ->where('student_id', $student->id)
@@ -534,7 +559,7 @@ public function results(Request $request)
     $sessions = SessionModel::all();
     $terms = Term::all();
 
-    
+
     return view('students.result', compact('student','results','sessions','terms'));
 }
 

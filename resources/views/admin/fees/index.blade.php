@@ -22,7 +22,9 @@
         <tbody>
             @foreach($fees as $fee)
             <tr>
-                <td>{{ $fee->student->name }}</td>
+                <!-- <td>{{ $fee->student->first_name }} {{ $fee->student->last_name }}</td> -->
+                <td>{{ $fee->student->first_name }}</td>
+                <!-- <td>{{ $fee->name }}</td> -->
                 <td>{{ $fee->session }}</td>
                 <td>{{ $fee->term }}</td>
                 <td>{{ $fee->class }}</td>

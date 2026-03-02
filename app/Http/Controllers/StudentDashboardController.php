@@ -11,7 +11,12 @@ class StudentDashboardController extends Controller
 {
     public function index()
     {
-        $student = Auth::guard('student')->user();
+        // $student = Auth::guard('student')->user();
+        $student = auth()->user();
+
+        if (!$student || $student->role !== 'student') {
+            abort(403, 'Unauthorized USER');
+        }
         // $exams = $student->examResults()->latest()->take(5)->get();
 
         return view('dashboard.student', compact('student'));
@@ -19,10 +24,21 @@ class StudentDashboardController extends Controller
 
     public function dashboard()
     {
-        $student = Auth::guard('student')->user();
+        $user = auth()->user();
+        // $student = Auth::guard('student')->user();
+        $student = $user->student; // get related student profile
+
+        //   auth()->user()->role === 'student'
+        // if (!$student || $student->role !== 'student') {
+        //     abort(403, 'Unauthorized USER');
+        // }
+
 
         $exams = Exam::where('class_id', $student->class_id)->get();
 
         return view('dashboard.student', compact('student', 'exams'));
+        // return view('student.dashboard', compact('student', 'exams'));
     }
+
+
 }

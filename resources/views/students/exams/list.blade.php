@@ -11,3 +11,16 @@
 </div>
 </div>
 @endsection
+
+@foreach($exams as $exam)
+<tr>
+    <td>{{ $exam->title }}</td>
+    <td>{{ $exam->duration }} mins</td>
+    <td>
+        <a href="{{ route('student.exam.start',$exam->id) }}"
+           class="btn btn-primary btn-sm">
+           Start CBT
+        </a>
+    </td>
+</tr>
+@endforeach

@@ -76,9 +76,9 @@
 
             <a href="{{ route('profile.show') }}">Profile</a>
 
-            
 
-            
+
+
             <a href="{{ route('logout') }}"
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 Logout
@@ -140,22 +140,22 @@
 </head>
 <body>
   <!-- Sidebar -->
-  <div class="sidebar">
+  <div class="sidebar " style="overflow-y: auto">
     <h4 class="text-center text-light mb-4">
-      
+
     {{-- @if($p->image)
                         <img src="{{ asset('storage/'.$p->image) }}" width="60" height="60" style="border-radius:50%;">
                     @else
                         <span>No Image</span>
                     @endif --}}
-                    
 
-      @if($admin) 
-      {{ ucfirst($admin->role) }} 
+
+      @if($admin)
+      {{ ucfirst($admin->role) }}
       @elseif($student) <img src="{{ asset('storage/'.$student->image) }}" width="60" height="60" style="border-radius:50%;">
-      {{ ucfirst($student->middle_name) }} 
+      {{ ucfirst($student->middle_name) }}
       @endif Panel
-      
+
     </h4>
 
 
@@ -189,7 +189,7 @@
     <a href="{{ route('student.books') }}">📚 Study Materials</a>
     <a href="#">🎯 Activities</a>
     <a href="#">🔔 Notifications</a>
-      
+
       <a href="{{ route('student.exams') }}">My Exams</a>
       <a href="{{ route('student.books') }}">Books</a>
       <a href="#">My Subjects</a>

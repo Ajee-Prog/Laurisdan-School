@@ -1,19 +1,114 @@
 @php
-    $admin   = Auth::guard('web')->user();
-    $student = Auth::guard('student')->user();
+    // $student = Auth::guard('student')->user();
+    $user = auth()->user();
 @endphp
 
 
 @extends('layouts.dashboard')
 
 @section('content')
+{{-- New start here --}}
+<div class="container py-4">
+
+    <h2>Student Dashboard</h2>
+
+    @if($user->role==='student')
+        <p class="text-muted">Welcome, {{ $student->first_name }} </p>
+    @endif
+
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    {{-- ================= PROFILE SUMMARY ================= --}}
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            @if($student && $student->image)
+                <img src="{{ asset('storage/'.$student->image) }}"
+                    width="80"
+                    height="80"
+                    style="border-radius:50%;">
+            @else
+                <img src="https://via.placeholder.com/80"
+                    style="border-radius:50%;">
+            @endif
+
+            <h5>Your Profile</h5>
+             <p>Fake Email: {{ $user->email ?? 'N/A' }}</p>
+            <p><strong>Admission No:</strong> {{ $student->admission_no }}</p>
+            <p><strong>Student code :</strong> {{ $student->student_code }}</p>
+            <p><strong>Class:</strong> {{ $student->class->name ?? 'N/A' }}</p>
+            <p><strong>Parent Contact:</strong> {{ $student->parent_contact ?? 'N/A' }}</p>
+            <a href="{{route('profile.show')}}" class="btn btn-info btn-sm">View Profile</a>
+
+            @if(Route::has('student.profile'))
+                <a href="{{ route('student.profile') }}" class="btn btn-info btn-sm">View Full Profile</a>
+            @endif
+        </div>
+    </div>
+
+    <div class="row">
+
+        {{-- ================= MY EXAMS ================= --}}
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">My Exams</h5>
+
+                    @forelse($exams as $exam)
+                        <div class="border p-2 mb-2 rounded">
+                            <strong>{{ $exam->title }}</strong><br>
+                            Duration: {{ $exam->duration }} minutes
+
+                            <div class="mt-2">
+                                <a href="{{ route('student.exam.start', $exam->id) }}"
+                                   class="btn btn-success btn-sm">
+                                    Start Exam
+                                </a>
+                            </div>
+                        </div>
+                    @empty
+                        <p class="text-muted">No exams available.</p>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+
+        {{-- ================= MY RESULTS ================= --}}
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">My Results</h5>
+                    <a href="{{ route('student.results') }}" class="btn btn-dark btn-sm">
+                        View Results
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {{-- ================= MY BOOKS ================= --}}
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">My Books</h5>
+                    <a href="{{ route('student.books') }}" class="btn btn-warning btn-sm">
+                        View Books
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{{-- New End Here --}}
+ /**
 <div class="container py-4" style="margin-top: 20px;">
 
   <h2>Student Dashboard</h2>
 
   @if(auth()->check())
     <p>Hello {{ auth()->user()->first_name }}!</p>
-  @endif 
+  @endif
 
   @if(isset($student))
     <h3>Welcome, {{ $student->first_name }}</h3>
@@ -42,8 +137,8 @@
 
 
      {{-- ================== MY EXAMS ================== --}}
-        
-                        
+
+
 
     <div class="col-md-4 mb-3">
       <div class="card shadow-sm">
@@ -56,8 +151,8 @@
                 <!-- <span>{{ $exam->title }} ({{ $exam->duration }} min)</span> -->
                 <strong>{{ $exam->title }} </strong> <br>
                  Duration: ({{ $exam->duration }} min)<br>
-                @if(Route::has('student.exam'))
-                  <a href="{{ route('student.exam', $exam->id) }}" class="btn btn-success btn-sm">Take Exam</a> <br><br><br>
+                @if(Route::has('student.exams'))
+                  <a href="{{ route('student.exams', $exam->id) }}" class="btn btn-success btn-sm">Take Exam</a> <br><br><br>
                   <!-- testing the second method -->
                    <div>
                         <a href="{{ route('student.exam.view', $exam->id) }}" class="btn btn-outline-primary btn-sm">View</a>
@@ -150,7 +245,7 @@
                         <div class="border p-2 mb-2 rounded">
                             <strong>{{ $exam->title }}</strong> <br>
                             Duration: {{ $exam->duration }} min <br>
-                            <a href="{{ route('student.exam', $exam->id) }}" class="btn btn-success btn-sm mt-2">
+                            <a href="{{ route('student.exams', $exam->id) }}" class="btn btn-success btn-sm mt-2">
                                 Take Exam
                             </a>
                         </div>
@@ -168,7 +263,7 @@
                 <div class="card-body text-center">
                     <h5 class="card-title">Attempt Exams</h5>
                     @forelse ($exams as $exam)
-                    <a href="{{ route('exam.start', $exam->id) }}" class="btn btn-primary btn-sm">Start Exam</a>
+                    <a href="{{ route('student.exam.start', $exam->id) }}" class="btn btn-primary btn-sm">Start Exam</a>
                      @empty
                         <p class="text-muted">No exams available.</p>
                     @endforelse
@@ -197,6 +292,7 @@
         </div>
 
     </div>
+    {{-- */ --}}
 
 </div>
 @endsection

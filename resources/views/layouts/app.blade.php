@@ -1,7 +1,9 @@
 @php
-    $admin   = Auth::guard('web')->user();
-    $student = Auth::guard('student')->user();
+    // $admin   = Auth::guard('web')->user();
+    // $student = Auth::guard('student')->user();
+    $user = auth()->user();
 @endphp
+
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -34,7 +36,7 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
-    
+
 </head>
 <body>
     <div id="app">
@@ -207,10 +209,10 @@
      <!-- </div> -->
     <!-- *** Website Container Ends *** -->
 
-         <!-- Plain Html navbar ends here --> 
+         <!-- Plain Html navbar ends here -->
           @include('partials1.navbar')
 
-          
+
 
         <main class="py-4">
             @yield('content')

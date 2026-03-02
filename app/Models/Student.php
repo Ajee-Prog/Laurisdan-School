@@ -15,43 +15,26 @@ class Student extends Authenticatable
 
     use HasFactory;
     // protected $guard = 'student';
-    
+
 
     protected $table = 'students';
-    
+
 
     protected $fillable = [
-        'user_id',
-        'parent_id',
-        // 'name',
-        'last_name',
-        'first_name',
-        'middle_name',
-        
-        'password',
-        'class_id',
-        'image',
-        'gender',
-        'date_of_birth',
-        'place_birth',
-        'address',
-        'parent_contact',
-        'state',
-        'lga',
-        'nationality',
-        'religion',
-        'admission_no',
-        'student_code',
+        'user_id','parent_id',// 'name',
+        'last_name','first_name','middle_name','password','class_id',
+        'image','gender','date_of_birth','place_birth','address',
+        'parent_contact','state','lga','nationality','religion','admission_no','student_code',
         'medical_Att',
         // 'phone',
-        
+
     ];
 
 
 
-     
 
-     
+
+
 
     protected $hidden = ['password'];
 
@@ -62,38 +45,52 @@ class Student extends Authenticatable
             ? Carbon::parse($this->date_of_birth)->age
             : null;
     }
-   
 
+    // Student Auto Admission Number
+    public static function generateAdmissionNo()
+    {
+        $year = date('Y');
 
+        $count = self::whereYear('created_at', $year)->count() + 1;
 
-    public function user(){
-        return $this->belongsTo(User::class,'user_id');
+        return "LNPS/$year/" . str_pad($count, 3, '0', STR_PAD_LEFT);
     }
 
-    
+
+
+
+    // public function user(){
+    //     return $this->belongsTo(User::class,'user_id');
+    // }
+
+    public function user(){
+        return $this->belongsTo(\App\Models\User::class);
+    }
+
+
 
     public function class(){
         return $this->belongsTo(\App\Models\SchoolClass::class,'class_id');
     }
-    
-    
+
+
     public function parent(){
         return $this->belongsTo(ParentModel::class,'parent_id');
     }
-    
 
-    
-   
+
+
+
     public function examResults()
 {
     return $this->hasMany(ExamResult::class, 'student_id');
 }
-    
-   
-    
 
 
-    
 
-    
+
+
+
+
+
 }

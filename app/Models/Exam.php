@@ -35,6 +35,7 @@ class Exam extends Model
     {
         return $this->hasMany(Question::class);
     }
+
     // public function class(){
     //     return $this->belongsTo(Classroom::class);
     // }

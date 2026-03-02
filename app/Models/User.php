@@ -24,12 +24,18 @@ class User extends Authenticatable
         'role',
         'address',
         'photo',
-        'student_code'
+        'student_code',
+        'admission_no'
     ];
 
-    public function student(){
-        return $this->hasOne(Student::class, 'user_id');
-    }
+    public function student()
+{
+    return $this->hasOne(\App\Models\Student::class);
+}
+
+    // public function student(){
+    //     return $this->hasOne(Student::class, 'user_id');
+    // }
 
     public function parentProfile()
 {
@@ -46,7 +52,7 @@ public function teacher()
     public function isParent(){ return $this->role === 'parent';}
     public function isStudent(){ return $this->role === 'student';}
     // public function isRole($role){ return $this->role === $role;}
-    
+
 
     /**
      * The attributes that should be hidden for serialization.

@@ -1,6 +1,7 @@
 @php
-    $admin   = Auth::guard('web')->user();
-    $student = Auth::guard('student')->user();
+    // $admin   = Auth::guard('web')->user();
+    // $student = Auth::guard('student')->user();
+    $user = auth()->user();
 @endphp
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +55,13 @@
   <div class="container-fluid">
     <a class="navbar-brand" href="{{ route('admin.dashboard') }}">Laurisdan School Admin</a>
     <div class="d-flex">
-        <span class="text-white me-3">{{ Auth::user()->name ?? 'Admin' }}</span>
+        <span class="text-white me-3">
+            {{-- {{ Auth::user()->name ?? 'Admin' }} --}}
+
+            @if(Auth::guard('web')->check())
+                {{ Auth::guard('web')->user()->name }}
+            @endif
+        </span>
         <form action="{{ route('logout') }}" method="POST" class="d-none">
             @csrf
             <button class="btn btn-outline-light btn-sm">Logout</button>

@@ -1,6 +1,7 @@
 @php
-    $admin   = Auth::guard('web')->user();
-    $student = Auth::guard('student')->user();
+    // $admin   = Auth::guard('web')->user();
+    // $student = Auth::guard('student')->user();
+    $user = auth()->user();
 @endphp
 
 
@@ -102,7 +103,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-md-3">
                 <div class="card shadow-sm">
                     <div class="card-body text-center">
@@ -141,7 +142,7 @@
                         ➕ Add CBT Question to {{ \Illuminate\Support\Str::limit($exam->title, 30) }}
                     </a>
 
-                    
+
                     <!-- <a href="{{ route('exams.questions.create', $exam->id) }}" class="nav-link">
                         Add Question to {{ \Illuminate\Support\Str::limit($exam->title, 30) }}
                     </a> -->
@@ -158,7 +159,7 @@
     </div>
 
 
-   
+
 
 </div>
 @endsection

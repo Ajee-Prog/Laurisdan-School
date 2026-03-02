@@ -6,7 +6,7 @@
   <title>Laurisdan Nursery & Primary School</title>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-  
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet" type="text/css">
@@ -71,7 +71,7 @@
 
 
 
-    
+
 </head>
 <body>
   <!-- Navbar -->
@@ -108,8 +108,9 @@
             <a class="nav-link dropdown-toggle" href="#" id="classesDropdown" role="button" data-bs-toggle="dropdown">Student Portal</a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{{ route('student.login') }}">Student Login</a></li>
+              <li><a class="dropdown-item" href="{{ route('students.index') }}">Students</a></li>
               <li><a class="dropdown-item" href="{{ route('classes.index') }}">All Classes</a></li>
-              <li><a class="dropdown-item" href="{{ route('classes.show', 1) }}">Primary 1</a></li>
+              <li><a class="dropdown-item" href="{{ route('exams.index') }}">Exams</a></li>
               <li><a class="dropdown-item" href="{{ route('classes.show', 2) }}">Primary 2</a></li>
               <li><a class="dropdown-item" href="{{ route('classes.show', 3) }}">Primary 3</a></li>
               <li><a class="dropdown-item" href="{{ route('classes.show', 4) }}">Primary 4</a></li>
@@ -123,15 +124,15 @@
 
 
 
-         
 
-    
+
+
           <li class="nav-item"><a class="nav-link" href="{{ route('books.index') }}">Books</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('activities.index') }}">Activities</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('teachers.index') }}">Teachers</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('parents.index') }}">Parents</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('students.index') }}">Students</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('exams.index') }}">Exams</a></li>
+          <!-- <li class="nav-item"><a class="nav-link" href="{{ route('students.index') }}">Students</a></li> -->
+          <!-- <li class="nav-item"><a class="nav-link" href="{{ route('exams.index') }}">Exams</a></li> -->
           <li class="nav-item"><a class="nav-link" href="{{ route('sessions.index') }}">Sessions</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('terms.index') }}">Terms</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact</a></li>
@@ -141,6 +142,24 @@
           @else
             <li class="nav-item"><a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a></li>
           @endguest
+          <!-- New... -->
+
+            {{-- ADMIN / STAFF LOGIN --}}
+               {{-- @if(Auth::guard('web')->check())
+                    <p>Welcome, {{ Auth::user()->name }}</p>
+                    <a href="{{ route('dashboard') }}" class="btn btn-primary">Dashboard</a>
+
+                {{-- STUDENT LOGIN -}}
+                @elseif(Auth::guard('student')->check())
+                    <p>Welcome, {{ Auth::guard('student')->user()->first_name }}</p>
+                    <a href="{{ route('dashboard.student') }}" class="btn btn-success">Student Dashboard</a>
+
+                {{-- GUEST -}}
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-primary">Admin Login</a>
+                    <a href="{{ route('student.login') }}" class="btn btn-success">Student Login</a>
+                @endif --}}
+           <!-- New ends.... -->
         </ul>
       </div>
     </div>
@@ -166,7 +185,7 @@
   <!-- 2 copied -->
    <!-- Carousel new section start -->
   <section class="p5">
-    
+
 
 
 
@@ -185,7 +204,7 @@
 
           <div class="carousel-item" style="background-image: url({{ asset('assets/images/laurisdan3.jpg') }});">
           <!-- <div class="carousel-item" > -->
-            
+
             <div class="carousel-caption">
               <h1>Quality Education for Every Child</h1>
               <p>Empowering students with creativity, knowledge, and discipline.</p>
@@ -223,21 +242,21 @@
             <div class="card border-0 shadow-sm p-3">
               <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle mx-auto" width="100">
               <h5 class="mt-3">Mrs. Irriferigoma Johnson</h5>
-              <p class="text-muted mb-0">Head Teacher</p>
+              <p class="text-muted mb-0">Head School</p>
             </div>
           </div>
           <div class="col-md-3">
             <div class="card border-0 shadow-sm p-3">
               <img src="https://randomuser.me/api/portraits/men/35.jpg" class="rounded-circle mx-auto" width="100">
-              <h5 class="mt-3">Mr. Emmanuel Okoro</h5>
-              <p class="text-muted mb-0">Mathematics</p>
+              <h5 class="mt-3">Miss. Iffioma Emmanuel </h5>
+              <p class="text-muted mb-0">Admin</p>
             </div>
           </div>
           <div class="col-md-3">
             <div class="card border-0 shadow-sm p-3">
               <img src="https://randomuser.me/api/portraits/women/65.jpg" class="rounded-circle mx-auto" width="100">
               <h5 class="mt-3">Mrs. Kemi Oyebanjo</h5>
-              <p class="text-muted mb-0">Science</p>
+              <p class="text-muted mb-0">Head Science</p>
             </div>
           </div>
           <div class="col-md-3">
@@ -257,70 +276,186 @@
       ================================================== -->
       <!-- Wrap the rest of the page in another container to center all the content. -->
 
-      <div class="container marketing">
+      <!-- <div class="container marketing">
 
-        <!-- Three columns of text below the carousel -->
+        <!- Three columns of text below the carousel ->
         <div class="row">
           <div class="col-lg-4">
-            <img class="rounded-circle mx-auto" src="{{ asset('assets/images/laurisdan5.jpg') }}" alt="Generic placeholder image" width="140" height="140">
+            {{-- <img class="rounded-circle mx-auto" src="{{ asset('assets/images/laurisdan5.jpg') }}" alt="Generic placeholder image" width="140" height="140"> --}}
             <h2>Heading</h2>
             <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
             <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-          </div><!-- /.col-lg-4 -->
+          </div><!- /.col-lg-4 ->
           <div class="col-lg-4">
-            <img class="rounded-circle" src="{{ asset('assets/images/laurisdan6.jpg') }}" alt="Generic placeholder image" width="140" height="140">
+            {{-- <img class="rounded-circle" src="{{ asset('assets/images/laurisdan6.jpg') }}" alt="Generic placeholder image" width="140" height="140"> --}}
             <h2>Heading</h2>
             <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
             <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-          </div><!-- /.col-lg-4 -->
+          </div><!- /.col-lg-4 ->
           <div class="col-lg-4">
-            <img class="rounded-circle" src="{{ asset('assets/images/laurisdan7.jpg') }}" alt="Generic placeholder image" width="140" height="140">
+            {{-- <img class="rounded-circle" src="{{ asset('assets/images/laurisdan7.jpg') }}" alt="Generic placeholder image" width="140" height="140"> --}}
             <h2>Heading</h2>
             <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
             <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-          </div><!-- /.col-lg-4 -->
-        </div><!-- /.row -->
+          </div> --><!-- /.col-lg-4 ->
+        </div><!- /.row -->
+
+        <section class="">
+          <div class="container">
+             <!-- Student FreecodeCamp -->
+            <div class="row">
+              <div class="col-3 pt-5" style="border-radius: 50%;">
+                <img  class=" image-fluid rounded-circle mx-auto" width="100"   src="{{ asset('assets/images/laurisdanLogo1.jpg') }}" >
+
+              </div>
+              <div class="col-9 pt-5">
+                <div class=""><h1>Lauridan School</h1></div>
+                <div class="d-flex">
+                  <div class="pr-5 " style="padding-right: 20px;"><strong>153</strong>Posts</div>
+                  <div class="pr-5  pl-4" style="padding-right: 20px;"><strong>23k</strong>Followers      </div>
+                  <div class="pr-5  pl-4" style="padding-right: 20px;"><strong>212</strong>following     </div>
+                </div>
+
+                <div class="pt-4"> laurisdannpschool.com</div>
+                <div class=""> We are global communities of millions of people learning together. We're an open source, supporting our brighter future.</div>
+                <div><a href="#">www.laurisdannpschools.com</a></div>
+              </div>
+            </div>
+            {{--  --}}
+            <div class="card shadow-sm mb-3 mt-3">
+                <div class="card-body">
+                    <h5>Your Profile ====****</h5>
+
+                    {{-- <p>Email: {{ $student->email ?? 'N/A' }}</p> --}}
+                    {{-- <p><strong> Admission No: </strong> {{ $student->admission_no }}</p> --}}
+                    <p><strong> Student Code: </strong> </p>
+                    <p> <strong>Class: </strong> </p>
+                    <p> <strong>Parent Contact: </strong> </p>
+
+                    <a href="{{route('profile.show')}}" class="btn btn-info btn-sm">View Profile</a>
+                </div>
+            </div>
+            {{--  --}}
+
+            <div class="card shadow-sm mb-3 mt-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <img class="featurette-image img-fluid mx-auto  "  src="{{ asset('assets/images/laurisdan10.jpg') }}" >
+
+                        </div>
+                        <div class="col-4">
+                            <img class="featurette-image img-fluid mx-auto  "  src="{{ asset('assets/images/laurisdan2.jpg') }}" >
+
+                        </div>
+                        <div class="col-4">
+                            <img class="featurette-image img-fluid mx-auto  "  src="{{ asset('assets/images/laurisdan3.jpg') }}" >
+
+                        </div>
+            </div>
+
+                    <a href="{{route('profile.show')}}" class="btn btn-info btn-sm">View Profile</a>
+                </div>
+            </div>
+
+            {{-- ********* --}}
+
+            <div class="row">
+              <div class="col-4">
+                <img class="featurette-image img-fluid mx-auto  "  src="{{ asset('assets/images/laurisdan10.jpg') }}" >
+
+              </div>
+              <div class="col-4">
+                <img class="featurette-image img-fluid mx-auto  "  src="{{ asset('assets/images/laurisdan2.jpg') }}" >
+
+              </div>
+              <div class="col-4">
+                <img class="featurette-image img-fluid mx-auto  "  src="{{ asset('assets/images/laurisdan3.jpg') }}" >
+
+              </div>
+            </div>
+
+            <!-- Student FreecodeCamp Ends here-->
+          </div>
+        </section>
 
 
         <!-- START THE FEATURETTES -->
 
+      <!-- Activity -->
         <hr class="featurette-divider">
 
-        <div class="row featurette">
-          <div class="col-md-7">
-            <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It'll blow your mind.</span></h2>
-            <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
-          </div>
-          <div class="col-md-5">
-            <img class="featurette-image img-fluid mx-auto" src="{{ asset('assets/images/laurisdan9.jpg') }}" alt="Generic placeholder image">
-          </div>
-        </div>
+        <section class="mt-4 mx-4 px-4 py-5 text-center">
+            <h2 class="section-title">Our Activities</h2>
+            <div class="row featurette">
+                <div class="col-md-7">
 
-        <hr class="featurette-divider">
+                {{-- *************** --}}
+                <h2 class="featurette-heading py-5">First featurette Ballet. <span class="text-muted">It'll blow your mind.</span></h2>
+                <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                </div>
+                <div class="col-md-5">
+                <div class="card border-0 shadow-sm p-3">
+                    <img class="featurette-image img-fluid mx-auto" src="{{ asset('assets/images/laurisdan9.jpg') }}" alt="Generic placeholder image">
 
-        <div class="row featurette">
-          <div class="col-md-7 order-md-2">
-            <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
-            <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
-          </div>
-          <div class="col-md-5 order-md-1">
-            <img class="featurette-image img-fluid mx-auto" src="{{ asset('assets/images/laurisdan10.jpg') }}" alt="Generic placeholder image">
-          </div>
-        </div>
+                </div>
+                <!-- <img class="featurette-image img-fluid mx-auto" src="{{ asset('assets/images/laurisdan9.jpg') }}" alt="Generic placeholder image"> -->
+                </div>
+            </div>
 
-        <hr class="featurette-divider">
 
-        <div class="row featurette">
-          <div class="col-md-7">
-            <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
-            <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
-          </div>
-          <div class="col-md-5">
-            <img class="featurette-image img-fluid mx-auto" src="{{ asset('assets/images/laurisdan8.jpg') }}" alt="Generic placeholder image">
-          </div>
-        </div>
+            <div class="card border- shadow-sm p-3 my-3">
+                    {{-- <div class="card-body "> --}}
+                        <div class="row">
+                        <div class="col-md-7">
+                        <h2 class="featurette-heading py-5">First featurette Ballet. <span class="text-muted">It'll blow your mind.</span></h2>
+                        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                        </div>
+                        {{-- </div> --}}
+                    <div class="col-md-5">
+                        <div class="card border-0 shadow-sm p-3">
+                            <img class="featurette-image img-fluid mx-auto" src="{{ asset('assets/images/laurisdan9.jpg') }}" alt="Generic placeholder image">
 
-        <hr class="featurette-divider">
+                        </div>
+                    </div>
+            </div>
+            </div>
+
+
+
+
+          {{-- <hr class="featurette-divider"> --}}
+
+            <div class="card shadow-sm p-3">
+                <div class="row featurette mx-4 mx-4">
+                    <div class="col-md-7 order-md-2">
+                    <h2 class="featurette-heading py-5">Oh yeah, Spelling Bee, it's that good. <span class="text-muted">See for yourself.</span></h2>
+                    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                    </div>
+                    <div class="col-md-5 border-md-1 p-3">
+                    <img class="featurette-image img-fluid mx-auto" src="{{ asset('assets/images/laurisdan10.jpg') }}" alt="Generic placeholder image">
+                    </div>
+                </div>
+            </div>
+
+          <hr class="featurette-divider">
+
+            <div class="card shadow-sm p-3">
+                <div class="row featurette">
+                    <div class="col-md-7">
+                    <h2 class="featurette-heading">Cultural Dance, We proud of our culture. <span class="text-muted">Checkmate.</span></h2>
+                    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                    </div>
+                    <div class="col-md-5">
+                    <img class="featurette-image img-fluid mx-auto" src="{{ asset('assets/images/laurisdan8.jpg') }}" alt="Generic placeholder image">
+                    </div>
+                </div>
+            </div>
+
+
+          <hr class="featurette-divider">
+
+        </section>
 
         <!-- /END THE FEATURETTES -->
 
@@ -527,7 +662,7 @@
       </div>
     </div>
   </div>
-  
+
     <!-- first footer ends here -->
   <footer class="bg-dark text-light py-3 mt-5">
     <div class="container text-center">
@@ -540,7 +675,7 @@
 <!-- FOOTER -->
   <footer class="footer text-center">
     <div class="container">
-      <p>powered by <a href=""> YusTech</a> : &copy; 2025 - {{ date('Y') }} Laurisdan Nursery & Primary School. All Rights Reserved.</p>
+      <p>powered by <a href=""> YusTech</a> : &copy; 2014 - {{ date('Y') }} Laurisdan Nursery & Primary School. <span class="mr-5" style="border-right: 2px solid white; margin-right: 10px;"></span> All Rights Reserved.</p>
       <div>
         <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
         <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
@@ -551,6 +686,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    
+
 </body>
 </html>

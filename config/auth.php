@@ -2,12 +2,12 @@
 
 return [
 
-  
+
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
     |--------------------------------------------------------------------------
-    
+
     */
 
     'defaults' => [
@@ -19,7 +19,7 @@ return [
     |--------------------------------------------------------------------------
     | Authentication Guards
     |--------------------------------------------------------------------------
-   
+
     | Supported: "session"
     |
     */
@@ -32,11 +32,11 @@ return [
     //      'teacher' => [
     //     'driver' => 'session',
     //     'provider' => 'teachers',
+    // ],******************
+    // 'student' => [
+    //     'driver' => 'session',
+    //     'provider' => 'students',
     // ],
-    'student' => [
-        'driver' => 'session',
-        'provider' => 'students',
-    ],
     // 'parent' => [
     //     'driver' => 'session',
     //     'provider' => 'parents',
@@ -50,7 +50,7 @@ return [
     |--------------------------------------------------------------------------
     | User Providers
     |--------------------------------------------------------------------------
-    
+
     | Supported: "database", "eloquent"
     |
     */
@@ -71,10 +71,10 @@ return [
         // 'model' => App\Models\Teacher::class,
         // ],
 
-        'students' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Student::class,
-        ],
+        // 'students' => [
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\Student::class,
+        // ],
 
         // 'parents' => [
         //     'driver' => 'eloquent',
@@ -87,7 +87,7 @@ return [
     |--------------------------------------------------------------------------
     | Resetting Passwords
     |--------------------------------------------------------------------------
-    
+
     */
 
     'passwords' => [
@@ -99,7 +99,7 @@ return [
         ],
 
 
-        
+
         'students' => [
         'provider' => 'students',
         'table' => 'password_resets',
@@ -112,7 +112,7 @@ return [
     |--------------------------------------------------------------------------
     | Password Confirmation Timeout
     |--------------------------------------------------------------------------
-    
+
     */
 
     'password_timeout' => 10800,

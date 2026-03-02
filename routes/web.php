@@ -20,6 +20,10 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TermController;
 use App\Http\Controllers\QuestionController;
+// Refactors Exam Controller
+use App\Http\Controllers\Admin\AdminExamController;
+use App\Http\Controllers\Teacher\TeacherExamController;
+use App\Http\Controllers\Student\StudentExamController;
 
 
 
@@ -75,7 +79,7 @@ Auth::routes();
 */
 Route::middleware(['auth'])->group(function () {
 
-    
+
 
     /*
     |--------------------------------------------------------------------------
@@ -158,20 +162,34 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('terms', TermController::class);
         Route::resource('subjects', SubjectController::class);
 
+        Route::resource('teacher-attendance', TeacherAttendanceController::class);
+        Route::resource('student-attendance', StudentAttendanceController::class);
+        Route::resource('transporters', TransporterController::class);
+
         //     Route::get('/admin/questions', [QuestionController::class, 'index'])->name('questions.index');
         // Route::get('/admin/questions/create', [QuestionController::class, 'create'])->name('questions.create');
         // Route::post('/admin/questions/store', [QuestionController::class, 'store'])->name('questions.store');
 
         Route::get('/exams/{id}/toggle-status', [ExamController::class, 'toggleStatus'])->name('exams.toggle');
 
-        
-        
+
+
         // Question Bank (linked to exam)
+        Route::get('/exams/{exam}/questions', [QuestionController::class, 'index'])->name('exams.questions.index');
         Route::get('/exams/{exam}/questions/create', [QuestionController::class, 'create'])->name('exams.questions.create');
+        // Route::get('/exams/{exam}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
         Route::post('/exams/{exam}/questions', [QuestionController::class, 'store'])->name('exams.questions.store');
 
         Route::resource('questions', QuestionController::class)->except(['create', 'store']);
-        
+
+        // Refactor Exam controller start here
+            Route::get('/exams', [AdminExamController::class,'index'])->name('admin.exams.index');
+            Route::get('/exams/create', [AdminExamController::class,'create'])->name('admin.exams.create');
+            Route::post('/exams', [AdminExamController::class,'store'])->name('admin.exams.store');
+            Route::get('/exams/{exam}', [AdminExamController::class,'show'])->name('admin.exams.show');
+            Route::post('/exams/{exam}/toggle', [AdminExamController::class,'toggle'])->name('admin.exams.toggle');
+        // Refactors Exam Controller Ends
+
 
         Route::get('students-export-pdf', [App\Http\Controllers\StudentController::class, 'exportPdf'])->name('students.export.pdf');
         Route::get('books/export/pdf', [BookController::class, 'exportPdf'])->name('books.export.pdf');
@@ -189,6 +207,31 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/fees/finance-dashboard', [FeeController::class, 'financeDashboard'])->name('fees.finance');
         Route::post('/fees/import-csv', [FeeController::class, 'importCsv'])->name('fees.import.csv');
 
+        // Route::get('/questions/export/csv', [QuestionController::class, 'exportCsv'])->name('questions.export.csv');
+
+
+        /*
+        // To Test a New Question.............but is not needed
+        Route::get('/exams/{exam}/questions', [QuestionController::class, 'index'])
+        ->name('questions.index');
+
+    Route::get('/exams/{exam}/questions/create', [QuestionController::class, 'create'])
+        ->name('questions.create');
+
+    Route::post('/exams/{exam}/questions', [QuestionController::class, 'store'])
+        ->name('questions.store');
+
+    Route::get('/questions/{question}/edit', [QuestionController::class, 'edit'])
+        ->name('questions.edit');
+
+    Route::put('/questions/{question}', [QuestionController::class, 'update'])
+        ->name('questions.update');
+
+    Route::delete('/questions/{question}', [QuestionController::class, 'destroy'])
+        ->name('questions.destroy');
+
+        */
+
     });
 
         /*
@@ -202,6 +245,29 @@ Route::middleware(['auth'])->group(function () {
 
         // Teacher can manage exams
         Route::resource('exams', ExamController::class)->except(['show']);
+         Route::resource('questions', QuestionController::class);
+
+        //  Refactors Exam start here...***
+        Route::get('/exams', [TeacherExamController::class,'index'])->name('teacher.exams.index');
+        Route::get('/exams/{exam}', [TeacherExamController::class,'show'])->name('teacher.exams.show');
+        // Exam Questions
+        // Route::get('/exams/{exam}/questions', [QuestionController::class, 'index'])
+        // ->name('questions.index');
+
+        //     Route::get('/exams/{exam}/questions/create', [QuestionController::class, 'create'])
+        //         ->name('questions.create');
+
+        //     Route::post('/exams/{exam}/questions', [QuestionController::class, 'store'])
+        //         ->name('questions.store');
+
+        //     Route::get('/questions/{question}/edit', [QuestionController::class, 'edit'])
+        //         ->name('questions.edit');
+
+        //     Route::put('/questions/{question}', [QuestionController::class, 'update'])
+        //         ->name('questions.update');
+
+        //     Route::delete('/questions/{question}', [QuestionController::class, 'destroy'])
+        //         ->name('questions.destroy');
         });
 
     /*
@@ -215,7 +281,7 @@ Route::middleware(['auth'])->group(function () {
     //     // Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('dashboard.student');
     //     Route::get('/dashboard/student', [StudentDashboardController::class, 'dashboard'])->name('dashboard.student');
     //     // Route::get('/student/dashboard', [DashboardController::class, 'index'])->name('dashboard.student');
-        
+
 
     //     // Student exam list & open
     //     Route::get('/student/exams', [ExamController::class, 'studentExamss'])->name('student.exams');
@@ -236,11 +302,11 @@ Route::middleware(['auth'])->group(function () {
     //     Route::get('/student/results', [StudentController::class, 'results'])->name('student.results');
 
     //     // ------------------------------------ Tryin new method-----------------------
-        
 
 
 
-       
+
+
     // });
 
     /*
@@ -269,13 +335,13 @@ Route::middleware(['auth'])->group(function () {
 }); //General auths admin ends here
 
 // Student with Admission No
-    Route::middleware(['auth:student'])->group(function () {
+    Route::middleware(['auth','role:student'])->group(function () {
 
         // Route::get('/student/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
         // Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('dashboard.student');
         Route::get('/dashboard/student', [StudentDashboardController::class, 'dashboard'])->name('dashboard.student');
         // Route::get('/student/dashboard', [DashboardController::class, 'index'])->name('dashboard.student');
-        
+
 
         // Student exam list & open
         Route::get('/student/exams', [ExamController::class, 'studentExamss'])->name('student.exams');
@@ -286,26 +352,38 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/student/exam/{id}/start', [ExamController::class, 'startExamCBT'])->name('student.exam.start');
         // Route::get('/student/exam/{exam}/start', [ExamController::class, 'startExamCBT'])->name('student.exam.start');
         // Route::post('/student/exam/{id}/submit', [ExamController::class, 'submitCBT'])->name('student.exam.submit');
-        
+
 
         // Route::get('/student/exam', [ExamController::class, 'studentExams'])->name('student.exam');
-        Route::get('/student/exam/{subject}', [ExamController::class, 'studentExams'])->name('student.exam');
+        // Route::get('/student/exam/{subject}', [ExamController::class, 'studentExams'])->name('student.exam');
         // real exam start below route
         Route::get('/student/exam/{exam}/start', [ExamController::class, 'startExamCBT'])->name('student.exam.start');//this can b used
-        Route::get('/student/exam/start/{subject}', [ExamController::class, 'startExams'])->name('exam.start');
-        Route::post('/student/exam/submit', [ExamController::class, 'submitExam'])->name('exam.submit');
+        // Route::get('/student/exam/start/{subject}', [ExamController::class, 'startExams'])->name('exam.start');
+        // Route::post('/student/exam/{id}/submit', [ExamController::class, 'submitCBT'])->name('student.exams.submit');
+        Route::post('/student/exam/submit', [ExamController::class, 'submitExam'])->name('student.exams.submit');
+        // Route::post('/student/exam/submit', [ExamController::class, 'submitExam'])->name('exam.submit');
+
+        // **************Refactors Exam against future bugs*************
+        Route::get('/exams', [StudentExamController::class,'index'])->name('student.exams');
+
+    Route::get('/exam/{exam}/view', [StudentExamController::class,'view'])->name('student.exam.view');
+
+    Route::get('/exam/{exam}/start', [StudentExamController::class,'start'])->name('student.exam.start');
+
+    Route::post('/exam/{exam}/submit', [StudentExamController::class,'submit'])->name('student.exam.submit');
+        // ******************Refactors Ends here******************
 
         Route::get('/student/books', [BookController::class, 'studentBooks'])->name('student.books');
         Route::get('/student/results', [StudentController::class, 'results'])->name('student.results');
-        
+
         Route::get('/student/profile', [StudentController::class, 'profile'])->name('profile.show');
 
         // ------------------------------------ Tryin new method-----------------------
-        
 
 
 
-       
+
+
     });
 // Student with Admission ends here...........................
 
@@ -649,7 +727,7 @@ Route::get('/fee/{id}/receipt', [FeeController::class, 'generateReceipt'])->midd
 // Route::middleware(['auth','role:admin'])->group(function(){
 //         // Route::get('/admin/dashboard', [AdminDashboard::class,'index'])->name('admin.dashboard');
 
-        
+
 
 
 //         Route::resource('students', StudentController::class);
@@ -662,7 +740,7 @@ Route::get('/fee/{id}/receipt', [FeeController::class, 'generateReceipt'])->midd
 //         Route::resource('sessions', SessionController::class);
 //         // Exams Management
 //                 Route::resource('exams', ExamController::class);
-                
+
 //         Route::resource('terms', TermController::class);
 
 
@@ -689,7 +767,7 @@ Route::get('/fee/{id}/receipt', [FeeController::class, 'generateReceipt'])->midd
 //     Route::get('/student/exam/select', function(){
 //         return view('student.exam-select');
 //     })->name('student.exam.select');
-    
+
 
 // // Route::get('/student/dashboard', [StudentDashboard::class,'index'])->name('student.dashboard');
 
@@ -704,7 +782,7 @@ Route::get('/fee/{id}/receipt', [FeeController::class, 'generateReceipt'])->midd
 //     // Route::get('/student/exam/{examId}', [StudentController::class,'exam'])->name('student.exam');
 //     // Route::post('/student/exam/submit', [StudentController::class,'submitExam'])->name('student.exam.submit');
 //     // Route::get('/student/exam/select', function(){ return view('student.exam-select'); })->name('student.exam.select');
-    
+
 //     // Route::get('/student/results', [StudentController::class, 'results'])->name('student.results');
 //     Route::get('students-export-pdf', [App\Http\Controllers\StudentController::class, 'exportPdf'])->name('students.export.pdf');
 // });
@@ -733,8 +811,8 @@ Route::get('/fee/{id}/receipt', [FeeController::class, 'generateReceipt'])->midd
 //     */
 //     Route::middleware(['role:admin'])->group(function () {
 
-        
-             
+
+
 
 //         // Route::get('/admin/dashboard', function () {
 //         //     return view('admin.dashboard');
@@ -757,7 +835,7 @@ Route::get('/fee/{id}/receipt', [FeeController::class, 'generateReceipt'])->midd
 
 //         // Exams Management
 //         Route::resource('exams', ExamController::class);
-                
+
 //         Route::resource('terms', TermController::class);
 
 
@@ -823,7 +901,7 @@ Route::get('/fee/{id}/receipt', [FeeController::class, 'generateReceipt'])->midd
 
 //     // And all clean routes ends here
 
-    
+
 
 
 
@@ -1242,7 +1320,7 @@ Route::middleware(['auth'])->group(function() {
 // Route::get('/students/dashboard', [App\Http\Controllers\StudentController::class, 'dashboard'])
 //     ->middleware(['auth','role:student'])
 //     ->name('student.dashboard');
-    
+
 
 
 //     // Admin login all Students Teachers, and Parents Login

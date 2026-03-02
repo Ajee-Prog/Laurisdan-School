@@ -1,6 +1,7 @@
 @php
-    $admin   = Auth::guard('web')->user();
-    $student = Auth::guard('student')->user();
+    // $admin   = Auth::guard('web')->user();
+    // $student = Auth::guard('student')->user();
+    $user = auth()->user();
 @endphp
 <ul class="nav flex-column">
   <li class="nav-item">

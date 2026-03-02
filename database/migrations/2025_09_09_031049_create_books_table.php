@@ -18,11 +18,14 @@ class CreateBooksTable extends Migration
             $table->string('title');
             $table->string('author')->nullable();
             $table->unsignedBigInteger('class_id')->nullable();
+            $table->unsignedBigInteger('student_id')->nullable();
             $table->string('pdf')->nullable();
             $table->string('isbn')->nullable();
             $table->integer('quantity')->default(1);
             $table->longText('notes')->nullable();
             $table->timestamps();
+
+            $table->index('class_id');
         });
     }
 
