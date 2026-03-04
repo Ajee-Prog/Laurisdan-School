@@ -88,7 +88,7 @@
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">About Us</a></li>
-          <li class="nav-item dropdown">
+          {{-- <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="classesDropdown" role="button" data-bs-toggle="dropdown">Classes</a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{{ route('classes.index') }}">All Classes</a></li>
@@ -99,7 +99,7 @@
               <li><a class="dropdown-item" href="{{ route('classes.show', 5) }}">Primary 5</a></li>
               <li><a class="dropdown-item" href="{{ route('classes.show', 6) }}">Primary 6</a></li>
             </ul>
-          </li>
+          </li> --}}
 
 
 
@@ -109,8 +109,10 @@
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{{ route('student.login') }}">Student Login</a></li>
               <li><a class="dropdown-item" href="{{ route('students.index') }}">Students</a></li>
-              <li><a class="dropdown-item" href="{{ route('classes.index') }}">All Classes</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ route('books.index') }}">Books</a></li>
               <li><a class="dropdown-item" href="{{ route('exams.index') }}">Exams</a></li>
+              <li><a class="dropdown-item" href="{{ route('classes.index') }}">All Classes</a></li>
+
               <li><a class="dropdown-item" href="{{ route('classes.show', 2) }}">Primary 2</a></li>
               <li><a class="dropdown-item" href="{{ route('classes.show', 3) }}">Primary 3</a></li>
               <li><a class="dropdown-item" href="{{ route('classes.show', 4) }}">Primary 4</a></li>
@@ -127,12 +129,12 @@
 
 
 
-          <li class="nav-item"><a class="nav-link" href="{{ route('books.index') }}">Books</a></li>
+          {{-- <li class="nav-item"><a class="nav-link" href="{{ route('books.index') }}">Books</a></li> --}}
           <li class="nav-item"><a class="nav-link" href="{{ route('activities.index') }}">Activities</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('teachers.index') }}">Teachers</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('parents.index') }}">Parents</a></li>
-          <!-- <li class="nav-item"><a class="nav-link" href="{{ route('students.index') }}">Students</a></li> -->
-          <!-- <li class="nav-item"><a class="nav-link" href="{{ route('exams.index') }}">Exams</a></li> -->
+          {{-- <!-- <li class="nav-item"><a class="nav-link" href="{{ route('students.index') }}">Students</a></li> --> --}}
+          {{-- <!-- <li class="nav-item"><a class="nav-link" href="{{ route('exams.index') }}">Exams</a></li> --> --}}
           <li class="nav-item"><a class="nav-link" href="{{ route('sessions.index') }}">Sessions</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('terms.index') }}">Terms</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact</a></li>
@@ -342,25 +344,33 @@
                     <div class="row">
                         <div class="col-4">
                             <img class="featurette-image img-fluid mx-auto  "  src="{{ asset('assets/images/laurisdan10.jpg') }}" >
+                            <h3 class="card-title mt-3">Registration and Payment</h3>
+                            <p class="card-text text-muted mt-3">Registration and payment reciept printout for parents is now open. Pls proceed to register and print payment receipts</p>
 
                         </div>
                         <div class="col-4">
                             <img class="featurette-image img-fluid mx-auto  "  src="{{ asset('assets/images/laurisdan2.jpg') }}" >
+                            <h3 class="card-title mt-3">General Payment Reciepts</h3>
+                            <p class="card-text text-muted mt-3">Students can proceed to print receipt for general Payment.</p>
+
 
                         </div>
                         <div class="col-4">
                             <img class="featurette-image img-fluid mx-auto  "  src="{{ asset('assets/images/laurisdan3.jpg') }}" >
+                            <h3 class="card-title mt-3">Instructions for Newly Admitted Students</h3>
+                            <p class="card-text text-muted mt-3">All newly admitted students should proceed to '<b>PORTAL LOGIN </b>' for payment of school fees and await clearance.</p>
+
 
                         </div>
             </div>
 
-                    <a href="{{route('profile.show')}}" class="btn btn-info btn-sm">View Profile</a>
+                    <a href="{{route('profile.show')}}" class="btn btn-info btn-sm text-center">View More <span class="pt" style="margin-top: 5px; padding-top:10px; color:white">>></span></a>
                 </div>
             </div>
 
             {{-- ********* --}}
 
-            <div class="row">
+            {{-- <div class="row">
               <div class="col-4">
                 <img class="featurette-image img-fluid mx-auto  "  src="{{ asset('assets/images/laurisdan10.jpg') }}" >
 
@@ -373,7 +383,7 @@
                 <img class="featurette-image img-fluid mx-auto  "  src="{{ asset('assets/images/laurisdan3.jpg') }}" >
 
               </div>
-            </div>
+            </div> --}}
 
             <!-- Student FreecodeCamp Ends here-->
           </div>
@@ -391,7 +401,7 @@
                 <div class="col-md-7">
 
                 {{-- *************** --}}
-                <h2 class="featurette-heading py-5">First featurette Ballet. <span class="text-muted">It'll blow your mind.</span></h2>
+                <h2 class="featurette-heading py-5"> Ballet. <span class="text-muted">It'll blow your mind.</span></h2>
                 <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
                 </div>
                 <div class="col-md-5">
@@ -408,7 +418,7 @@
                     {{-- <div class="card-body "> --}}
                         <div class="row">
                         <div class="col-md-7">
-                        <h2 class="featurette-heading py-5">First featurette Ballet. <span class="text-muted">It'll blow your mind.</span></h2>
+                        <h2 class="featurette-heading py-5"> Ballet. <span class="text-muted">It'll blow your mind.</span></h2>
                         <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
                         </div>
                         {{-- </div> --}}
@@ -429,7 +439,7 @@
             <div class="card shadow-sm p-3">
                 <div class="row featurette mx-4 mx-4">
                     <div class="col-md-7 order-md-2">
-                    <h2 class="featurette-heading py-5">Oh yeah, Spelling Bee, it's that good. <span class="text-muted">See for yourself.</span></h2>
+                    <h2 class="featurette-heading py-5"> Spelling Bee, it's that good. <span class="text-muted">See for yourself.</span></h2>
                     <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
                     </div>
                     <div class="col-md-5 border-md-1 p-3">
@@ -499,34 +509,42 @@
   </section>
   <section class="py-5 bg-light">
     <div class="container text-center">
-      <h2 class="section-title">Latest News</h2>
+        <h2 class="section-title mt-5 text-center">Latest News & Announcements</h2>
+        <p class="text-muted mb-0">Stay informed with the latest News at Laurisdan N & P School</p>
       <div class="row g-4 mt-4">
-        <!-- <div class="col-md-3"> -->
+        <div class="col">
+            <h3 class="text-center">School News</h3>
+        </div>
+            {{-- <!-- <div class="col-md-3"> --> --}}
 
-        <h3 class="mt-5 text-center">Latest Activities</h3>
-        <div class="row">
-        @foreach($activities as $act)
-            <div class="col-md-4">
-                <div class="card shadow mb-3">
-                    <img src="{{ asset('uploads/activities/'.$act->image) }}" class="card-img-top">
-                    <div class="card-body">
-                        <h5>{{ $act->title }}</h5>
+            {{-- <h3 class="mt-5 text-center">Latest Activities</h3> --}}
+            <div class="col">
+                <div class="row">
+                    <h3 class="text-center">School Anouncements</h3>
+                @foreach($activities as $act)
+                    <div class="col-md-4">
+                        <div class="card shadow mb-3">
+                            <img src="{{ asset('uploads/activities/'.$act->image) }}" class="card-img-top">
+                            <div class="card-body">
+                                <h5>{{ $act->title }}</h5>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                @endforeach
             </div>
-        @endforeach
+            </div>
+
+
+            {{-- <h3 class="mt-5">News & Announcements</h3> --}}
+            {{-- <ul>
+            @foreach($news as $n)
+                <li>{{ $n->title }}</li>
+            @endforeach
+            </ul> --}}
+
+
         </div>
-
-        <h3 class="mt-5">News & Announcements</h3>
-        {{-- <ul>
-        @foreach($news as $n)
-            <li>{{ $n->title }}</li>
-        @endforeach
-        </ul> --}}
-
-
-        </div>
-      </div>
+      {{-- </div> --}}
     </div>
   </section>
 
@@ -598,7 +616,7 @@
 </section>
 
 <!-- CONTACT SECTION -->
-  <section id="contact" class="py-5 bg-light">
+  {{-- <section id="contact" class="py-5 bg-light">
     <div class="container text-center">
       <h2 class="section-title">Contact Us</h2>
       <p class="mb-4">We’d love to hear from you. Get in touch for admissions or inquiries.</p>
@@ -617,8 +635,58 @@
         </div>
       </form>
     </div>
-  </section>
+  </section> --}}
 <!-- CONTACT SECTION ENDS -->
+{{-- <!-- CONTACT SECTION --> --}}
+{{-- New section ********************** --}}
+  <section class="py-5 bg-light">
+    <div class="container text-center">
+        <h2 class="section-title mt-5 text-center">More Inquiries / Need Help?</h2>
+        <p class="text-muted mb-0">We're here to help with any questions you may have</p>
+      <div class="row g-4 mt-4">
+        <div class="col">
+            <h2 class="text-center"><i class="fas fa-user-alt" style='font-size:36px ;color:green'></i> Enquiries on admission?</h2>
+            <p class="text-muted mb-0">Send mail to <b>admission@laurisdannpschool.com.ng</b>
+            <br>Pls include Application Number in your Mail</p>
+            <div class="mt-3">
+                <a href="#" class="text-secondry me-3"><i class="fab fa-facebook-f" style='font-size:24px'></i></a>
+                <a href="#" class="text-secondry me-3"><i class="fab fa-twitter" style='font-size:24px'></i></a>
+                <a href="#" class="text-secondry me-3"><i class="fab fa-instagram" style='font-size:24px'></i></a>
+                <a href="#" class="text-secondry me-3"><i class="fab fa-linkedin-in" style='font-size:24px ;color:re'></i></a>
+                <a href="#" class="text-secondry me-3"><i class="fab fa-whatsapp" style='font-size:24px ;color:green'></i></a>
+                <a href="#" class="text-secondry"><i class="fab fa-youtube" style='font-size:24px ;color:red'></i></a>
+
+            </div>
+        </div>
+            {{-- <!-- <div class="col-md-3"> --> --}}
+
+            {{-- <h3 class="mt-5 text-center">Latest Activities</h3> --}}
+            <div class="col">
+                <div class="row">
+                    <h2 class="text-center">Do you have some questions? Fill the form and get an answer!</h2>
+                <form class="row g-3 justify-content-center">
+                    <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Full Name" required>
+                    </div>
+                    <div class="col-md-4">
+                    <input type="email" class="form-control" placeholder="Email Address" required>
+                    </div>
+                    <div class="col-md-8">
+                    <textarea class="form-control" rows="4" placeholder="Your Message" required></textarea>
+                    </div>
+                    <div class="col-md-8">
+                    <button type="submit" class="btn btn-custom">Send Message</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+
+        </div>
+
+    </div>
+  </section>
+  {{-- <!-- CONTACT SECTION ENDS --> --}}
+{{-- New section ends here************* --}}
 
 <!-- Contact -->
 <section id="contact" class="p-5">
