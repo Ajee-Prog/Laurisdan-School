@@ -1,6 +1,7 @@
 @php
-    $admin   = Auth::guard('web')->user();
-    $student = Auth::guard('student')->user();
+    // $admin   = Auth::guard('web')->user();
+    // $student = Auth::guard('student')->user();
+    $user = auth()->user()
 @endphp
 
 @extends('layouts.student')
@@ -51,7 +52,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- <div class="row">
         <div class="col-md-6"> -->
             <div class="card shadow-sm text-center">
@@ -60,12 +61,12 @@
                     <p class="fs-3"> Email: {{ Auth::user()->email }} </p>
                     <p class="fs-3"> Class: {{ $student->class->name ?? 'N/A' }} </p>
                     <p class="fs-3"> Parent Contact: {{ $student->parent_contact ?? 'N/A' }} </p>
-                    
+
                 </div>
 
 
 
-               
+
             </div>
 
              <div class="container">
@@ -79,8 +80,8 @@
                     </div>
                 </div>
 
-            
-       
+
+
 </div>
 @endsection
 

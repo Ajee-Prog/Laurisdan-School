@@ -1,6 +1,7 @@
 @php
-    $admin   = Auth::guard('web')->user();
-    $student = Auth::guard('student')->user();
+    // $admin   = Auth::guard('web')->user();
+    // $student = Auth::guard('student')->user();
+    $user = auth()->user();
 @endphp
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +13,7 @@
 <body>
   @include('partials.navbar')
 
-  @if(auth()->user()->role == 'superadmin')
+  @if($user->role == 'superadmin')
   <li><a href="{{ route('superadmin.dashboard') }}" class="nav-link">Dashboard</a></li>
   <li><a href="{{ route('admins.index') }}" class="nav-link">Admins</a></li>
   <li><a href="{{ route('teachers.index') }}" class="nav-link">Teachers</a></li>

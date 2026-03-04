@@ -100,41 +100,42 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    Route::middleware(['auth', 'role:superadmin'])->group(function () {
+    Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->group(function () {
 
-        Route::get('/superadmin/dashboard', [SuperAdminController::class, 'dashboard'])
+        // Route::get('/superadmin/dashboard', [SuperAdminController::class, 'dashboard'])
+        Route::get('/dashboard', [SuperAdminController::class, 'dashboard'])
             ->name('superadmin.dashboard');
 
         // Manage Admins
-        Route::resource('superadmin/admins', App\Http\Controllers\Admin\UserController::class);
+        // Route::resource('superadmin/admins', App\Http\Controllers\Admin\UserController::class);
 
         // Manage Teachers
-        Route::resource('superadmin/teachers', App\Http\Controllers\TeacherController::class);
+        // Route::resource('superadmin/teachers', App\Http\Controllers\TeacherController::class);
 
         // Manage Students
-        Route::resource('superadmin/students', App\Http\Controllers\StudentController::class);
+        // Route::resource('superadmin/students', App\Http\Controllers\StudentController::class);
 
         // Manage Parents
-        Route::resource('superadmin/parents', App\Http\Controllers\ParentController::class);
+        // Route::resource('superadmin/parents', App\Http\Controllers\ParentController::class);
 
         // Manage Classes
-        Route::resource('superadmin/classes', App\Http\Controllers\ClassController::class);
+        // Route::resource('superadmin/classes', App\Http\Controllers\ClassController::class);
 
         // Manage Sessions
-        Route::resource('superadmin/sessions', App\Http\Controllers\SessionController::class);
+        // Route::resource('superadmin/sessions', App\Http\Controllers\SessionController::class);
 
         // Manage Terms
-        Route::resource('superadmin/terms', App\Http\Controllers\TermController::class);
+        // Route::resource('superadmin/terms', App\Http\Controllers\TermController::class);
 
         // Manage Subjects
-        Route::resource('superadmin/subjects', App\Http\Controllers\SubjectController::class);
+        // Route::resource('superadmin/subjects', App\Http\Controllers\SubjectController::class);
 
         // Manage Exams
-        Route::resource('superadmin/exams', App\Http\Controllers\ExamController::class);
+        // Route::resource('superadmin/exams', App\Http\Controllers\ExamController::class);
 
         // Manage School Fees
-        Route::resource('superadmin/fees', App\Http\Controllers\FeeController::class);
-        Route::resource('news', NewsController::class);
+        // Route::resource('superadmin/fees', App\Http\Controllers\FeeController::class);
+        // Route::resource('news', NewsController::class);
 
     });
 
@@ -143,10 +144,10 @@ Route::middleware(['auth'])->group(function () {
     | ADMIN ROUTES (manage everything)
     |--------------------------------------------------------------------------
     */
-    Route::middleware(['role:admin,superadmin'])->group(function(){
+    Route::middleware(['auth','role:superadmin,admin'])->prefix('admin')->group(function(){
 
         // Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
         // Route::get('/admin/dashboard', [DashboardController::class, 'adminDashboard'])->name('admin.dashboard');
 
         Route::resource('students', StudentController::class);
@@ -239,7 +240,7 @@ Route::middleware(['auth'])->group(function () {
         | TEACHER ROUTES
         |--------------------------------------------------------------------------
         */
-        Route::middleware(['role:teacher,admin'])->group(function () {
+        Route::middleware(['auth','role:teacher,admin'])->group(function () {
             Route::get('/teacher/dashboard', [TeacherController::class, 'index'])->name('teacher.dashboard');
             // Route::get('/teacher/dashboard', [DashboardController::class, 'teacherDashboard'])->name('teacher.dashboard');
 
@@ -756,7 +757,7 @@ Route::get('/fee/{id}/receipt', [FeeController::class, 'generateReceipt'])->midd
 // Route::resource('exams', ExamController::class);
 // });
 
-
+// *********************************************************************************************
 // // =========================
 // // STUDENT ROUTES
 // // =========================
@@ -907,337 +908,6 @@ Route::get('/fee/{id}/receipt', [FeeController::class, 'generateReceipt'])->midd
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Not Using Again
-
-
-/*
-// start again
-// Admin routes
-Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
-    Route::resource('students', StudentController::class);
-    Route::resource('teachers', TeacherController::class);
-    Route::resource('parents', ParentController::class);
-});
-Route::middleware(['auth','is_admin'])->prefix('admin')->name('admin.')->group(function() {
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
-});
-Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('register', [RegisterController::class, 'register']);
-Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('login', [LoginController::class, 'login']);
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-
-// Dashboards
-Route::middleware(['auth','is_admin'])->get('/admin/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
-Route::middleware(['auth','is_teacher'])->get('/teacher/dashboard', fn() => view('teacher.dashboard'))->name('teacher.dashboard');
-Route::middleware(['auth','is_parent'])->get('/parent/dashboard', fn() => view('parent.dashboard'))->name('parent.dashboard');
-Route::middleware(['auth','is_student'])->get('/student/dashboard', fn() => view('student.dashboard'))->name('student.dashboard');
-
-
-Route::middleware(['auth', 'role:parent'])->prefix('parent')->group(function () {
-    Route::get('/dashboard', [App\Http\Controllers\Parent\DashboardController::class, 'index'])->name('parent.dashboard');
-});
-
-Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function () {
-    Route::get('/dashboard', [App\Http\Controllers\Teacher\DashboardController::class, 'index'])->name('teacher.dashboard');
-});
-
-// This is admin teacher create Questions
-Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->group(function () {
-    Route::resource('exams', App\Http\Controllers\Teacher\ExamController::class);
-    Route::get('exams/{exam}/questions/create', [App\Http\Controllers\Teacher\QuestionController::class, 'create'])->name('teacher.exams.questions.create');
-    Route::post('exams/{exam}/questions', [App\Http\Controllers\Teacher\QuestionController::class, 'store'])->name('teacher.exams.questions.store');
-});
-
-
-//  start again ends
-
-// cleans.....
-Route::prefix('admin')->middleware(['auth'])->group(function(){
-    Route::resource('teachers', App\Http\Controllers\TeacherController::class)->names('admin.teachers');
-    Route::resource('parents', App\Http\Controllers\Admin\ParentController::class)->names('admin.parents');
-    //Route::resource('classes', App\Http\Controllers\Admin\ClassController::class)->names('admin.classes');
-    Route::resource('students', App\Http\Controllers\Admin\StudentController::class)->names('admin.students');
-    //Route::resource('exams', App\Http\Controllers\Admin\ExamController::class)->names('admin.exams');
-    //Route::get('exams-export/pdf', [App\Http\Controllers\Admin\ExamController::class,'exportPdf'])->name('admin.exams.export.pdf');
-    //Route::resource('activities', App\Http\Controllers\Admin\ActivityController::class)->names('admin.activities');
-    //Route::get('activities-export/pdf', [App\Http\Controllers\Admin\ActivityController::class,'exportPdf'])->name('admin.activities.export.pdf');
-});
-
-
-Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {
-    // 🏠 Admin dashboard route
-    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
-
-    // 👨‍🎓 Students
-    Route::resource('students', StudentController::class);
-
-    // 👩‍🏫 Teachers
-    Route::resource('teachers', TeacherController::class);
-
-    // 👪 Parents
-    Route::resource('parents', ParentController::class);
-});
-
-// cleans ends here
-// Route::post('/admin/students', [StudentController::class, 'store'])->name('admin.students.store');
-
-// Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
-
-// new contact forms route
-
-// ***************************All Admins Route Start Here*********************************
-
-// Student Exam
-Route::middleware(['auth','role:student'])->group(function(){
-    Route::get('exam/{subject}', [App\Http\Controllers\ExamController::class, 'index'])->name('exam.start');
-    Route::post('exam/submit', [App\Http\Controllers\ExamController::class, 'submit'])->name('exam.submit');
-    Route::get('student/dashboard', [App\Http\Controllers\StudentController::class, 'dashboard'])->name('student.dashboard');
-});
-
-// Admin
-Route::middleware(['auth','role:admin'])->group(function(){
-    Route::get('admin/exam/create', [App\Http\Controllers\ExamController::class, 'create'])->name('admin.exam.create');
-    Route::post('admin/exam/store', [App\Http\Controllers\ExamController::class, 'store'])->name('admin.exam.store');
-});
-
-Route::middleware(['auth', 'role:admin,teacher'])->group(function() {
-    // Route::resource('students', App\Http\Controllers\StudentController::class);
-    Route::get('students-export-pdf', [App\Http\Controllers\StudentController::class, 'exportPdf'])->name('students.export.pdf');
-});
-// // Exam CBT New Routes ends here
-
-// // Admin routes
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-});
-
-// Teacher routes works with students also maybe as admin....
-Route::middleware(['auth', 'role:teacher'])->group(function () {
-    // Route::get('/teacher/dashboard', function () {
-    //     return view('teacher.dashboard');
-    // })->name('teacher.dashboard');
-    Route::get('/teacher/dashboard', [App\Http\Controllers\Teacher\TeacherController::class, 'dashboard'])->name('teacher.dashboard');
-    Route::resource('classes', App\Http\Controllers\ClassController::class);
-    Route::resource('exams', App\Http\Controllers\ExamController::class);
-    Route::resource('students', App\Http\Controllers\StudentController::class);
-});
-
-// Student routes
-Route::middleware(['auth', 'role:student'])->group(function () {
-    Route::get('/student/dashboard', [App\Http\Controllers\StudentController::class, 'dashboard'])->name('student.dashboard');
-});
-
-// Parent routes
-Route::middleware(['auth', 'role:parent'])->group(function () {
-    Route::get('/parent/dashboard', [App\Http\Controllers\Parent\ParentController::class, 'dashboard'])->name('parent.dashboard');
-});
-
-// _________ Dashboard routes starts-------------
-// Admin-only to list of examssss/....
-// Route::middleware(['auth', 'role:admin'])->group(function () {
-//     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-// });
-
-// Teacher-only
-Route::middleware(['auth', 'role:teacher'])->group(function () {
-    Route::get('/teacher/dashboard', [App\Http\Controllers\Teacher\TeacherController::class, 'dashboard'])->name('teacher.dashboard');
-
-});
-
-// Student-only
-Route::middleware(['auth', 'role:student'])->group(function () {
-    Route::get('/student/dashboard', [App\Http\Controllers\StudentController::class, 'dashboard'])->name('student.dashboard');
-});
-
-// _________ Dashboard routes ends here -------------
-
-
-// _________ indexs routes -------------
-Route::middleware(['auth', 'role:teacher'])->group(function(){
-    Route::get('/teacher/dashboard', [App\Http\Controllers\Teacher\DashboardController::class, 'index'])->name('teacher.dashboard');
-});
-
-Route::middleware(['auth', 'role:student'])->group(function(){
-    Route::get('/student/dashboard', [App\Http\Controllers\Student\DashboardController::class, 'index'])->name('student.dashboard');
-});
-
-Route::middleware(['auth', 'role:parent'])->group(function(){
-    Route::get('/parent/dashboard', [App\Http\Controllers\Parent\DashboardController::class, 'index'])->name('parent.dashboard');
-});
-
-
-
-
-// _________ indexs routes ends -------------
-
-
-
-// ***************************All Admins Route Ends Here*********************************
-
-
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('contacts', ContactController::class)->only(['index','show','destroy']);
-});
-
-//******************************************************************************** */
-
-// // Student exam routes
-// Route::middleware(['auth', 'role:student'])->group(function () {
-//     Route::get('/student/exam', [App\Http\Controllers\StudentController::class, 'exam'])->name('student.exam');
-//     Route::post('/student/exam/submit', [App\Http\Controllers\StudentController::class, 'submitExam'])->name('student.exam.submit');
-//     Route::get('/student/exam/select', function(){
-//         return view('student.exam-select');
-//     })->name('student.exam.select');
-
-//     Route::get('/student/exam', [App\Http\Controllers\StudentController::class, 'exam'])->name('student.examt');
-//     Route::post('/student/exam/submit', [App\Http\Controllers\StudentController::class, 'submitExam'])->name('student.exam.submit');
-
-
-// });
-
-// // Admin Question CRUD
-// Route::middleware(['auth', 'role:admin'])->group(function () {
-//     Route::resource('questions', App\Http\Controllers\QuestionController::class);
-// });
-
-//***************************************************************************** */
-
-// Route::get('/home', [HomeController::class, 'index'])->name('home');
-
-// Route::middleware(['auth', 'role:admin'])->group(function(){
-//     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-// });
-
-// Route::middleware(['auth', 'role:teacher'])->group(function(){
-//     Route::get('/teacher/dashboard', function(){
-//         return view('teacher.dashboard');
-//     })->name('teacher.dashboard');
-// });
-
-// Route::middleware(['auth', 'role:teacher'])->group(function(){
-//     Route::get('/teacher/dashboard', [App\Http\Controllers\Teacher\DashboardController::class, 'index'])->name('teacher.dashboard');
-// });
-
-// // Route::middleware(['auth', 'role:student'])->group(function(){
-// //     Route::get('/student/dashboard', function(){
-// //         return view('student.dashboard');
-// //     })->name('teacher.dashboard');
-// // });
-// Route::middleware(['auth', 'role:student'])->group(function(){
-//     Route::get('/student/dashboard', [App\Http\Controllers\Student\DashboardController::class, 'index'])->name('student.dashboard');
-// });
-
-// Route::middleware(['auth', 'role:parent'])->group(function(){
-//     Route::get('/parent/dashboard', function(){
-//         return view('parent.dashboard');
-//     })->name('parent.dashboard');
-// });
-
-// Route::middleware(['auth', 'role:parent'])->group(function(){
-//     Route::get('/parent/dashboard', [App\Http\Controllers\Parent\DashboardController::class, 'index'])->name('parent.dashboard');
-// });
-
-/*
-Route::middleware(['auth'])->group(function() {
-    // Route::get('/home', [HomeController::class, 'index'])->name('home');
-
-    // Admin
-    Route::prefix('admin')->middleware('role:admin')->group(function(){
-        Route::get('/', [DashboardController::class, 'index']);
-        Route::resource('books', BookController::class);
-        Route::get('books/export/pdf', [BookController::class, 'exportPdf'])->name('books.export.pdf');
-        // other admin routes
-    });
-
-    // Teacher
-    Route::prefix('teacher')->middleware('role:teacher')->group(function(){
-        Route::resource('teacher', TeacherController::class);
-    });
-
-    // Student
-    Route::prefix('student')->middleware('role:student')->group(function(){
-        Route::resource('student', StudentController::class);
-    });
-
-    // Parent
-    Route::prefix('parent')->middleware('role:parent')->group(function(){
-        Route::resource('parent', ParentController::class);
-    });
-
-    // Exams
-    Route::resource('exams', ExamController::class);
-});*/
-
-// Route::resource('books', BookController::class);
-// Route::get('books-export/pdf', [BookController::class,'exportPdf'])->name('books.export.pdf');
-
-
-// Route::resource('exams', App\Http\Controllers\ExamController::class);
-// Route::get('exams-export/pdf', [App\Http\Controllers\ExamController::class,'exportPdf'])->name('exams.export.pdf');
-
-
-// Route::resource('sessions', SessionController::class);
-// Route::get('session-export/pdf', [SessionController::class,'exportPdf'])->name('session.export.pdf');
-
-// Route::get('/students/download-pdf', 'StudentController@download')->name('students.pdf');
-
-
 // // Admin
 
 // Route::get('/dashboard', function () {
@@ -1323,76 +993,4 @@ Route::middleware(['auth'])->group(function() {
 
 
 
-//     // Admin login all Students Teachers, and Parents Login
-
-//     // 🧑‍🏫 Teacher
-// Route::get('/teacher/login', [TeacherAuthController::class, 'showLoginForm'])->name('teacher.login');
-// Route::post('/teacher/login', [TeacherAuthController::class, 'login'])->name('teacher.login.submit');
-// Route::get('/teacher/dashboard', fn() => view('teacher.dashboard'))->name('teacher.dashboard')->middleware('role:teacher');
-// Route::get('/teacher/logout', [TeacherAuthController::class, 'logout'])->name('teacher.logout');
-
-// // 🎓 Student
-// Route::get('/student/login', [StudentAuthController::class, 'showLoginForm'])->name('student.login');
-// Route::post('/student/login', [StudentAuthController::class, 'login'])->name('student.login.submit');
-// Route::get('/student/dashboard', fn() => view('student.dashboard'))->name('student.dashboard')->middleware('role:student');
-// Route::get('/student/logout', [StudentAuthController::class, 'logout'])->name('student.logout');
-
-// // 👨‍👩‍👧 Parent
-// Route::get('/parent/login', [ParentAuthController::class, 'showLoginForm'])->name('parent.login');
-// Route::post('/parent/login', [ParentAuthController::class, 'login'])->name('parent.login.submit');
-// Route::get('/parent/dashboard', fn() => view('parent.dashboard'))->name('parent.dashboard')->middleware('role:parent');
-// Route::get('/parent/logout', [ParentAuthController::class, 'logout'])->name('parent.logout');
-
-
-    // Admin login all Students Teachers, and Parents Login
-
-    // 🧑‍🏫 Teacher
-// Route::get('/teacher/login', [TeacherAuthController::class, 'showLoginForm'])->name('teacher.login');
-// Route::post('/teacher/login', [TeacherAuthController::class, 'login'])->name('teacher.login.submit');
-// Route::get('/teacher/dashboard', fn() => view('teacher.dashboard'))->name('teacher.dashboard')->middleware('role:teacher');
-// Route::get('/teacher/logout', [TeacherAuthController::class, 'logout'])->name('teacher.logout');
-
-// // 🎓 Student
-// Route::get('/student/login', [StudentAuthController::class, 'showLoginForm'])->name('student.login');
-// Route::post('/student/login', [StudentAuthController::class, 'login'])->name('student.login.submit');
-// Route::get('/student/dashboard', fn() => view('student.dashboard'))->name('student.dashboard')->middleware('role:student');
-// Route::get('/student/logout', [StudentAuthController::class, 'logout'])->name('student.logout');
-
-// // 👨‍👩‍👧 Parent
-// Route::get('/parent/login', [ParentAuthController::class, 'showLoginForm'])->name('parent.login');
-// Route::post('/parent/login', [ParentAuthController::class, 'login'])->name('parent.login.submit');
-// Route::get('/parent/dashboard', fn() => view('parent.dashboard'))->name('parent.dashboard')->middleware('role:parent');
-// Route::get('/parent/logout', [ParentAuthController::class, 'logout'])->name('parent.logout');
-
-
-// // Admin routes for ........new development......Admin to create student...
-// // Route::middleware(['auth', 'is_admin'])->group(function() {
-// Route::middleware(['auth', 'role:admin'])->group(function() {
-//     Route::resource('admin/students', StudentController::class);
-//     Route::resource('admin/teachers', TeacherController::class);
-//     Route::resource('admin/parents', ParentController::class);
-    // Route::resource('admin/exams', ExamController::class);
-    // Route::get('admin/exam/{id}/assign', [ExamController::class, 'assignToStudents'])->name('admin.exam.assign');
-// });
-
-// // Questions Management
-// Route::get('admin/exam/{exam_id}/questions', [QuestionController::class, 'index'])->name('admin.questions.index');
-// Route::get('admin/exam/{exam_id}/questions/create', [QuestionController::class, 'create'])->name('admin.questions.create');
-// Route::post('admin/exam/{exam_id}/questions', [QuestionController::class, 'store'])->name('admin.questions.store');
-
-// // CBT Routes (Students)
-// Route::middleware(['auth:student'])->group(function() {
-//     Route::get('student/exam/{exam_id}/start', [CBTController::class, 'start'])->name('student.exam.start');
-//     Route::post('student/exam/{exam_id}/submit', [CBTController::class, 'submit'])->name('student.exam.submit');
-// });
-
-
-
-// // This is needed to Add to inside student auth middleware group......................
-// Route::middleware(['auth:student'])->group(function () {
-//     Route::get('student/exam/{exam}/start', [CBTController::class, 'start'])->name('student.exam.start');
-//     Route::post('student/exam/{exam}/save-progress', [CBTController::class, 'saveProgress'])->name('student.exam.save');
-//     Route::post('student/exam/{exam}/submit', [CBTController::class, 'submit'])->name('student.exam.submit');
-//     Route::get('student/exam/{exam}/result', [CBTController::class, 'result'])->name('student.exam.result');
-// });
 

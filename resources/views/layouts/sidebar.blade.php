@@ -1,6 +1,7 @@
 @php
-    $admin   = Auth::guard('web')->user();
-    $student = Auth::guard('student')->user();
+    // $admin   = Auth::guard('web')->user();
+    // $student = Auth::guard('student')->user();
+    $user = auth()->user();
 @endphp
 <!-- <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -51,19 +52,19 @@
         <h4 class="p-3">Laurisdan</h4>
 
         @auth
-            @if(Auth::user()->role === 'admin')
+            @if($user->role === 'admin')
                 <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Admin Dashboard</a>
                 <a href="{{ route('students.index') }}">Students</a>
                 <a href="{{ route('teachers.index') }}">Teachers</a>
                 <a href="{{ route('exams.index') }}">Exams</a>
                 <a href="{{ route('books.index') }}">Books</a>
                 <a href="{{ route('activities.index') }}">Activities</a>
-            @elseif(Auth::user()->role === 'teacher')
+            @elseif($user->role === 'teacher')
                 <a href="{{ route('teacher.dashboard') }}">Teacher Dashboard</a>
                 <a href="{{ route('teacher.classes') }}">My Classes</a>
                 <a href="{{ route('teacher.exams') }}">Exams</a>
                 <a href="{{ route('teacher.activities') }}">Activities</a>
-            @elseif(Auth::user()->role === 'student')
+            @elseif($user->role === 'student')
                 <a href="{{ route('student.dashboard') }}">Student Dashboard</a>
                 <a href="{{ route('student.exams') }}">My Exams</a>
                 <a href="{{ route('student.books') }}">Books</a>
@@ -150,16 +151,16 @@
                     @endif --}}
 
 
-      @if($admin)
-      {{ ucfirst($admin->role) }}
-      @elseif($student) <img src="{{ asset('storage/'.$student->image) }}" width="60" height="60" style="border-radius:50%;">
-      {{ ucfirst($student->middle_name) }}
+      @if($user)
+      {{ ucfirst($user->role) }}
+      @elseif($student) <img src="{{ asset('storage/'.$user->image) }}" width="60" height="60" style="border-radius:50%;">
+      {{ ucfirst($user->middle_name) }}
       @endif Panel
 
     </h4>
 
 
-    @if($admin == 'admin')
+    @if($user === 'admin')
       <a href="{{ route('dashboard') }}" class="active">Dashboard</a>
       <a href="{{ route('students.index') }}">Students</a>
       <a href="{{ route('teachers.index') }}">Teachers</a>
@@ -170,7 +171,7 @@
       <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
         @csrf
       </form>
-    @elseif($admin == 'teacher')
+    @elseif($user === 'teacher')
       <a href="{{ route('dashboard') }}" class="active">Dashboard</a>
       <a href="#">My Classes</a>
       <a href="#">Exams</a>
@@ -180,7 +181,7 @@
       <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
         @csrf
       </form>
-    @elseif($student)
+    @elseif($user ==='student')
       <a href="{{ route('dashboard') }}" class="active">Dashboard</a>
 
       <a href="{{ route('profile.show') }}">👤 My Profile</a>
@@ -200,7 +201,7 @@
       <form id="logout-form" action="{{ route('student.logout') }}" method="POST" class="d-none">
         @csrf
       </form>
-    @elseif($admin == 'parent')
+    @elseif($user === 'parent')
       <a href="{{ route('dashboard') }}" class="active">Dashboard</a>
       <a href="#">My Children</a>
       <a href="#">Reports</a>
@@ -217,10 +218,10 @@
 
   <div class="content">
     <div class="topbar">
-      @if($admin)
-        <h5>Welcome, {{ $admin->name }}</h5>
-        <span class="badge bg-primary text-capitalize">{{ $admin->role }}</span>
-      @elseif($student)
+      @if($user)
+        <h5>Welcome, {{ $user->name }}</h5>
+        <span class="badge bg-primary text-capitalize">{{ $user->role }}</span>
+      @elseif($user==='student')
         <h5>Welcome {{ $student->first_name }}</h5>
         <span class="badge bg-primary text-capitalize">{{ $student->admission_no }}</span>
       @endif

@@ -1,6 +1,7 @@
 @php
-    $admin   = Auth::guard('web')->user();
-    $student = Auth::guard('student')->user();
+    // $admin   = Auth::guard('web')->user();
+    // $student = Auth::guard('student')->user();
+    $user = auth()->user();
 @endphp
 
 <!--  -->
@@ -8,7 +9,7 @@
 
 @section('content')
 <h2>Teacher Dashboard</h2>
-<p>Welcome, {{ Auth::user()->name }}!</p>
+<p>Welcome, {{ $user->name }}!</p>
 <ul>
   {{-- <li>Assigned Classes: {{ $myClasses->count() }}</li>
   <li>Upcoming Exams: {{ $upcomingExams->count() }}</li> --}}
@@ -16,7 +17,7 @@
    @if(isset($teacher))
   <h2>Welcome, {{ $teacher->name }}</h2>
 @else
-  <h2>Welcome, {{ Auth::user()->name }}</h2>
+  <h2>Welcome, {{ $user->name }}</h2>
   <p>Your Teacher profile is not linked yet.</p>
 @endif
 </ul>

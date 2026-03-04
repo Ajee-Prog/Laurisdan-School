@@ -361,7 +361,7 @@ public function submitExam(Request $request)
 //Submit exam answers
    /* public function submitExam(Request $request){
 
-        $student = Auth::guard('student')->user();
+        // $student = Auth::guard('student')->user();
 
         $result = ExamResult::where('student_id', $student->id)->where('exam_id', $request->exam_id)->firstOrFail();
 

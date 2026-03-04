@@ -400,7 +400,9 @@ class StudentController extends Controller
     }
     // Student Profile
     public function profile(){
-        $student = Auth::guard('student')->user();
+        // $student = Auth::guard('student')->user();
+        $student = auth()->user();
+
         return view('students.profile', compact('student'));
     }
 

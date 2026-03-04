@@ -9,93 +9,34 @@ use Illuminate\Http\Request;
 
 class RoleMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
-     */
+
     public function handle(Request $request, Closure $next,  ...$roles)
     {
+        // **********************************
+        $user = auth()->user();
 
-        if (!Auth::check()) {
-            return redirect('/login');
+        if (!$user) {
+            return redirect()->route('login');
         }
 
-        if (!in_array(Auth::user()->role, $roles)) {
-            abort(403, "Unauthorized USER");
+        if (!in_array($user->role, $roles)) {
+            abort(403, 'Unauthorized access.');
         }
 
         return $next($request);
-
-
-        // if (!auth()->check() || !in_array(auth()->user()->role, $roles)) {
-        //     abort(403);
-        // }
-        // return $next($request);
-
-        //  if ($role === 'teacher' && !auth('teacher')->check()) {
-        //     return redirect('/teacher/login');
-        // }
-
-        // if ($role === 'student' && !auth('student')->check()) {
-        //     return redirect('/student/login');
-        // }
-
-        // if ($role === 'parent' && !auth('parent')->check()) {
-        //     return redirect('/parent/login');
-        // }
-
-        // return $next($request);
-
+        // *****************************************
 
         // if (!Auth::check()) {
         //     return redirect('/login');
         // }
 
         // if (!in_array(Auth::user()->role, $roles)) {
-        //     abort(403, 'Unauthorized');
+        //     abort(403, "Unauthorized USER");
         // }
 
-        // if (!$request->user() ||  $request->user()->role !== $role) {
-        //     abort(403);
-        // }
-
-
-        // main check middleware....
-
-        // if (!Auth::check()) {
-        //     return redirect('login');
-        // }
-
-        // if (in_array(Auth::user()->role, $roles)) {
-
-        //     return $next($request);
-            
-        // }
-        
-        // abort(403, 'Unauthorized');
-
-        // if (Auth::check() && Auth::user()->role == 'admin') {
-        //     return $next($request); // Continue to the next middleware or controller
-        // } else {
-        //     return redirect('/login'); // Return a redirect response
-        // }
-
-       
-// --------------------------------------------------
+        // return $next($request);
 
 
 
-        //  if (!auth()->check()) {
-        //         abort(403);
-        //     }
-
-        //     if (!in_array(auth()->user()->role, $roles)) {
-        //         abort(403, 'Unauthorized');
-        //     }
-
-        //     return $next($request);
     }
 }

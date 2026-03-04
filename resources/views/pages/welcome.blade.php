@@ -110,7 +110,7 @@
               <li><a class="dropdown-item" href="{{ route('student.login') }}">Student Login</a></li>
               <li><a class="dropdown-item" href="{{ route('students.index') }}">Students</a></li>
               <li class="nav-item"><a class="nav-link" href="{{ route('books.index') }}">Books</a></li>
-              <li><a class="dropdown-item" href="{{ route('exams.index') }}">Exams</a></li>
+              <li><a class="dropdown-item" href="{{ route('admin.exams.index') }}">Exams</a></li>
               <li><a class="dropdown-item" href="{{ route('classes.index') }}">All Classes</a></li>
 
               <li><a class="dropdown-item" href="{{ route('classes.show', 2) }}">Primary 2</a></li>

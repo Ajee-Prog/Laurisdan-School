@@ -36,7 +36,7 @@ class LoginController extends Controller
         return back()->withErrors(['email'=>'Invalid credentials']);
     }
 
-    protected function redirectTo($user)
+    protected function redirectTo($request, $user)
     {
         // return match($user->role) {
         //     'admin'   => '/admin/dashboard',
@@ -50,18 +50,23 @@ class LoginController extends Controller
     switch ($role) {
         case 'superadmin':
             // return '/dashboard/superadmin';
-            return route('superadmin.dashboard');
+            // return route('superadmin.dashboard');
+            return redirect()->route('superadmin.dashboard');
         case 'admin':
-            return route('admin.dashboard');
+            // return route('admin.dashboard');
+            return redirect()->route('admin.dashboard');
         case 'teacher':
-            return route('teacher.dashboard');
+            // return route('teacher.dashboard');
+            return redirect()->route('teacher.dashboard');
 
         case 'parent':
             // return '/dashboard/parent';
-            return route('parent.dashboard');
+            // return route('parent.dashboard');
+            return redirect()->route('parent.dashboard');
         default:
             // return '/student/dashboard';
-            return route('student.dashboard');
+            // return route('student.dashboard');
+            return redirect()->route('student.dashboard');
     }
     }
 

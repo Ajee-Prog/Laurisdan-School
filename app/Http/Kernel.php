@@ -16,7 +16,7 @@ class Kernel extends HttpKernel
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
         // 'role' => \App\Http\Middleware\CheckRole::class,
-        
+
         \App\Http\Middleware\TrustProxies::class,
         \Fruitcake\Cors\HandleCors::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
@@ -46,7 +46,7 @@ class Kernel extends HttpKernel
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
-        'role' => [ \App\Http\Middleware\RoleMiddleware::class],
+        // 'role' => [ \App\Http\Middleware\RoleMiddleware::class],
     ];
 
     /**
@@ -67,9 +67,9 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'role' => \App\Http\Middleware\RoleMiddleware::class,
-        'is_admin'   => \App\Http\Middleware\IsAdmin::class,
-        'is_teacher' => \App\Http\Middleware\IsTeacher::class,
-        'is_parent'  => \App\Http\Middleware\IsParentRole::class,
-        'is_student' => \App\Http\Middleware\IsStudent::class,
+        // 'is_admin'   => \App\Http\Middleware\IsAdmin::class,
+        // 'is_teacher' => \App\Http\Middleware\IsTeacher::class,
+        // 'is_parent'  => \App\Http\Middleware\IsParentRole::class,
+        // 'is_student' => \App\Http\Middleware\IsStudent::class,
     ];
 }

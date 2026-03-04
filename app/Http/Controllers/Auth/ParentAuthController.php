@@ -15,7 +15,8 @@ class ParentAuthController extends Controller
     public function login(Request $request) {
         $credentials = $request->only('email', 'password');
 
-        if (Auth::guard('parent')->attempt($credentials)) {
+        // if (Auth::guard('parent')->attempt($credentials)) {
+        if (Auth::attempt($credentials)) {
             return redirect()->route('parents.dashboard');
         }
 

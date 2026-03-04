@@ -1,6 +1,7 @@
 @php
-    $admin   = Auth::guard('web')->user();
-    $student = Auth::guard('student')->user();
+    // $admin   = Auth::guard('web')->user();
+    // $student = Auth::guard('student')->user();
+    $user = auth()->user();
 @endphp
 
 
@@ -8,7 +9,7 @@
 
 @section('content')
 <h2>Parent Dashboard</h2>
-<p>Hello {{ Auth::user()->name }}!</p>
+<p>Hello {{ $user->name }}!</p>
 <ul>
   @foreach($children as $child)
     <li>{{ $child->full_name }} ({{ $child->class->name }})</li>
@@ -23,7 +24,7 @@
 
             @forelse ($children as $child)
                 <div class="border rounded p-2 mb-2">
-                    <strong>{{ $child->name }}</strong>  
+                    <strong>{{ $child->name }}</strong>
                     <br> Class: {{ $child->class->name ?? 'N/A' }}
                 </div>
             @empty

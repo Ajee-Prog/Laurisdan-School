@@ -13,7 +13,8 @@
     <h2>Student Dashboard</h2>
 
     @if($user->role==='student')
-        <p class="text-muted">Welcome, {{ $student->first_name }} </p>
+        {{-- <p class="text-muted">Welcome, {{ $student->first_name }} </p> --}}
+        <p class="text-muted">Welcome, {{ $user->first_name }} </p>
     @endif
 
     @if(session('success'))
@@ -23,8 +24,8 @@
     {{-- ================= PROFILE SUMMARY ================= --}}
     <div class="card shadow-sm mb-4">
         <div class="card-body">
-            @if($student && $student->image)
-                <img src="{{ asset('storage/'.$student->image) }}"
+            @if($user && $user->image)
+                <img src="{{ asset('storage/'.$user->image) }}"
                     width="80"
                     height="80"
                     style="border-radius:50%;">
@@ -35,10 +36,10 @@
 
             <h5>Your Profile</h5>
              <p>Fake Email: {{ $user->email ?? 'N/A' }}</p>
-            <p><strong>Admission No:</strong> {{ $student->admission_no }}</p>
-            <p><strong>Student code :</strong> {{ $student->student_code }}</p>
-            <p><strong>Class:</strong> {{ $student->class->name ?? 'N/A' }}</p>
-            <p><strong>Parent Contact:</strong> {{ $student->parent_contact ?? 'N/A' }}</p>
+            <p><strong>Admission No:</strong> {{ $user->admission_no }}</p>
+            <p><strong>Student code :</strong> {{ $user->student_code }}</p>
+            <p><strong>Class:</strong> {{ $user->class->name ?? 'N/A' }}</p>
+            <p><strong>Parent Contact:</strong> {{ $user->parent_contact ?? 'N/A' }}</p>
             <a href="{{route('profile.show')}}" class="btn btn-info btn-sm">View Profile</a>
 
             @if(Route::has('student.profile'))

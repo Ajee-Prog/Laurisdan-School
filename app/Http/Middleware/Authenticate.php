@@ -15,19 +15,24 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        // if (! $request->expectsJson()) {
-        //     return route('login');
-        // }
-
         if (! $request->expectsJson()) {
-        if (Auth::guard('student')->check()) {
-            return route('dashboard.student');
+            return route('login'); // single unified login
         }
-        return route('student.login');
+
+        // if (! $request->expectsJson()) {
+        // // if (Auth::guard('student')->check()) {
+        // if (Auth::user()->check()) {
+        //     return route('dashboard.student');
+        // }
+        // return route('student.login');
+        //}
     }
-    }
 
 
 
-    
+
 }
+
+
+
+
