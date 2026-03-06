@@ -28,7 +28,7 @@
         <th>Term</th><th>Session</th><th>Amount</th><th>Receipt</th>
     </tr>
 
-    @foreach($fees as $f)
+    @foreach($fee as $f)
     <tr>
         <td>{{ $f->term }}</td>
         <td>{{ $f->session }}</td>

@@ -15,29 +15,113 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-     public function showLoginForm()
+    /*
+    |--------------------------------------------------------------------------
+    | Show Login Form
+    |--------------------------------------------------------------------------
+    */
+
+    public function showLoginForm()
     {
         return view('auth.login');
     }
 
-     public function login(Request $request)
+    /*
+    |--------------------------------------------------------------------------
+    | Login System (Email OR Admission Number)
+    |--------------------------------------------------------------------------
+    */
+
+    public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email'=>'required|email',
-            'password'=>'required',
+        $request->validate([
+            'login' => 'required',
+            'password' => 'required'
         ]);
 
+        $login = $request->login;
+
+        // Detect if email or admission number
+        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'admission_no';
+
+        $credentials = [
+            $field => $login,
+            'password' => $request->password
+        ];
+
         if (Auth::attempt($credentials)) {
+
             $request->session()->regenerate();
+
             $user = Auth::user();
-            return redirect()->intended($this->redirectTo($user));
+
+            switch ($user->role) {
+
+                case 'superadmin':
+                    return redirect()->route('superadmin.dashboard');
+
+                case 'admin':
+                    return redirect()->route('admin.dashboard');
+
+                case 'teacher':
+                    return redirect()->route('teacher.dashboard');
+
+                case 'parent':
+                    return redirect()->route('parent.dashboard');
+
+                case 'student':
+                    return redirect()->route('student.dashboard');
+
+                default:
+                    return redirect('/');
+            }
         }
 
-        return back()->withErrors(['email'=>'Invalid credentials']);
+        return back()->withErrors([
+            'login' => 'Invalid login credentials'
+        ]);
     }
 
-    protected function redirectTo($request, $user)
+    /*
+    |--------------------------------------------------------------------------
+    | Logout
+    |--------------------------------------------------------------------------
+    */
+
+    public function logout(Request $request)
     {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+    }
+
+
+
+    // End of clean login***************
+
+
+
+
+   /* //  public function login(Request $request)
+    // {
+    //     $credentials = $request->validate([
+    //         'email'=>'required|email',
+    //         'password'=>'required',
+    //     ]);
+
+    //     if (Auth::attempt($credentials)) {
+    //         $request->session()->regenerate();
+    //         $user = Auth::user();
+    //         return redirect()->intended($this->redirectTo($user));
+    //     }
+
+    //     return back()->withErrors(['email'=>'Invalid credentials']);
+    // }*/
+
+
         // return match($user->role) {
         //     'admin'   => '/admin/dashboard',
         //     'teacher' => '/teacher/dashboard',
@@ -45,38 +129,9 @@ class LoginController extends Controller
         //     default   => '/student/dashboard',
         // };
 
-        $role = Auth::user()->role;
+        // $role = Auth::user()->role;
 
-    switch ($role) {
-        case 'superadmin':
-            // return '/dashboard/superadmin';
-            // return route('superadmin.dashboard');
-            return redirect()->route('superadmin.dashboard');
-        case 'admin':
-            // return route('admin.dashboard');
-            return redirect()->route('admin.dashboard');
-        case 'teacher':
-            // return route('teacher.dashboard');
-            return redirect()->route('teacher.dashboard');
 
-        case 'parent':
-            // return '/dashboard/parent';
-            // return route('parent.dashboard');
-            return redirect()->route('parent.dashboard');
-        default:
-            // return '/student/dashboard';
-            // return route('student.dashboard');
-            return redirect()->route('student.dashboard');
-    }
-    }
-
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect('/');
-    }
     /*
     |--------------------------------------------------------------------------
     | Login Controller
@@ -117,4 +172,12 @@ class LoginController extends Controller
     //         default => '/home',
     //     };
     // }
+
+
+
+
+
+
+
+
 }

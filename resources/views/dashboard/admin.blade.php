@@ -37,7 +37,7 @@
             <div class="card p-3">
                 <h5>Exams</h5>
                 <p class="display-4">{{ \App\Models\Exam::count() }}</p>
-                <a href="{{ route('exams.index') }}" class="btn btn-sm btn-outline-primary">Manage</a>
+                <a href="{{ route('admin.exams.index') }}" class="btn btn-sm btn-outline-primary">Manage</a>
             </div>
             </div>
             <div class="col-md-3">
@@ -61,7 +61,7 @@
 
             <div>
                 <a href="{{ route('exams.questions.create', $exam->id) }}" class="btn btn-primary btn-sm">Add Question</a>
-                <a href="{{ route('exams.show', $exam->id) }}" class="btn btn-outline-secondary btn-sm">View</a>
+                <a href="{{ route('admin.exams.show', $exam->id) }}" class="btn btn-outline-secondary btn-sm">View</a>
             </div>
         </div>
         @endforeach
@@ -84,7 +84,7 @@
     <div class="col-md-3"><a href="{{ route('parents.index') }}" class="btn btn-success w-100 mb-2">Manage Parents</a></div>
     <div class="col-md-3"><a href="{{ route('classes.index') }}" class="btn btn-warning w-100 mb-2">Manage Classes</a></div>
     <div class="col-md-3"><a href="{{ route('books.index') }}" class="btn btn-info w-100 mb-2">Manage Books</a></div>
-    <div class="col-md-3"><a href="{{ route('exams.index') }}" class="btn btn-dark w-100 mb-2">Manage Exams</a></div>
+    <div class="col-md-3"><a href="{{ route('admin.exams.index') }}" class="btn btn-dark w-100 mb-2">Manage Exams</a></div>
     <div class="col-md-3"><a href="{{ route('activities.index') }}" class="btn btn-primary w-100 mb-2">Manage Activities</a></div>
     <div class="col-md-3"><a href="{{ route('sessions.index') }}" class="btn btn-secondary w-100 mb-2">Manage Sessions</a></div>
     <div class="col-md-3"><a href="{{ route('terms.index') }}" class="btn btn-success w-100 mb-2">Manage Terms</a></div>
@@ -121,7 +121,7 @@
                         <h4>{{ $examCnt }}</h4>
                         <h5 class="card-title">Exams</h5>
                         <p class="card-text">Setup and print exams</p>
-                        <a href="{{ route('exams.index') }}" class="btn btn-primary btn-sm">View</a>
+                        <a href="{{ route('admin.exams.index') }}" class="btn btn-primary btn-sm">View</a>
                     </div>
                 </div>
             </div>
@@ -143,9 +143,9 @@
                     </a>
 
 
-                    <!-- <a href="{{ route('exams.questions.create', $exam->id) }}" class="nav-link">
+                    {{-- <!-- <a href="{{ route('exams.questions.create', $exam->id) }}" class="nav-link">
                         Add Question to {{ \Illuminate\Support\Str::limit($exam->title, 30) }}
-                    </a> -->
+                    </a> --> --}}
                     @endforeach
                 </li>
 

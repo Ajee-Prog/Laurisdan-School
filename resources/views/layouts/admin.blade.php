@@ -76,12 +76,12 @@
     <a href="{{ route('teachers.index') }}">👩‍🏫 Teachers</a>
     <a href="{{ route('parents.index') }}">👨‍👩‍👧 Parents</a>
     <a href="{{ route('classes.index') }}">🏫 Classes</a>
-    <a href="{{ route('exams.index') }}">🧠 Exams</a>
+    <a href="{{ route('admin.exams.index') }}">🧠 Exams</a>
     <a href="{{ route('activities.index') }}">🎯 Activities</a>
     <a href="{{ route('books.index') }}">📚 Books</a>
     <a href="{{ route('terms.index') }}">📆 Terms</a>
     <a href="{{ route('sessions.index') }}">🗓 Sessions</a>
-    <a href="{{ route('exams.index') }}">💻 CBT</a>
+    <a href="{{ route('admin.exams.index') }}">💻 CBT</a>
     <li class="nav-item">
     <a href="{{ route('fees.index') }}" class="nav-link text-white">Manage Fees</a>
   </li>
