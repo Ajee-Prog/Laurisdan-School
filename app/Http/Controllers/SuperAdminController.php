@@ -37,7 +37,17 @@ public function login(Request $request)
     }
 
     return back()->with('error', 'Invalid login credentials');
-}  
+}
+
+// *********************************************
+        // $totalUsers = User::count();
+        // $totalStudents = Student::count();
+
+        // return view('superadmin.dashboard', compact(
+        //     'totalUsers',
+        //     'totalStudents'
+        // ));
+// *********************************************
 
 
 
@@ -45,7 +55,8 @@ public function login(Request $request)
     {
         return view('superadmin.dashboard', [
             'totalAdmins'   => User::where('role', 'admin')->count(),
-            'totalTeachers' => Teacher::count(),
+            'totalTeachers' => User::where('role', 'teacher')->count(),
+            // 'totalTeachers' => Teacher::count(),
             'totalStudents' => Student::count(),
             'totalParents'  => User::where('role', 'parent')->count(),
             'totalExams'    => Exam::count(),

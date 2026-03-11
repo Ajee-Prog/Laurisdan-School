@@ -242,28 +242,32 @@
         <div class="row g-4 mt-4">
           <div class="col-md-3">
             <div class="card border-0 shadow-sm p-3">
-              <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle mx-auto" width="100">
-              <h5 class="mt-3">Mrs. Irriferigoma Johnson</h5>
-              <p class="text-muted mb-0">Head School</p>
+              {{-- <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle mx-auto" width="100"> --}}
+              <img src="{{asset('assets/images/mrs.oyebajo.jpeg')}}" class="rounded-circle mx-auto" width="100">
+              <h5 class="mt-3">Mrs. Mrs. Oyebajo</h5>
+              <p class="text-muted mb-0">Head Primary 6</p>
             </div>
           </div>
           <div class="col-md-3">
             <div class="card border-0 shadow-sm p-3">
-              <img src="https://randomuser.me/api/portraits/men/35.jpg" class="rounded-circle mx-auto" width="100">
-              <h5 class="mt-3">Miss. Iffioma Emmanuel </h5>
-              <p class="text-muted mb-0">Admin</p>
+              {{-- <img src="https://randomuser.me/api/portraits/men/35.jpg" class="rounded-circle mx-auto" width="100"> --}}
+              <img src="{{asset('assets/images/mrs.solomon.jpeg')}}" class="rounded-circle mx-auto" width="100">
+              <h5 class="mt-3">Mrs. Solomon </h5>
+              <p class="text-muted mb-0">Head Primay 4</p>
             </div>
           </div>
           <div class="col-md-3">
             <div class="card border-0 shadow-sm p-3">
-              <img src="https://randomuser.me/api/portraits/women/65.jpg" class="rounded-circle mx-auto" width="100">
-              <h5 class="mt-3">Mrs. Kemi Oyebanjo</h5>
-              <p class="text-muted mb-0">Head Science</p>
+              {{-- <img src="https://randomuser.me/api/portraits/women/65.jpg" class="rounded-circle mx-auto" width="100"> --}}
+              <img src="{{asset('assets/images/mrs.ede-pry5.jpeg')}}" class="rounded-circle mx-auto" width="100">
+              <h5 class="mt-3">Mrs. Ede</h5>
+              <p class="text-muted mb-0">Head Primary 5</p>
             </div>
           </div>
           <div class="col-md-3">
             <div class="card border-0 shadow-sm p-3">
-              <img src="https://randomuser.me/api/portraits/men/50.jpg" class="rounded-circle mx-auto" width="100">
+              {{-- <img src="https://randomuser.me/api/portraits/men/50.jpg" class="rounded-circle mx-auto" width="100"> --}}
+              <img src="{{asset('assets/images/Yusuf-Passport.jpg')}}" class="rounded-circle mx-auto" width="100">
               <h5 class="mt-3">Mr. Yusuf Kareem</h5>
               <p class="text-muted mb-0">ICT Instructor</p>
             </div>

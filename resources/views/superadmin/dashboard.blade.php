@@ -6,6 +6,14 @@
     <h2 class="mb-4">Super Admin Dashboard</h2>
 
     <div class="row">
+        <div class="col-md-3">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <h5>Total Users</h5>
+                    <h3>{{ $totalUsers }}</h3>
+                </div>
+            </div>
+        </div>
 
         <div class="col-md-3">
             <div class="card shadow p-3 text-center bg-primary text-white rounded">
@@ -59,7 +67,7 @@
                 <h2>{{ $totalExams }}</h2>
             </div>
         </div>
-        
+
 
         <div class="col-md-3">
             <div class="card shadow p-3 text-center bg-teal text-white rounded">
