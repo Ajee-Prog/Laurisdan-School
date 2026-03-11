@@ -196,7 +196,9 @@
       <div id="schoolCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
 
-          <div class="carousel-item active" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c');">
+          {{-- <div class="carousel-item active" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c');"> --}}
+          {{-- <div class="carousel-item active" style="background-image:{{asset('assets/images/laurisdanSchool.jpeg')}} url('');"> --}}
+          <div class="carousel-item active" style="background-image: url('{{asset('assets/images/laurisdanSchool.jpeg')}}');">
             <div class="carousel-caption">
               <h1>Welcome to Laurisdan School</h1>
               <p>Building Bright Futures Through Learning and Care.</p>
