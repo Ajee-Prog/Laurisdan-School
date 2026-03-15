@@ -326,7 +326,7 @@
 
                 <div class="pt-4"> laurisdannpschool.com</div>
                 <div class=""> We are global communities of millions of people learning together. We're an open source, supporting our brighter future.</div>
-                <div><a href="#">www.laurisdannpschools.com</a></div>
+                <div><a href="#">www.laurisdannpschools.com.ng</a></div>
               </div>
             </div>
             {{--  --}}
@@ -407,8 +407,8 @@
                 <div class="col-md-7">
 
                 {{-- *************** --}}
-                <h2 class="featurette-heading py-5"> Ballet. <span class="text-muted">It'll blow your mind.</span></h2>
-                <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                <h2 class="featurette-heading py-5"> Ballet MUSIC. <span class="text-muted">It'll blow your mind.</span></h2>
+                <p class="lead">The music program is designed to develop a response to rhythm, tempo, and melodic direction through activities such as group and individual singing, playing of rhythm instruments and dance.</p>
                 </div>
                 <div class="col-md-5">
                 <div class="card border-0 shadow-sm p-3">
@@ -424,8 +424,8 @@
                     {{-- <div class="card-body "> --}}
                         <div class="row">
                         <div class="col-md-7">
-                        <h2 class="featurette-heading py-5"> Ballet. <span class="text-muted">It'll blow your mind.</span></h2>
-                        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                        <h2 class="featurette-heading py-5"> PHYSICAL EDUCATION <span class="text-muted">It'll blow your mind.</span></h2>
+                        <p class="lead">Students enjoy physical education in our state of the art football pitch, basketball court, volleyball court, swimming pool, tennis court, race track and outdoor activities in our beautifully equipped playground. Pupils are given the opportunity to express their achievements in motor development, inhibition of movement and introduction to organized games.</p>
                         </div>
                         {{-- </div> --}}
                     <div class="col-md-5">
@@ -445,8 +445,8 @@
             <div class="card shadow-sm p-3">
                 <div class="row featurette mx-4 mx-4">
                     <div class="col-md-7 order-md-2">
-                    <h2 class="featurette-heading py-5"> Spelling Bee, it's that good. <span class="text-muted">See for yourself.</span></h2>
-                    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                    <h2 class="featurette-heading py-5"> ART. <span class="text-muted">See for yourself.</span></h2>
+                    <p class="lead">The art & craft program is integrated into the regular  exercises. The students learn basic art skills, such as cutting with scissors and pasting, while exploring different textures and materials.</p>
                     </div>
                     <div class="col-md-5 border-md-1 p-3">
                     <img class="featurette-image img-fluid mx-auto" src="{{ asset('assets/images/laurisdan10.jpg') }}" alt="Generic placeholder image">
@@ -460,7 +460,7 @@
                 <div class="row featurette">
                     <div class="col-md-7">
                     <h2 class="featurette-heading">Cultural Dance, We proud of our culture. <span class="text-muted">Checkmate.</span></h2>
-                    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                    <p class="lead">The art & craft program is integrated into the regular Montessori exercises. The students learn basic art skills, such as cutting with scissors and pasting, while exploring different textures and materials.</p>
                     </div>
                     <div class="col-md-5">
                     <img class="featurette-image img-fluid mx-auto" src="{{ asset('assets/images/laurisdan8.jpg') }}" alt="Generic placeholder image">
