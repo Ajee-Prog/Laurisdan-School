@@ -157,7 +157,8 @@ class StudentController extends Controller
         // Neww store ends
 
         $validated = $request->validate([
-            'admission_no'   => 'required|unique:students,admission_no',
+            // 'admission_no'   => 'required|unique:students,admission_no',
+            'admission_no'   => 'required|unique:users,admission_no',
             'student_code'   => 'required|unique:students,student_code',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -212,7 +213,7 @@ class StudentController extends Controller
         // Admission Number
         $validatedData['admission_no'] = $generatedAdmissionNo;
         */
-
+        $validated['admission_no'] = $generatedAdmissionNo;
        DB::beginTransaction();
 
     try {
