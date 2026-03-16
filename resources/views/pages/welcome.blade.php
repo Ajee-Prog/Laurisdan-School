@@ -332,15 +332,58 @@
             {{--  --}}
             <div class="card shadow-sm mb-3 mt-3">
                 <div class="card-body">
-                    <h5>Your Profile ====****</h5>
+                    <h5>OUR VALUES</h5>
+
+                    <div class="row" style="color: navy">
+                        <div class="col">
+                            <ul>
+                                <li>To put God first in all things</li>
+                                <li> To strive for academic</li>
+                                <li> To show integrity in all actions</li>
+                                <li> To crave for effective learning and creativity</li>
+                                <li>Team work and cooperation</li>
+                                <li> Good citizenship</li>
+                            </ul>
+                        </div>
+                        <div class="col text-center">
+                            <h5>MISSION STATEMENT</h5>
+                            <ol>
+                                <li>To provide each student equal opportunity to learn and attain full potentials inline with the school's vission</li>
+                                <li>To achieve all learning goals inline with approved curricula</li>
+                                <li>To provide a stimulating learning and instructional environment</li>
+                                <li>To encourage each child to develop a love for learning and achieve their potentials</li>
+                                <li>To use media and materials andf exploration mode of instruction and learning</li>
+                                <li>To involve pupils in inter school, state and national competitions</li>
+                                <li>Create a worm and friendly environment for the entire school community.</li>
+                                <li>To encourage an atmosphere of love, respect and national consciousness.</li>
+                                <li>To have fellowships, prayers, and recitations to shape them up spiritually.</li>
+                            </ol>
+                        </div>
+                    </div>
 
                     {{-- <p>Email: {{ $student->email ?? 'N/A' }}</p> --}}
                     {{-- <p><strong> Admission No: </strong> {{ $student->admission_no }}</p> --}}
-                    <p><strong> Student Code: </strong> </p>
-                    <p> <strong>Class: </strong> </p>
-                    <p> <strong>Parent Contact: </strong> </p>
+                    <div class="row bg-primary text-light">
+                        <div class="col">
+                            <p><strong> School Contacts: </strong> </p>
+                            <p> <strong><i class="fas fa-phone" style='font-size:24px ;color:gree'></i> 0903 434 5478 </strong> </p>
+                            <p> <strong> <i class="fab fa-whatsapp" style='font-size:24px ;color:green'></i> +234 708 880 0744 </strong> </p>
+                            {{-- |||||| --}}
+                            <a href="#" class="text-secondry me-3"><i class="fab fa-whatsapp" style='font-size:24px ;color:green'></i></a>
+                            <p><i class="fas fa-envelope" style='font-size:24px ;color:gree'></i> Email: laurisdannpschool@gmail.com | Phone: +234-8141132252</p>
+                            {{-- <i class="fab fa-facebook-f"></i> --}}
+                        </div>
+                        <div class="col mt-5">
+                            <h3><i class="fas fa-location-dot" style='font-size:24px ;color:gree'></i>SCHOOL LOCATION:</h2>
+                                <h4><i class="fas fa-location-arrow" style='font-size:24px ;color:gree'></i>ONOSA</h4>
+                                <p><i class="fas fa-location-dot" style='font-size:24px ;color:red'></i> ENGR. AWANBI BENSON STREET, OFFIRAN, ONOSA, IBEJU-LEKKI LGA, LAGOS.</p>
+                        </div>
+                    </div>
 
-                    <a href="{{route('profile.show')}}" class="btn btn-info btn-sm">View Profile</a>
+                    {{--  --}}
+
+                    {{-- <a href="{{route('profile.show')}}" class="btn btn-info btn-sm mt-3">Read more</a> --}}
+                    <a href="#" class="btn btn-info btn-sm mt-3">Read more</a>
                 </div>
             </div>
             {{--  --}}
@@ -460,7 +503,7 @@
                 <div class="row featurette">
                     <div class="col-md-7">
                     <h2 class="featurette-heading">Cultural Dance, We proud of our culture. <span class="text-muted">Checkmate.</span></h2>
-                    <p class="lead">The art & craft program is integrated into the regular Montessori exercises. The students learn basic art skills, such as cutting with scissors and pasting, while exploring different textures and materials.</p>
+                    <p class="lead">The art & craft program is integrated into the regular Laurisdan exercises. The students learn basic art skills, such as cutting with scissors and pasting, while exploring different textures and materials.</p>
                     </div>
                     <div class="col-md-5">
                     <img class="featurette-image img-fluid mx-auto" src="{{ asset('assets/images/laurisdan8.jpg') }}" alt="Generic placeholder image">
@@ -597,22 +640,24 @@
 <section id="services" class="p-5 bg-light" style="color:navy; ">
   <div class="container" style="color:navy; ">
     <h2>Our Services</h2>
-    <div class="row" style="color:navy; ">
-      <div class="col-md-4">
+    <div class="row text-center" style="color:navy; ">
+      <div class="col-md-4 text-center">
         <div class="card p-3">
-          <span class="p-2"> <i class="fas fa-cloud"></i> </span>
+          <span class="p-2 text-center"> <i class="fas fa-book" style="font-size: 36px"></i> </span>
           <h4>Modern Classes</h4>
           <p>Interactive and engaging classrooms.</p>
         </div>
       </div>
       <div class="col-md-4">
         <div class="card p-3">
+            <span class="p-2 text-center"> <i class="fas fa-computer" style="font-size: 36px"></i> </span>
           <h4>Books & Exams</h4>
           <p>Digital books and computer-based exams.</p>
         </div>
       </div>
       <div class="col-md-4">
         <div class="card p-3">
+            <span class="p-2 text-center"> <i class="fas fa-chess-knight" style="font-size: 36px"></i> </span>
           <h4>Activities</h4>
           <p>Sports, arts, and other fun programs.</p>
             </div>
@@ -699,6 +744,7 @@
   <div class="container">
     <h2>Contact Us</h2>
     <p>Email: info@lisschool.com | Phone: +234-8141132252</p>
+
   </div>
 </section>
    <!-- 2 copied ends here -->
@@ -712,25 +758,25 @@
   </section>
 
   <!-- Footer -->
-   <section class="bg-primary text-light">
+   <section class="bg-dark text-light">
     <div class="container ">
     <h2>Quick Links</h2>
     <div class="row">
       <div class="col-md-4">
-        <div class="card p-3" style="color:navy; ">
-          <h4>Modern Classes</h4>
+        <div class="car p-3" style="color:nav; ">
+          <h4>Quick Links</h4>
           <p>Interactive and engaging classrooms.</p>
         </div>
       </div>
       <div class="col-md-4">
-        <div class="card p-3">
-          <h4>Books & Exams</h4>
+        <div class="car p-3">
+          <h4>What we Do</h4>
           <p>Digital books and computer-based exams.</p>
         </div>
       </div>
       <div class="col-md-4">
-        <div class="card p-3">
-          <h4>Activities</h4>
+        <div class="car p-3">
+          <h4>Reach out to us via:</h4>
           <p>Sports, arts, and other fun programs.</p>
             </div>
       </div>
@@ -754,6 +800,7 @@
         <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
         <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
         <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+        graduation-cap
       </div>
     </div>
   </footer>
