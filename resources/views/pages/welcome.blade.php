@@ -206,7 +206,7 @@
             </div>
           </div>
 
-          <div class="carousel-item" style="background-image: url({{ asset('assets/images/laurisdan3.jpg') }});">
+          <div class="carousel-item" style="background-image: url({{ asset('assets/images/lnp-old-graduant.jpg') }});">
           <!-- <div class="carousel-item" > -->
 
             <div class="carousel-caption">
@@ -324,7 +324,7 @@
                   <div class="pr-5  pl-4" style="padding-right: 20px;"><strong>212</strong>following     </div>
                 </div>
 
-                <div class="pt-4"> laurisdannpschool.com</div>
+                <div class="pt-4"> laurisdannpschool.com.ng</div>
                 <div class=""> We are global communities of millions of people learning together. We're an open source, supporting our brighter future.</div>
                 <div><a href="#">www.laurisdannpschools.com.ng</a></div>
               </div>
@@ -332,10 +332,18 @@
             {{--  --}}
             <div class="card shadow-sm mb-3 mt-3">
                 <div class="card-body">
-                    <h5>OUR VALUES</h5>
+                    <div class="row text-center py-3" style="background: navy; color:#efefef">
+                        <h5>OUR VISION</h5>
+
+                            <p>
+                                <q><strong> Giving children a firm foundation academically, morally and spiritually </strong> </q>
+                             </p>
+
+                    </div>
 
                     <div class="row" style="color: navy">
                         <div class="col">
+                            <h3>OUR VALUES</h3>
                             <ul>
                                 <li>To put God first in all things</li>
                                 <li> To strive for academic</li>
@@ -346,7 +354,7 @@
                             </ul>
                         </div>
                         <div class="col text-center">
-                            <h5>MISSION STATEMENT</h5>
+                            <h3>MISSION STATEMENT</h3>
                             <ol>
                                 <li>To provide each student equal opportunity to learn and attain full potentials inline with the school's vission</li>
                                 <li>To achieve all learning goals inline with approved curricula</li>
@@ -488,7 +496,7 @@
             <div class="card shadow-sm p-3">
                 <div class="row featurette mx-4 mx-4">
                     <div class="col-md-7 order-md-2">
-                    <h2 class="featurette-heading py-5"> ART. <span class="text-muted">See for yourself.</span></h2>
+                    <h2 class="featurette-heading py-5"> ART. </h2>
                     <p class="lead">The art & craft program is integrated into the regular  exercises. The students learn basic art skills, such as cutting with scissors and pasting, while exploring different textures and materials.</p>
                     </div>
                     <div class="col-md-5 border-md-1 p-3">
@@ -537,7 +545,8 @@
         </div>
         <div class="col-md-4">
           <div class="card border-0 shadow-sm">
-            <img src="https://images.unsplash.com/photo-1600353061113-9ecdc501f5c6" class="card-img-top">
+            {{-- <img src="{https://images.unsplash.com/photo-1600353061113-9ecdc501f5c6}" class="card-img-top"> --}}
+            <img src="{{asset('assets/images/laurisdan10.jpg')}}" class="card-img-top">
             <div class="card-body">
               <h5 class="card-title">Primary 1-3</h5>
               <p class="card-text">Fostering curiosity and teamwork through exciting lessons and projects.</p>
@@ -546,7 +555,8 @@
         </div>
         <div class="col-md-4">
           <div class="card border-0 shadow-sm">
-            <img src="https://images.unsplash.com/photo-1596495577886-d920f1fb7238" class="card-img-top">
+            {{-- <img src="https://images.unsplash.com/photo-1596495577886-d920f1fb7238" class="card-img-top"> --}}
+            <img src="{{asset('assets/images/ln-pry6.jpeg')}}" class="card-img-top">
             <div class="card-body">
               <h5 class="card-title">Primary 4-6</h5>
               <p class="card-text">Preparing students for future success with leadership and excellence.</p>
@@ -559,6 +569,11 @@
   <section class="py-5 bg-light">
     <div class="container text-center">
         <h2 class="section-title mt-5 text-center">Latest News & Announcements</h2>
+        <div class="row">
+            <div class="card">
+                <img src="{{asset('assets/images/lnp-latest-graduant.jpg')}}" alt="">
+            </div>
+        </div>
         <p class="text-muted mb-0">Stay informed with the latest News at Laurisdan N & P School</p>
       <div class="row g-4 mt-4">
         <div class="col">
@@ -601,34 +616,37 @@
    <!-- TEACHERS SECTION -->
   <section id="teachers" class="py-5">
     <div class="container text-center">
-      <h2 class="section-title">Meet Our Teachers</h2>
+      <h2 class="section-title"> Our Field Teachers</h2>
       <div class="row g-4 mt-4">
         <div class="col-md-3">
           <div class="card border-0 shadow-sm p-3">
-            <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle mx-auto" width="100">
-            <h5 class="mt-3">Mrs. Adeola Johnson</h5>
+            {{-- <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle mx-auto" width="100"> --}}
+            <img src="{{asset('assets/images/ln-1.jpeg')}}" class="rounded-circle mx-auto" width="100">
+            <h5 class="mt-3">Mrs. Martha Johnson</h5>
             <p class="text-muted mb-0">Head Teacher</p>
           </div>
         </div>
         <div class="col-md-3">
           <div class="card border-0 shadow-sm p-3">
-            <img src="https://randomuser.me/api/portraits/men/35.jpg" class="rounded-circle mx-auto" width="100">
-            <h5 class="mt-3">Mr. Emmanuel Okoro</h5>
+            {{-- <img src="https://randomuser.me/api/portraits/men/35.jpg" class="rounded-circle mx-auto" width="100"> --}}
+            <img src="{{asset('assets/images/ln-3.jpeg')}}" class="rounded-circle mx-auto" width="100">
+            <h5 class="mt-3">Mrs. Mustapha </h5>
             <p class="text-muted mb-0">Mathematics</p>
           </div>
         </div>
         <div class="col-md-3">
           <div class="card border-0 shadow-sm p-3">
-            <img src="https://randomuser.me/api/portraits/women/65.jpg" class="rounded-circle mx-auto" width="100">
+            {{-- <img src="https://randomuser.me/api/portraits/women/65.jpg" class="rounded-circle mx-auto" width="100"> --}}
+            <img src="{{asset('assets/images/ln-4.jpeg')}}" class="rounded-circle mx-auto" width="100">
             <h5 class="mt-3">Mrs. Kemi Balogun</h5>
-            <p class="text-muted mb-0">Science</p>
+            <p class="text-muted mb-0">Nursery Teacher</p>
           </div>
         </div>
         <div class="col-md-3">
           <div class="card border-0 shadow-sm p-3">
-            <img src="{{ asset('assets/images/Yusuf-Passport.jpg') }}" class="rounded-circle mx-auto" width="100">
-            <h5 class="mt-3">Mr. Yusuf Kareem</h5>
-            <p class="text-muted mb-0">ICT Instructor</p>
+            <img src="{{ asset('assets/images/ln2.jpeg') }}" class="rounded-circle mx-auto" width="100">
+            <h5 class="mt-3">Mrs. Amadi </h5>
+            <p class="text-muted mb-0">Nursery 3</p>
           </div>
         </div>
       </div>
@@ -700,11 +718,11 @@
             <p class="text-muted mb-0">Send mail to <b>admission@laurisdannpschool.com.ng</b>
             <br>Pls include Application Number in your Mail</p>
             <div class="mt-3">
-                <a href="#" class="text-secondry me-3"><i class="fab fa-facebook-f" style='font-size:24px'></i></a>
+                <a href="https://www.facebook.com/laurisdannurseryandprimaryschool" class="text-secondry me-3" target="_blank"><i class="fab fa-facebook-f" style='font-size:24px'></i></a>
                 <a href="#" class="text-secondry me-3"><i class="fab fa-twitter" style='font-size:24px'></i></a>
                 <a href="#" class="text-secondry me-3"><i class="fab fa-instagram" style='font-size:24px'></i></a>
                 <a href="#" class="text-secondry me-3"><i class="fab fa-linkedin-in" style='font-size:24px ;color:re'></i></a>
-                <a href="#" class="text-secondry me-3"><i class="fab fa-whatsapp" style='font-size:24px ;color:green'></i></a>
+                <a href="https://wa.me/2347088800744" target="_blank" class="text-secondry me-3"><i class="fab fa-whatsapp" style='font-size:24px ;color:green'></i></a>
                 <a href="#" class="text-secondry"><i class="fab fa-youtube" style='font-size:24px ;color:red'></i></a>
 
             </div>
@@ -743,7 +761,7 @@
 <section id="contact" class="p-5">
   <div class="container">
     <h2>Contact Us</h2>
-    <p>Email: info@lisschool.com | Phone: +234-8141132252</p>
+    <p>Call: ICT Tech | Phone: +234-8141132252</p>
 
   </div>
 </section>
@@ -761,23 +779,54 @@
    <section class="bg-dark text-light">
     <div class="container ">
     <h2>Quick Links</h2>
-    <div class="row">
+    <div class="row align-left">
       <div class="col-md-4">
         <div class="car p-3" style="color:nav; ">
           <h4>Quick Links</h4>
-          <p>Interactive and engaging classrooms.</p>
+          {{-- <p> <a href="">Home</a> </p>
+          <p> <a href="">About</a> </p> --}}
+          <ul>
+            <li><a href="">Home</a></li>
+            <li><a href="">About</a></li>
+            <li><a href="">Admission</a></li>
+            <li><a href="">Our School</a></li>
+            <li><a href="">E-School</a></li>
+            <li><a href="">News</a></li>
+          </ul>
+
+
+
         </div>
       </div>
       <div class="col-md-4">
         <div class="car p-3">
           <h4>What we Do</h4>
-          <p>Digital books and computer-based exams.</p>
+          <p>Laurisdan school is unique in its approach to education service. We provide a stimulating environment where children receive a broad spectrum of exciting learning experiences, they discover and achieve excellence in all they do! We also provide late pickup & after school facilities, early drop-in and transportation service.</p>
+            <h3>Address:</h3>
+            <p>
+                ENGR. AWANBI BENSON STREET, OFFIRAN, ONOSA, IBEJU-LEKKI LGA, LAGOS.
+            </p>
         </div>
-      </div>
-      <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
         <div class="car p-3">
           <h4>Reach out to us via:</h4>
-          <p>Sports, arts, and other fun programs.</p>
+            <p class="mt-5">
+                <form class="row g-3 justify-content-center">
+                    <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Full Name" required>
+                    </div>
+                    <div class="col-md-4">
+                    <input type="email" class="form-control" placeholder="Email Address" required>
+                    </div>
+                    <div class="col-md-8">
+                    <textarea class="form-control" rows="4" placeholder="Your Message" required></textarea>
+                    </div>
+                    <div class="col-md-8">
+                    <button type="submit" class="btn btn-custom">Send Message</button>
+                    </div>
+                </form>
+            </p>
             </div>
       </div>
     </div>
@@ -797,10 +846,10 @@
     <div class="container">
       <p>powered by <a href=""> YusTech</a> : &copy; 2014 - {{ date('Y') }} Laurisdan Nursery & Primary School. <span class="mr-5" style="border-right: 2px solid white; margin-right: 10px;"></span> All Rights Reserved.</p>
       <div>
-        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.facebook.com/laurisdannurseryandprimaryschool" class="text-white me-3" target="_blank"><i class="fab fa-facebook-f"></i></a>
         <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
         <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
-        graduation-cap
+        {{-- graduation-cap --}}
       </div>
     </div>
   </footer>
