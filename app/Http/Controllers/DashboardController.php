@@ -39,7 +39,7 @@ class DashboardController extends Controller
 
 
 
-        
+
 
         switch ($user->role) {
 
@@ -106,8 +106,20 @@ class DashboardController extends Controller
                     'student' => $student,
                     'exams'   => $exams
                 ]);*/
+                case 'student':
+
+                $student = Student::where('user_id', $user->id)->first();
+                // $student = Student::where('user_id', $user->id)->with('schoolClass')->first();
+                $exams   = Exam::all(); // list exams they can take
+                // $exams = $student ? Exam::where('class_id', $student->class_id)->get() : collect();
+
+                return view('dashboard.student', [
+                    'student' => $student,
+                    'exams'   => $exams
+                ]);
 
             /*
+
             |--------------------------------------------------------------------------
             | PARENT DASHBOARD
             |--------------------------------------------------------------------------
@@ -115,7 +127,7 @@ class DashboardController extends Controller
             case 'parent':
 
                 $parent = ParentModel::where('user_id', $user->id)->first();
-                // $children = Student::where('parent_id', optional($parent)->id)->get();              
+                // $children = Student::where('parent_id', optional($parent)->id)->get();
                 $children = $parent ? Student::where('parent_id', $parent->id)->get() : collect();
 
                 return view('dashboard.parent', [
@@ -139,7 +151,7 @@ class DashboardController extends Controller
 
 
         // each of these functions can be called inside switch
-        
+
 
         // $role = Auth::user()->role;
 
@@ -194,7 +206,7 @@ class DashboardController extends Controller
 
 
 
-            
+
         // $user = Auth::user();
 
         // switch ($user->role) {

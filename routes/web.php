@@ -187,7 +187,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/exams', [AdminExamController::class,'index'])->name('admin.exams.index');
             Route::get('/exams/create', [AdminExamController::class,'create'])->name('admin.exams.create');
             Route::post('/exams', [AdminExamController::class,'store'])->name('admin.exams.store');
-            Route::get('/exams/{exam}', [AdminExamController::class,'show'])->name('admin.exams.show');
+            // Route::get('/exams/{exam}', [AdminExamController::class,'show'])->name('admin.exams.show');
+            Route::get('/exams/{exam}', [ExamController::class,'show'])->name('admin.exams.show');
             Route::post('/exams/{exam}/toggle', [AdminExamController::class,'toggle'])->name('admin.exams.toggle');
         // Refactors Exam Controller Ends
 

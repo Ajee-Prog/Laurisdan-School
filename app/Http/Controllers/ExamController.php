@@ -121,7 +121,7 @@ class ExamController extends Controller
         'subject' => 'required|string',
     ]);
         Exam::create($data);
-        return redirect()->route('exams.index')->with('success','Exam created.');
+        return redirect()->route('admin.exams.index')->with('success','Exam created.');
 
     }
 
@@ -215,12 +215,13 @@ public function exportPdf(){
 
 
 // // list for students
-//     public function studentExamss()
-//     {
-//         $student = Student::where('user_id', Auth::id())->first();
-//         $exams = $student ? Exam::where('class_id', $student->class_id)->get() : collect();
-//         return view('student-exam.index', compact('exams'));
-//     }
+    public function studentExamss()
+    {
+        $student = Student::where('user_id', Auth::id())->first();
+        $exams = $student ? Exam::where('class_id', $student->class_id)->get() : collect();
+        // return view('student-exam.index', compact('exams'));
+        return view('students.exams.list', compact('exams'));
+    }
 
     // view exam brief (not CBT page)
     public function studentExamView($id)

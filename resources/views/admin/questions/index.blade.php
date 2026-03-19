@@ -4,7 +4,7 @@
 <div class="container py-4">
   <h2 class="mb-3">Manage Questions</h2>
   <a href="{{ route('questions.create') }}" class="btn btn-primary mb-3">Add Question</a>
-  
+
 
   @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
@@ -13,7 +13,7 @@
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th>#</th>
+        <th>#1</th>
         <th>Question</th>
         <th>Options</th>
         <th>Correct</th>
@@ -27,7 +27,7 @@
           <td>{{ $q->question }}</td>
           <td>
             @foreach($q->options as $opt)
-              <div>{{ $opt->option_text }} 
+              <div>{{ $opt->option_text }}
                 @if($opt->is_correct) @endif
               </div>
             @endforeach

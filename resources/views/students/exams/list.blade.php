@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div class="col-md-12 mt-4">
+<div class="col-md-12 mt-4" style="padding-top: 60px">
 <h3>Available Exams</h3>
 <div class="list-group">
 @foreach($exams as $exam)

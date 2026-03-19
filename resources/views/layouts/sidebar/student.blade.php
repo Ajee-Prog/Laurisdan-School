@@ -14,7 +14,7 @@
     <a href="{{ route('books.index') }}" class="nav-link text-white">Books</a>
   </li>
   <li class="nav-item">
-    <a href="{{ route('exams.index') }}" class="nav-link text-white">Exams</a>
+    <a href="{{ route('admin.exams.index') }}" class="nav-link text-white">Exams</a>
   </li>
   <li class="nav-item">
     <a href="{{ route('student.fee.history') }}" class="nav-link text-white">Fees History</a>

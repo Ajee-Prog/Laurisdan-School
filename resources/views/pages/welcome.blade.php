@@ -270,7 +270,7 @@
             <div class="card border-0 shadow-sm p-3">
               {{-- <img src="https://randomuser.me/api/portraits/men/50.jpg" class="rounded-circle mx-auto" width="100"> --}}
               <img src="{{asset('assets/images/Yusuf-Passport.jpg')}}" class="rounded-circle mx-auto" width="100">
-              <h5 class="mt-3">Mr. Yusuf Kareem</h5>
+              <h5 class="mt-3">Mr. Yusuf Ajetunmobi</h5>
               <p class="text-muted mb-0">ICT Instructor</p>
             </div>
           </div>

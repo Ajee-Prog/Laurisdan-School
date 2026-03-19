@@ -54,6 +54,8 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
+            // $user = auth()->user();
+            // $role = auth()->user()->role;
 
             switch ($user->role) {
 
@@ -70,6 +72,7 @@ class LoginController extends Controller
                     return redirect()->route('parent.dashboard');
 
                 case 'student':
+                    // return redirect()->route('student.dashboard');
                     return redirect()->route('student.dashboard');
 
                 default:
