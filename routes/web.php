@@ -351,7 +351,7 @@ Route::middleware(['auth'])->group(function () {
 
         // CBT start & submit (POST)
         // real exam start below route because route points unto it
-        Route::get('/student/exam/{id}/start', [ExamController::class, 'startExamCBT'])->name('student.exam.start');
+        // Route::get('/student/exam/{id}/start', [ExamController::class, 'startExamCBT'])->name('student.exam.start');
         // Route::get('/student/exam/{exam}/start', [ExamController::class, 'startExamCBT'])->name('student.exam.start');
         // Route::post('/student/exam/{id}/submit', [ExamController::class, 'submitCBT'])->name('student.exam.submit');
 
@@ -359,7 +359,7 @@ Route::middleware(['auth'])->group(function () {
         // Route::get('/student/exam', [ExamController::class, 'studentExams'])->name('student.exam');
         // Route::get('/student/exam/{subject}', [ExamController::class, 'studentExams'])->name('student.exam');
         // real exam start below route
-        Route::get('/student/exam/{exam}/start', [ExamController::class, 'startExamCBT'])->name('student.exam.start');//this can b used
+        Route::get('/student/exam/{exam}/start', [ExamController::class, 'startExamCBT'])->name('student.exams.start');//this can b used
         // Route::get('/student/exam/start/{subject}', [ExamController::class, 'startExams'])->name('exam.start');
         // Route::post('/student/exam/{id}/submit', [ExamController::class, 'submitCBT'])->name('student.exams.submit');
         Route::post('/student/exam/submit', [ExamController::class, 'submitExam'])->name('student.exams.submit');

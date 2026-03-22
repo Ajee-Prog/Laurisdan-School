@@ -73,7 +73,8 @@ class LoginController extends Controller
 
                 case 'student':
                     // return redirect()->route('student.dashboard');
-                    return redirect()->route('student.dashboard');
+                    // return redirect()->route('student.dashboard');
+                    return redirect()->route('dashboard.student');
 
                 default:
                     return redirect('/');

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="col-md-12 mt-4">
+    <div class="col-md-12 mt-4" style="margin-top: 160px; padding-top: 60px">
         <h3>{{ $exam->title }}</h3>
         <div id="timer" class="mb-3">Time left: <span id="timeDisplay"></span></div>
 
@@ -26,59 +26,59 @@
         </form>
 
 
-    </div>
+        {{-- </div> --}}
 
-    {{-- New cbt Start here --}}
-@if($questions->count() > 0)
-    @foreach($questions as $index => $question)
-        <div class="mb-3">
-            <p><strong>{{ $index + 1 }}. {{ $question->question }}</strong></p>
+            {{-- New cbt Start here --}}
+        @if($questions->count() > 0)
+            @foreach($questions as $index => $question)
+                <div class="mb-3">
+                    <p><strong>{{ $index + 1 }}. {{ $question->question }}</strong></p>
 
-            @foreach($question->options as $option)
-                <div>
-                    <input type="radio"
-                           name="answers[{{ $question->id }}]"
-                           value="{{ $option->id }}">
-                    {{ $option->option }}
+                    @foreach($question->options as $option)
+                        <div>
+                            <input type="radio"
+                                name="answers[{{ $question->id }}]"
+                                value="{{ $option->id }}">
+                            {{ $option->option }}
+                        </div>
+                    @endforeach
                 </div>
             @endforeach
+        @else
+            <p class="text-danger">No questions available for this exam.</p>
+        @endif
+
+        {{-- New cbt ends here --}}
+
+        {{-- @foreach($questions as $index => $q)
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5>{{ $index + 1 }}. {{ $q->question_text }}</h5>
+
+                <label>
+                    <input type="radio" name="answers[{{ $q->id }}]" value="A">
+                    {{ $q->option_a }}
+                </label><br>
+
+                <label>
+                    <input type="radio" name="answers[{{ $q->id }}]" value="B">
+                    {{ $q->option_b }}
+                </label><br>
+
+                <label>
+                    <input type="radio" name="answers[{{ $q->id }}]" value="C">
+                    {{ $q->option_c }}
+                </label><br>
+
+                <label>
+                    <input type="radio" name="answers[{{ $q->id }}]" value="D">
+                    {{ $q->option_d }}
+                </label>
+            </div>
         </div>
-    @endforeach
-@else
-    <p class="text-danger">No questions available for this exam.</p>
-@endif
+        @endforeach --}}
 
-{{-- New cbt ends here --}}
-
-@foreach($questions as $index => $q)
-<div class="card mb-3">
-    <div class="card-body">
-        <h5>{{ $index + 1 }}. {{ $q->question_text }}</h5>
-
-        <label>
-            <input type="radio" name="answers[{{ $q->id }}]" value="A">
-            {{ $q->option_a }}
-        </label><br>
-
-        <label>
-            <input type="radio" name="answers[{{ $q->id }}]" value="B">
-            {{ $q->option_b }}
-        </label><br>
-
-        <label>
-            <input type="radio" name="answers[{{ $q->id }}]" value="C">
-            {{ $q->option_c }}
-        </label><br>
-
-        <label>
-            <input type="radio" name="answers[{{ $q->id }}]" value="D">
-            {{ $q->option_d }}
-        </label>
     </div>
-</div>
-@endforeach
-
-
     <script>
     let total = `{{ $exam->duration * 60 }}`;
     const display = document.getElementById('timeDisplay');

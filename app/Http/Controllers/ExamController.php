@@ -238,7 +238,7 @@ public function exportPdf(){
     $exam = Exam::with('questions')->findOrFail($examId);
 
     $user = auth()->user();
-    dd(auth()->user());
+    // dd(auth()->user());
 
     if (!$user || $user->role !== 'student') {
         abort(403, 'Unauthorized USER');
