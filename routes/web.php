@@ -342,6 +342,16 @@ Route::middleware(['auth'])->group(function () {
         // Route::get('/student/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
         // Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('dashboard.student');
         Route::get('/dashboard/student', [StudentDashboardController::class, 'dashboard'])->name('dashboard.student');
+        // ************ This is to use clean***********
+            Route::get('/student/exams', [ExamController::class, 'studentExamss'])->name('student.exams');
+
+            Route::get('/student/exam/{id}', [ExamController::class, 'studentExamView'])->name('student.exam.view');
+
+            Route::get('/student/exam/{exam}/start', [ExamController::class, 'startExamCBT'])->name('student.exams.start');
+
+            Route::post('/student/exam/submit', [ExamController::class, 'submitExam'])->name('student.exams.submit');
+
+        // ************ This is to use clean ends here ************
         // Route::get('/student/dashboard', [DashboardController::class, 'index'])->name('dashboard.student');
 
 
@@ -368,11 +378,11 @@ Route::middleware(['auth'])->group(function () {
         // **************Refactors Exam against future bugs*************
         Route::get('/exams', [StudentExamController::class,'index'])->name('student.exams');
 
-    Route::get('/exam/{exam}/view', [StudentExamController::class,'view'])->name('student.exam.view');
+    // Route::get('/exam/{exam}/view', [StudentExamController::class,'view'])->name('student.exam.view');
 
-    Route::get('/exam/{exam}/start', [StudentExamController::class,'start'])->name('student.exam.start');
+    // Route::get('/exam/{exam}/start', [StudentExamController::class,'start'])->name('student.exam.start');
 
-    Route::post('/exam/{exam}/submit', [StudentExamController::class,'submit'])->name('student.exam.submit');
+    // Route::post('/exam/{exam}/submit', [StudentExamController::class,'submit'])->name('student.exam.submit');
         // ******************Refactors Ends here******************
 
         Route::get('/student/books', [BookController::class, 'studentBooks'])->name('student.books');

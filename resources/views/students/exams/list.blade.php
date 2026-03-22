@@ -4,7 +4,7 @@
     <h3>Available Exams</h3>
     <div class="list-group">
         @foreach($exams as $exam)
-        <a href="{{ route('student.exam.start', $exam->id) }}" class="list-group-item list-group-item-action btn btn-primary btn-sm mb-3">
+        <a href="{{ route('student.exams.start', $exam->id) }}" class="list-group-item list-group-item-action btn btn-primary btn-sm mb-3">
         {{ $exam->title }} — Duration: {{ $exam->duration }} mins
         </a>
         @endforeach

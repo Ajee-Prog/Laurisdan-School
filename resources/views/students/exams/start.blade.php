@@ -4,7 +4,50 @@
         <h3>{{ $exam->title }}</h3>
         <div id="timer" class="mb-3">Time left: <span id="timeDisplay"></span></div>
 
+        {{-- ************* Correct and clean th Question file --}}
+        <form method="POST" action="{{ route('student.exams.submit') }}">
+            @csrf
 
+            <input type="hidden" name="exam_id" value="{{ $exam->id }}">
+
+            @if($questions->count() > 0)
+                    @foreach($questions as $index => $q)
+            <div class="card mb-3">
+                <div class="card-body">
+
+                    <p><strong>{{ $index + 1 }}.</strong> {{ $q->question_text }}</p>
+
+                    <label>
+                        <input type="radio" name="question_{{ $q->id }}" value="A">
+                        {{ $q->option_a }}
+                    </label><br>
+
+                    <label>
+                        <input type="radio" name="question_{{ $q->id }}" value="B">
+                        {{ $q->option_b }}
+                    </label><br>
+
+                    <label>
+                        <input type="radio" name="question_{{ $q->id }}" value="C">
+                        {{ $q->option_c }}
+                    </label><br>
+
+                    <label>
+                        <input type="radio" name="question_{{ $q->id }}" value="D">
+                        {{ $q->option_d }}
+                    </label>
+
+                </div>
+            </div>
+        @endforeach
+
+    @else
+        <p class="text-danger">No questions available for this exam.</p>
+    @endif
+
+    <button class="btn btn-success">Submit Exam</button>
+</form>
+        {{-- *************** Correct and clean ends here --}}
         <form method="POST" action="{{ route('student.exams.submit', $exam->id) }}">
         @csrf
         @foreach($questions as $idx => $q)

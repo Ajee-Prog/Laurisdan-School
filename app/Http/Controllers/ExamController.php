@@ -229,6 +229,8 @@ public function exportPdf(){
         $exam = Exam::findOrFail($id);
         // return view('student-exam.exam', compact('exam'));
         return view('exams.student-exam', compact('exam'));
+        // return view('students.exams.list', compact('exam'));
+
     }
 
 

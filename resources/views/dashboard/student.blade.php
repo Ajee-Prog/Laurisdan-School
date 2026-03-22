@@ -62,7 +62,7 @@
                             Duration: {{ $exam->duration }} minutes
 
                             <div class="mt-2">
-                                <a href="{{ route('student.exam.start', $exam->id) }}"
+                                <a href="{{ route('student.exams.start', $exam->id) }}"
                                    class="btn btn-success btn-sm">
                                     Start Exam
                                 </a>
@@ -156,8 +156,8 @@
                   <a href="{{ route('student.exams', $exam->id) }}" class="btn btn-success btn-sm">Take Exam</a> <br><br><br>
                   <!-- testing the second method -->
                    <div>
-                        <a href="{{ route('student.exam.view', $exam->id) }}" class="btn btn-outline-primary btn-sm">View</a>
-                        <a href="{{ route('student.exam.start', $exam->id) }}" class="btn btn-success btn-sm">Start</a>
+                        <a href="{{ route('student.exam.view', $exam->id) }}" class="btn btn-outline-primary btn-sm">View..</a>
+                        <a href="{{ route('student.exams.start', $exam->id) }}" class="btn btn-success btn-sm">Start</a>
                     </div>
                     <!-- testing the second method ends here and remove if any error -->
                 @else
@@ -264,7 +264,7 @@
                 <div class="card-body text-center">
                     <h5 class="card-title">Attempt Exams</h5>
                     @forelse ($exams as $exam)
-                    <a href="{{ route('student.exam.start', $exam->id) }}" class="btn btn-primary btn-sm">Start Exam</a>
+                    <a href="{{ route('student.exams.start', $exam->id) }}" class="btn btn-primary btn-sm">Start Exam</a>
                      @empty
                         <p class="text-muted">No exams available.</p>
                     @endforelse
