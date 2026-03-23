@@ -10,7 +10,7 @@
 
 @foreach ($exam->questions as $q)
     <div class="mb-4 p-3 border rounded">
-        <strong>Q{{ $loop->index + 1 }}. {{ $q->question }}</strong>
+        <strong>Q{{ $loop->index + 1 }}. {{ $q->question_text }}</strong>
 
         <div class="mt-2">
             <label>
@@ -25,10 +25,10 @@
             <label>
                 <input type="radio" name="answer[{{ $q->id }}]" value="D"> {{ $q->option_d }}
             </label>
-            
+
         </div>
 
-        
+
     </div>
 @endforeach
 

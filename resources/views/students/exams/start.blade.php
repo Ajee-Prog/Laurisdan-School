@@ -48,7 +48,8 @@
     <button class="btn btn-success">Submit Exam</button>
 </form>
         {{-- *************** Correct and clean ends here --}}
-        <form method="POST" action="{{ route('student.exams.submit', $exam->id) }}">
+
+        {{-- <form method="POST" action="{{ route('student.exams.submit', $exam->id) }}">
         @csrf
         @foreach($questions as $idx => $q)
         <div class="card mb-2">
@@ -71,7 +72,7 @@
 
         {{-- </div> --}}
 
-            {{-- New cbt Start here --}}
+            {{-- New cbt Start here -}}
         @if($questions->count() > 0)
             @foreach($questions as $index => $question)
                 <div class="mb-3">
@@ -89,7 +90,7 @@
             @endforeach
         @else
             <p class="text-danger">No questions available for this exam.</p>
-        @endif
+        @endif --}}
 
         {{-- New cbt ends here --}}
 

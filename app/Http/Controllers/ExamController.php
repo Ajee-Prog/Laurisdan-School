@@ -220,13 +220,14 @@ public function exportPdf(){
         $student = Student::where('user_id', Auth::id())->first();
         $exams = $student ? Exam::where('class_id', $student->class_id)->get() : collect();
         // return view('student-exam.index', compact('exams'));
-        return view('students.exams.list', compact('exams'));
+        return view('students.exams.list', compact('exams', 'student'));
     }
 
     // view exam brief (not CBT page)
     public function studentExamView($id)
     {
         $exam = Exam::findOrFail($id);
+        $exam = Exam::with('questions')->findOrFail($id);
         // return view('student-exam.exam', compact('exam'));
         return view('exams.student-exam', compact('exam'));
         // return view('students.exams.list', compact('exam'));
