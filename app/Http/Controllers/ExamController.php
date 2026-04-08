@@ -104,6 +104,7 @@ class ExamController extends Controller
 
     public function create()
     {
+        //  $classes = Session::all();
          $classes = SchoolClass::all();
         $terms = Term::all();
         return view('exams.create', compact('classes','terms'));
@@ -317,6 +318,7 @@ public function exportPdf(){
 // public function downloadPdf(ExamResult $result){ $pdf = Pdf::loadView('student.exams.result_pdf', compact('result')); return $pdf->download('result_'.$result->id.'.pdf'); }
 // */
 // New Submit Exam start here***********************************
+
 public function submitExam(Request $request)
 {
     $user = auth()->user();
@@ -350,14 +352,41 @@ public function submitExam(Request $request)
     }
 
     $result->update([
-        'score' => $score,
+        // 'score' => $score,
+        // 'is_submitted' => true,
+        // 'submitted_at' => now()
+        'exam_score' =>$score,
+        'total_score' => $score,  //Temporary (will be updated later)
         'is_submitted' => true,
         'submitted_at' => now()
     ]);
 
-    return redirect()->route('student.exams')
-        ->with('success','Exam submitted. Score: '.$score);
+    // return redirect()->route('student.exams')
+    //     ->with('success','Exam submitted. Score: '.$score);
+
+        return view('students.result', compact('score','exam'));
 }
+
+        /*
+public function submitExam(Request $request)
+{
+    $user = auth()->user();
+    $student = $user->student;
+
+    $exam = Exam::with('questions')->findOrFail($request->exam_id);
+
+    $score = 0;
+
+    foreach ($exam->questions as $question) {
+        $answer = $request->input('question_'.$question->id);
+
+        if ($answer === $question->correct_option) {
+            $score++;
+        }
+    }
+
+    return view('students.result', compact('score', 'exam'));
+} */
 // New Submit Exam ends here************************************
 
 
@@ -458,5 +487,17 @@ public function submitExam(Request $request)
         //     }
         //     return view('student.exam-result', compact('score'));
     }*/
+
+        public function results()
+{
+    $student = auth()->user()->student;
+
+    $result = ExamResult::where('student_id', $student->id)->latest()->first();
+
+    return view('students.result', [
+        'score' => $result->score ?? 0,
+        'exam' => $result->exam ?? null
+    ]);
+}
 
 }

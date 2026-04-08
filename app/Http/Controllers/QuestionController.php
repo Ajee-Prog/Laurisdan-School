@@ -449,6 +449,9 @@ class QuestionController extends Controller
         'option_c'       => $request->options[2],
         'option_d'       => $request->options[3],
         'correct_option' => $letters[$request->correct_option],
+         //         'session_id'     => $request->session_id,
+        //         'term_id'        => $request->term_id,
+        //         'subject_id'     => $request->subject_id ?? null,
     ]);
 
     return redirect()->route('questions.index', $exam->id)->with('success', 'Question added successfully!');

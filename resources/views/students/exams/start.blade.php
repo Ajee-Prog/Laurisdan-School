@@ -1,8 +1,15 @@
 @extends('layouts.app')
 @section('content')
     <div class="col-md-12 mt-4" style="margin-top: 160px; padding-top: 60px">
+
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
         <h3>{{ $exam->title }}</h3>
-        <div id="timer" class="mb-3">Time left: <span id="timeDisplay"></span></div>
+        <div id="timer" class="mb-3">
+            Time left: <span id="timeDisplay"></span>
+        </div>
 
         {{-- ************* Correct and clean th Question file --}}
         <form method="POST" action="{{ route('student.exams.submit') }}">

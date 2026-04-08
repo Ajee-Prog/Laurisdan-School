@@ -192,6 +192,11 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/exams/{exam}/toggle', [AdminExamController::class,'toggle'])->name('admin.exams.toggle');
         // Refactors Exam Controller Ends
 
+        // Admin Create Result for CA Test
+        Route::get('/admin/results/{id}/edit', [AdminResultController::class, 'edit'])->name('admin.results.edit');
+        Route::post('/admin/results/{id}/update', [AdminResultController::class, 'update'])->name('admin.results.update');
+        //Admin Create CA Ends here..
+
 
         Route::get('students-export-pdf', [App\Http\Controllers\StudentController::class, 'exportPdf'])->name('students.export.pdf');
         Route::get('books/export/pdf', [BookController::class, 'exportPdf'])->name('books.export.pdf');
@@ -374,6 +379,7 @@ Route::middleware(['auth'])->group(function () {
     //     // Route::post('/student/exam/{id}/submit', [ExamController::class, 'submitCBT'])->name('student.exams.submit');
     //     Route::post('/student/exam/submit', [ExamController::class, 'submitExam'])->name('student.exams.submit');
     //     // Route::post('/student/exam/submit', [ExamController::class, 'submitExam'])->name('exam.submit');
+        Route::get('/student/results', [ExamController::class, 'results'])->name('student.results');
 
     //     // **************Refactors Exam against future bugs*************
     //     // Route::get('/exams', [StudentExamController::class,'index'])->name('student.exams');
@@ -386,7 +392,8 @@ Route::middleware(['auth'])->group(function () {
         // ******************Refactors Ends here******************
 
         Route::get('/student/books', [BookController::class, 'studentBooks'])->name('student.books');
-        Route::get('/student/results', [StudentController::class, 'results'])->name('student.results');
+        // Route::get('/student/results', [StudentController::class, 'results'])->name('student.results');
+        // Route::get('/student/results', [ExamController::class, 'results'])->name('student.results');
 
         Route::get('/student/profile', [StudentController::class, 'profile'])->name('profile.show');
 

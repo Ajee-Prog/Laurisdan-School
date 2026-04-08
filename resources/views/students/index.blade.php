@@ -3,6 +3,11 @@
 @section('content')
 <div class="d-flex justify-content-between mb-3">
   <h2>Students</h2>
+
+  @if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+  @endif
+
   <a href="{{ route('students.create') }}" class="btn btn-primary mb-3">Add Student</a>
   <a href="{{ route('students.export.pdf') }}" class="btn btn-primary mb-3">Export PDF</a>
 </div>
@@ -15,16 +20,16 @@
       <th>First Name</th>
       <th>Last Name</th>
       <th>Middle Name</th>
-      <th>Class</th> 
+      <th>Class</th>
       <th>Age</th>
-       <th>Parent</th> 
-       <th>Parent Contact</th> 
+       <th>Parent</th>
+       <th>Parent Contact</th>
        <th>Passport</th>
        <th>Action</th>
     </tr>
   </thead>
   <tbody>
-  
+
 
         <!-- I dont need the above code -->
 
@@ -37,7 +42,7 @@
         <td>{{ $student->middle_name }}</td>
         <td>{{ $student->class->name ?? 'N/A' }}</td>
         <td>{{ $student->age }} Years</td>
-        
+
         <td>{{ $student->parent->full_name ?? '  -  ' }}</td>
         <td>{{ $student->parent_contact }}</td>
         <td>@if($student->image)

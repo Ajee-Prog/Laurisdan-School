@@ -5,6 +5,11 @@
 @section('content')
 <div class="container mt-5">
     <h3>Subject List</h3>
+
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
     <a href="{{ route('subjects.create') }}" class="btn btn-primary mb-3">Add Subject</a>
 
     <table class="table table-bordered">

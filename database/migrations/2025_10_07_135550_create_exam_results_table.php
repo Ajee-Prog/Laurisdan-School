@@ -18,16 +18,22 @@ class CreateExamResultsTable extends Migration
             $table->unsignedBigInteger('exam_id');
             // $table->foreignId('student_id')->constrained()->onDelete('cascade');
             $table->unsignedBigInteger('student_id');
-            // $table->string('subject');
+            $table->unsignedBigInteger('subject_id');
             // $table->integer('score');
             // $table->integer('total');
-            // $table->string('term');
-            // $table->string('session');
+            $table->unsignedBigInteger('term_id');
+            $table->unsignedBigInteger('session_id');
             // $table->timestamps();
 
             // $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
-            $table->integer('score')->default(0);
+            $table->integer('ca_score')->default(0);
+            $table->integer('test_score')->default(0);
+            $table->integer('exam_score')->default(0);
+            // $table->integer('total_score')->default(0);
             $table->integer('total_questions')->default(0);
+            $table->integer('total')->default(0);
+            $table->integer('percentage')->default(0);
+            $table->string('status')->default('FAIL');
             $table->timestamp('started_at')->nullable();
             $table->timestamp('submitted_at')->nullable();
             $table->boolean('is_submitted')->default(false);

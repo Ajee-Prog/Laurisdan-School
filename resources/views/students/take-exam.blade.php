@@ -4,6 +4,10 @@
 <h3>{{ $exam->title }} Exam</h3>
 <p>Duration: {{ $exam->duration }} minutes</p>
 
+@if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+@endif
+
 
 <div id="timer" class="alert alert-danger">Time Left: <span id="time"></span></div>
 

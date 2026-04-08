@@ -2,6 +2,12 @@
 @section('content')
 <div class="col-md-12 mt-4" style="padding-top: 60px;">
     <h3>Available Exams</h3>
+
+    @if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+  @endif
+
+
     <div class="list-group">
         @foreach($exams as $exam)
         <a href="{{ route('student.exams.start', $exam->id) }}" class="list-group-item list-group-item-action btn btn-primary btn-sm mb-3">
