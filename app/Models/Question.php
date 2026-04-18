@@ -18,7 +18,7 @@ class Question extends Model
     //     'class_id', 'subject_id', 'question', 'correct_option'
     // ];
 
-        
+
     // public function options(){
     //     return $this->hasMany(Option::class);
     // }
@@ -26,9 +26,9 @@ class Question extends Model
         return $this->belongsTo(Exam::class);
     }
 
-    public function options(){
-        return $this->hasMany(Option::class);
-    }
+    // public function options(){
+    //     return $this->hasMany(Option::class);
+    // }
 
     // public function subject(){
     //     return $this->belongsTo(Subject::class);

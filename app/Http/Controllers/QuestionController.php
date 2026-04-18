@@ -50,6 +50,7 @@
 // //     //     $terms = Term::all();
 // //     //     $subjects = Subject::all();
 
+
 // //         // return view('admin.questions.create', compact('exam','sessions','terms','subjects'));
 // //     //     // new implementation
 // //     //     $exam = Exam::findOrFail($exam_id);
@@ -412,16 +413,20 @@ class QuestionController extends Controller
         // $terms = Term::all();
         // $subjects = Subject::all();
 
+
         // return view('admin.questions.create', compact('exams','exam','sessions','terms','subjects'));
         // Load dropdown lists
-       /* $exam    = $exam;
-        $exams    = Exam::all(); */
+       /* $exam    = $exam;*/
+        $exams    = Exam::all(); //*/
+        $exam = $exam->id;
+
+
         $sessions = \App\Models\SessionModel::all();
         $terms = \App\Models\Term::all();
         $subjects = Subject::all();
 
         // return view('admin.questions.create', compact('exam','exams', 'subjects', 'sessions', 'terms'));
-        return view('admin.questions.create', compact('exam', 'subjects', 'sessions', 'terms'));
+        return view('admin.questions.create', compact('exam','exams', 'subjects', 'sessions', 'terms'));
 
     }
 

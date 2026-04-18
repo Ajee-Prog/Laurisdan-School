@@ -8,6 +8,16 @@
     <div class="alert alert-success">{{ session('success') }}</div>
   @endif
 
+  {{-- ************* --}}
+    <h2>Exam Completed</h2>
+    <p><strong>{{ $exam->title }}</strong></p>
+    <h3>Your Score: {{ $score }} / {{ $total }}</h3>
+
+    <a href="{{ route('student.dashboard') }}" class="btn btn-success">
+        Back to Dashboard
+    </a>
+  {{-- ******************* --}}
+
   <p class="mt-3">
     You scored <strong>{{ $score }}</strong> out of
     {{-- <strong>{{ $total }}</strong>.</p> --}}
