@@ -24,4 +24,9 @@ protected $casts = [
         return $this->belongsTo(\App\Models\Student::class);
     }
 
+    public function exam()
+    {
+        return $this->belongsTo(Exam::class);
+    }
+
 }

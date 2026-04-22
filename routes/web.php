@@ -193,9 +193,17 @@ Route::middleware(['auth'])->group(function () {
         // Refactors Exam Controller Ends
 
         // Admin Create Result for CA Test
-        Route::get('/admin/results/{id}/edit', [AdminResultController::class, 'edit'])->name('admin.results.edit');
-        Route::post('/admin/results/{id}/update', [AdminResultController::class, 'update'])->name('admin.results.update');
-        //Admin Create CA Ends here..
+        Route::get('/results', [App\Http\Controllers\Admin\AdminResultController::class, 'index'])->name('admin.results.index');
+        // Route::get('/results', [AdminResultController::class, 'index'])->name('admin.results.index');
+        // Route::get('/admin/results/{id}/edit', [AdminResultController::class, 'edit'])->name('admin.results.edit');
+        Route::get('/admin/results/{id}/edit', [App\Http\Controllers\Admin\AdminResultController::class, 'edit'])->name('admin.results.edit');
+        // Route::post('/admin/results/{id}/update', [AdminResultController::class, 'update'])->name('admin.results.update');
+        Route::post('/admin/results/{id}/update', [App\Http\Controllers\Admin\AdminResultController::class, 'update'])->name('admin.results.update');
+
+
+           //Admin Create CA Ends here..
+
+
 
 
         Route::get('students-export-pdf', [App\Http\Controllers\StudentController::class, 'exportPdf'])->name('students.export.pdf');

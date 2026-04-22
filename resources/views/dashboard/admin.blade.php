@@ -75,11 +75,16 @@
   <div class="col-md-3"><div class="card p-3">Classes<br><h3>{{ $classes }}</h3></div></div>
   <div class="col-md-3"><div class="card p-3">Books<br><h3>{{ $books }}</h3></div></div>
 </div>
-<div class="mt-3">Exams: {{ $exams }}</div>
+{{-- <div class="mt-3">Exams: {{ $exams }}</div> --}}
+<a href="{{ route('admin.results.index') }}">Manage Results </a>
+{{-- <a href="{{route('admin.results.edit')}}"> Update Results</a> --}}
 
 
   <div class="row">
     <div class="col-md-3"><a href="{{ route('students.index') }}" class="btn btn-primary w-100 mb-2">Manage Students</a></div>
+    <div class="col-md-3">
+        <a href="{{ route('admin.results.index') }}" class="btn btn-primary w-100 mb-2">Manage Results</a>
+    </div>
     <div class="col-md-3"><a href="{{ route('teachers.index') }}" class="btn btn-secondary w-100 mb-2">Manage Teachers</a></div>
     <div class="col-md-3"><a href="{{ route('parents.index') }}" class="btn btn-success w-100 mb-2">Manage Parents</a></div>
     <div class="col-md-3"><a href="{{ route('classes.index') }}" class="btn btn-warning w-100 mb-2">Manage Classes</a></div>
