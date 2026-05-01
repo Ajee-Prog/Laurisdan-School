@@ -9,6 +9,7 @@ use App\Models\Question;
 use App\Models\ExamResult;
 use App\Models\ClassModel;
 use App\Models\SchoolClass;
+use App\Models\SessionModel;
 use App\Models\Student;
 use App\Models\Term;
 use Carbon\Carbon;
@@ -238,88 +239,100 @@ public function exportPdf(){
 
     // Start CBT Exam Used Start here****************************
     public function startExamCBT($examId)
-{
-    $exam = Exam::with('questions')->findOrFail($examId);
+    {
+        $exam = Exam::with('questions')->findOrFail($examId);
 
-    $user = auth()->user();
-    // dd(auth()->user());
+        $user = auth()->user();
+        // dd(auth()->user());
 
-    if (!$user || $user->role !== 'student') {
-        abort(403, 'Unauthorized USER');
-    }
+        if (!$user || $user->role !== 'student') {
+            abort(403, 'Unauthorized USER');
+        }
 
-    $student = $user->student;
+        $student = $user->student;
 
-    if (!$student) {
-        abort(403, 'Student profile not found');
-    }
+        if (!$student) {
+            abort(403, 'Student profile not found');
+        }
 
-    $exam = Exam::with('questions')
-        ->where('id', $examId)
-        ->where('class_id', $student->class_id)
-        ->where('is_active', 1)
-        ->firstOrFail();
+        $exam = Exam::with('questions')
+            ->where('id', $examId)
+            ->where('class_id', $student->class_id)
+            ->where('is_active', 1)
+            ->firstOrFail();
 
-        // Check if already submitted
-    $existing = ExamResult::where('exam_id', $exam->id)
-        ->where('student_id', $student->id)
-        ->first();
+            // Check if already submitted
+        $existing = ExamResult::where('exam_id', $exam->id)
+            ->where('student_id', $student->id)
+            ->first();
 
-    if ($existing && $existing->is_submitted) {
-        return redirect()->route('student.exams')
-            ->with('error', 'You already submitted this exam.');
-    }
-    // *************************************
+        if ($existing && $existing->is_submitted) {
+            return redirect()->route('student.exams')
+                ->with('error', 'You already submitted this exam.');
+        }
+        // *************************************
 
-    // Ensure exam belongs to student class
-    if ($exam->class_id && $student->class_id != $exam->class_id) {
-        abort(403, 'Exam not assigned to your class');
-    }
+        // Ensure exam belongs to student class
+        if ($exam->class_id && $student->class_id != $exam->class_id) {
+            abort(403, 'Exam not assigned to your class');
+        }
 
-    $result = ExamResult::firstOrCreate(
-        [
-            'student_id' => $student->id,
-            'exam_id'    => $exam->id,
-        ],
-        [
-            'started_at' => now(),
-        ]
-    );
+        $result = ExamResult::firstOrCreate(
+            [
+                'student_id' => $student->id,
+                'exam_id'    => $exam->id,
+            ],
+            [
+                'started_at' => now(),
+            ]
+        );
 
-    // if ($result->is_submitted) {
-    //     return redirect()->route('student.exams')
-    //         ->with('error','You already submitted this exam.');
-    // }
+        // if ($result->is_submitted) {
+        //     return redirect()->route('student.exams')
+        //         ->with('error','You already submitted this exam.');
+        // }
 
-    $endTime = Carbon::parse($result->started_at)
-        ->addMinutes($exam->duration);
+        $endTime = Carbon::parse($result->started_at)
+            ->addMinutes($exam->duration);
 
-    if (now()->gt($endTime)) {
-        $result->update([
-            'is_submitted' => true,
-            'submitted_at' => now()
+        if (now()->gt($endTime)) {
+            $result->update([
+                'is_submitted' => true,
+                'submitted_at' => now()
+            ]);
+
+            return redirect()->route('student.exams')
+                ->with('error','Exam time elapsed.');
+        }
+
+        return view('students.exams.start', [
+            'exam' => $exam,
+            'questions' => $exam->questions,
+            'endTime' => $endTime,
+            'result' => $result
         ]);
-
-        return redirect()->route('student.exams')
-            ->with('error','Exam time elapsed.');
     }
-
-    return view('students.exams.start', [
-        'exam' => $exam,
-        'questions' => $exam->questions,
-        'endTime' => $endTime,
-        'result' => $result
-    ]);
-}
     // Start Exam CBT Used Ends here***************************
 
 
 
 // public function downloadPdf(ExamResult $result){ $pdf = Pdf::loadView('student.exams.result_pdf', compact('result')); return $pdf->download('result_'.$result->id.'.pdf'); }
 // */
+
+private function grade($score)
+{
+    if ($score >= 70) return 'A';
+    if ($score >= 60) return 'B';
+    if ($score >= 50) return 'C';
+    if ($score >= 45) return 'D';
+    if ($score >= 40) return 'E';
+    return 'F';
+}
+
+
 // New Submit Exam start here***********************************
 
-public function submitExam(Request $request)
+public function submitExam(Request $request, $examId)
 {
     $user = auth()->user();
 
@@ -328,6 +341,8 @@ public function submitExam(Request $request)
     }
 
     $student = $user->student;
+
+
 
     $exam = Exam::with('questions')
         ->findOrFail($request->exam_id);
@@ -351,12 +366,30 @@ public function submitExam(Request $request)
         }
     }
 
-    $result->update([
+    // New added
+    $examScore = $score;
+    // $testScore = $existing->test_score ?? 0;
+    $testScore = $result->test_score ?? 0;
+
+    $total = $examScore + $testScore;
+    $percentage = $total; // assuming over 100
+    // New added ended
+// ///////////////////////////
+
+// ///////////////////////////
+    // $result->update([
+    $result->updateOrCreate([
+            'student_id' => $student->id,
+            'exam_id' => $examId
+    ],[
         // 'score' => $score,
         // 'is_submitted' => true,
         // 'submitted_at' => now()
-        'exam_score' =>$score,
-        'total_score' => $score,  //Temporary (will be updated later)
+        'exam_score' =>$examScore,
+        'test_score' => $testScore,
+        'total_score' => $total,  //Temporary (will be updated later)
+        'percentage' => $percentage,
+        'grade' => $this->grade($percentage),
         'is_submitted' => true,
         'submitted_at' => now()
     ]);
@@ -364,140 +397,102 @@ public function submitExam(Request $request)
     // return redirect()->route('student.exams')
     //     ->with('success','Exam submitted. Score: '.$score);
 
-        return view('students.result', compact('score','exam'));
+        return view('students.result', compact('score','exam', 'student'));
 }
 
-        /*
-public function submitExam(Request $request)
-{
-    $user = auth()->user();
-    $student = $user->student;
-
-    $exam = Exam::with('questions')->findOrFail($request->exam_id);
-
-    $score = 0;
-
-    foreach ($exam->questions as $question) {
-        $answer = $request->input('question_'.$question->id);
-
-        if ($answer === $question->correct_option) {
-            $score++;
-        }
-    }
-
-    return view('students.result', compact('score', 'exam'));
-} */
-// New Submit Exam ends here************************************
-
-
-
-//Submit exam answers
-   /* public function submitExam(Request $request){
-
-        // $student = Auth::guard('student')->user();
-
-        $result = ExamResult::where('student_id', $student->id)->where('exam_id', $request->exam_id)->firstOrFail();
-
-    //         if ($result->is_submitted) {
-    //     abort(403, 'Exam already submitted');
-    // }
-
-        // ❌ Already submitted
-    if ($result->is_submitted) {
-        return redirect()->route('student.exams')->with('error', 'Exam already submitted.');
-    }
-
-    // ⏰ Time check
-    $exam = Exam::findOrFail($request->exam_id);
-    $endTime = $result->started_at->addMinutes($exam->duration);
-
-    if (now()->gt($endTime)) {
-        $result->update([
-            'is_submitted' => true,
-            'submitted_at' => now()
-        ]);
-
-        return redirect()->route('student.exams')->with('error', 'Time elapsed. Exam auto-submitted.');
-    }
-
-    // ✅ Mark answers & calculate score
-    $score = 0; // calculate here
-
-    $result->update([
-        'score' => $score,
-        'is_submitted' => true,
-        'submitted_at' => now()
-    ]);
-
-    return redirect()->route('student.results')->with('success', 'Exam submitted successfully.');
-
-    // ================
-        ExamResult::create([
-        'student_id' => $student->id,
-        'exam_id'    => $request->exam_id,
-        'score'      => $score,
-        'submitted_at' => now(),
-    ]);
-    // return redirect()->route('student.results')->with('success', 'Exam submitted successfully');
-
-    /*
-
-        if (!$request->exam_id) {
-        abort(400, "Exam ID missing.");
-    }
-
-        $exam = Exam::with('questions')->findOrFail($request->exam_id);
-
-        // Fix: if no answers submitted
-            $answers = $request->answers ?? [];
-
-            if (!is_array($answers)) {
-                $answers = [];
-            }
-
-        $score = 0;
-
-
-        foreach ($request->answers as $question_id => $answer) {
-            $question = $exam->questions->find($question_id);
-            if ($question && $question->answer == $answer) $score++;
-        }
-
-        return view('students.result', compact('score', 'exam'));
-
-        *
-
-
-        // $total = count($request->answers ?? []);
-
-        // if ($request->answers) {
-        //     foreach ($request->answers as $question_id => $option_id) {
-        //         $option  =  Option::find($option_id);
-
-        //         if ($option && $option->is_correct) {
-        //             $score++;
-        //         }
-        //     }
-        // }
-        // return view('students.result', compact('score', 'total'));
-
-        // foreach ($request->answers as $question_id => $answer){
-        //     $question = Question::find($question_id);
-        //     if ($question->answer == $answer) $score++;
-        //     }
-        //     return view('student.exam-result', compact('score'));
-    }*/
 
         public function results()
-{
-    $student = auth()->user()->student;
+        {
+            $student = auth()->user()->student;
 
-    $result = ExamResult::where('student_id', $student->id)->latest()->first();
+            $result = ExamResult::where('student_id', $student->id)->latest()->first();
+            $sessions = SessionModel::all();
 
-    return view('students.result', [
-        'score' => $result->score ?? 0,
-        'exam' => $result->exam ?? null
-    ]);
-}
+            return view('students.result', [
+                'score' => $result->score ?? 0,
+                'exam' => $result->exam ?? null,
+                'sessions' => $sessions
+
+            ]);
+        }
+
+        // Admin Generate exam code for student CBT
+
+        public function generateCode($id)
+        {
+            $exam = \App\Models\Exam::findOrFail($id);
+
+            $exam->access_code = strtoupper(substr(md5(time()), 0, 6)); // e.g 6-digit code
+            $exam->save();
+
+            return back()->with('success', 'Access code generated: '.$exam->access_code);
+        }
+
+        // Show Student Form for Code Generate
+        public function showAccessForm($id)
+        {
+            $exam = \App\Models\Exam::findOrFail($id);
+
+            return view('students.exams.access_code', compact('exam'));
+        }
+
+        // Verify Generated access Code
+        public function verifyAccess(Request $request)
+        {
+            $exam = \App\Models\Exam::findOrFail($request->exam_id);
+            $student = auth()->user()->student;
+
+            //  Check access code
+            if ($request->access_code !== $exam->access_code) {
+                return back()->withErrors(['access_code' => 'Invalid access code']);
+            }
+
+            //  Check school fees (VERY IMPORTANT)
+            if ($student->fee_status !== 'paid') {
+                return back()->withErrors(['access_code' => 'You must pay school fees before taking exam']);
+            }
+
+            //  Allow access
+            return redirect()->route('student.exams.start', $exam->id);
+        }
+
+
+
+
+        // New eam result for students
+        /*
+        public function viewMyResult(Request $request)
+        {
+            $student = auth()->user()->student;
+
+            $results = \App\Models\ExamResult::with([
+                'student.class',
+                'exam',
+                'session',
+                'term',
+                'teacher'
+            ])
+            ->where('student_id', $student->id)
+            ->where('session_id', $request->session_id)
+            ->where('term_id', $request->term_id)
+            ->get();
+
+            if ($results->isEmpty()) {
+                return back()->with('error', 'No result found');
+            }
+
+            $total = $results->sum('score');
+            $count = max($results->count(), 1);
+            $percentage = $total / $count;
+
+            return view('students.student_results', [
+                'student' => $student,
+                'results' => $results,
+                'total_score' => $total,
+                'percentage' => round($percentage, 2),
+                'grade' => $this->getGrade($percentage),
+                'overall_grade' => $this->getGrade($percentage),
+            ]);
+        } */
 
 }

@@ -19,23 +19,24 @@ class CreateExamsTable extends Migration
             $table->unsignedBigInteger('class_id')->nullable();
             $table->string('title');
             $table->string('subject')->nullable();
-            $table->integer('duration')->default(30); // minutes
-            
+            $table->integer('duration')->default(60); // minutes
+
             $table->string('term')->nullable();
             $table->string('session')->nullable();
             $table->date('exam_date')->nullable();
             $table->boolean('is_active')->default(1);
+            $table->string('access_code')->nullable();
             // $table->unsignedBigInteger('class_id')->nullable();
             // $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade');
             // $table->foreignId('class_id')->constrained('classrooms')->onDelete('cascade');
-            
+
             // $table->unsignedBigInteger('term_id')->nullable();
             // $table->date('date');
             // $table->integer('duration');
             // $table->integer('total_marks');
-            
+
             // $table->foreignId('term_id')->nullable();
-            
+
             // $table->unsignedBigInteger('teacher_id');
             // $table->unsignedBigInteger('class_id');
             // $table->string('title');

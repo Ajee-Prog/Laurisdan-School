@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+
+
 {{-- <form method="GET" action="{{ route('admin.results') }}" class="row mb-3">
   <div class="col-md-3">
     <select name="session_id" class="form-control">
@@ -54,7 +56,9 @@
 
         @foreach($results as $result)
         <tr>
+            {{-- <td>{{ $result->student->user->name }}</td> --}}
             <td>{{ $result->student->user->name }}</td>
+
             <td>{{ $result->exam->title }}</td>
             <td>{{ $result->score }}</td>
             <td>
@@ -65,6 +69,47 @@
         </tr>
         @endforeach
     </table>
+
+    {{-- New Table --}}
+    <h3>Manage Student Results</h3>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Student</th>
+        <th>Subject</th>
+        <th>Exam Score</th>
+        <th>Test Score</th>
+        <th>Total</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach($results as $result)
+    <tr>
+        <td>{{ $result->student->name }}</td>
+        <td>{{ $result->exam->subject }}</td>
+        <td>{{ $result->exam_score }}</td>
+
+        <td>
+            <form action="{{ route('admin.results.test_score') }}" method="POST">
+                @csrf
+                <input type="hidden" name="result_id" value="{{ $result->id }}">
+
+                <input type="number"
+                       name="test_score"
+                       value="{{ $result->test_score }}"
+                       class="form-control">
+
+        </td>
+
+        <td>{{ $result->total_score }}</td>
+
+        <td>
+                <button class="btn btn-success btn-sm">Save</button>
+            </form>
+        </td>
+    </tr>
+    @endforeach
+</table>
 </div>
 
 @endsection

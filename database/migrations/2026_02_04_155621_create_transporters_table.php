@@ -15,6 +15,14 @@ class CreateTransportersTable extends Migration
     {
         Schema::create('transporters', function (Blueprint $table) {
             $table->id();
+
+            $table->string('driver_name');
+            $table->string('driver_phone');
+            $table->string('vehicle_no')->nullable();
+            $table->string('route')->nullable();
+            $table->integer('capacity')->nullable();
+            $table->string('image')->nullable();
+
             $table->timestamps();
         });
     }

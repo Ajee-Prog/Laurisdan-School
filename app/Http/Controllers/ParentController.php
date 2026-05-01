@@ -56,7 +56,7 @@ class ParentController extends Controller
          $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:parents',
-            
+
             'phone' => 'required',
             'address' => 'required',
             'password' => 'required|min:6',
@@ -95,7 +95,7 @@ class ParentController extends Controller
         //         'role' => 'parent'
         //         ]);
 
-        
+
 
         // Student::create($validated);
        $parent = ParentModel::create([
@@ -175,8 +175,8 @@ class ParentController extends Controller
             'email'     => $request->email,
             'phone'     => $request->phone,
             'address'   => $request->address,
-            'student_id' => $request->student_id 
-                            ? json_encode($request->student_id) 
+            'student_id' => $request->student_id
+                            ? json_encode($request->student_id)
                             : null,
         ]);
 
@@ -187,7 +187,7 @@ class ParentController extends Controller
     }
 
 
-    
+
 
     /**
      * Remove the specified resource from storage.
@@ -213,12 +213,63 @@ class ParentController extends Controller
 
 
     public function childResults()
-{
-    // $parent = auth()->user();
-    $parent = ParentModel::all();
+    {
+        // $parent = auth()->user();
+         $student = auth()->user()->student;
+        $parent = ParentModel::all();
 
-    $students = $parent->students()->with('results.exam')->get();
+        $students = $parent->students()->with('results.exam')->get();
 
-    return view('parents.results', compact('students'));
-}
+        return view('parents.results', compact('students'));
+    }
+
+    // New function implementation for result
+    public function viewResults(Request $request, $id)
+    {
+        $student = \App\Models\Student::findOrFail($id);
+
+        $results = \App\Models\ExamResult::with(['exam','term','session'])
+            ->where('student_id', $student->id)
+            ->where('term_id', $request->term_id)
+            ->where('session_id', $request->session_id)
+            ->get();
+
+        return view('parent.results', compact('student','results'));
+    }
+
+    // Lets compare the New from old up
+    // public function viewResults($childId)
+    // {
+    //     $parent = auth()->user();
+
+    //     $student = $parent->children()->findOrFail($childId);
+
+    //     $results = ExamResult::where('student_id', $student->id)->get();
+
+    //     return view('parent.results', compact('student','results'));
+    // }
+    // Compare ends
+
+    public function books(Request $request, $id)
+    {
+        $student = \App\Models\Student::findOrFail($id);
+
+        $books = \App\Models\Book::where('class_id', $student->class_id)
+            ->where('term_id', $request->term_id)
+            ->where('session_id', $request->session_id)
+            ->get();
+
+        return view('parent.books', compact('books','student'));
+    }
+
+    public function downloadPdf($id)
+    {
+        $student = \App\Models\Student::findOrFail($id);
+
+        $results = \App\Models\ExamResult::where('student_id', $id)->get();
+
+        $pdf = Pdf::loadView('parent.result_pdf', compact('student','results'));
+
+        return $pdf->download($student->name.'_result.pdf');
+    }
 }

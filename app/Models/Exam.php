@@ -42,4 +42,5 @@ class Exam extends Model
     public function students(){
         return $this->belongsToMany(Student::class, 'exam_student')->withPivot('score', 'status')->withTimestamps();
     }
+    //
 }

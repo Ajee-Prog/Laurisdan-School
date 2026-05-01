@@ -29,9 +29,9 @@ class User extends Authenticatable
     ];
 
     public function student()
-{
-    return $this->hasOne(\App\Models\Student::class);
-}
+    {
+        return $this->hasOne(\App\Models\Student::class);
+    }
 
     // public function student(){
     //     return $this->hasOne(Student::class, 'user_id');

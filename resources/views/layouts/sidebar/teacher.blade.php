@@ -11,7 +11,7 @@
     <a href="{{ route('classes.index') }}" class="nav-link text-white">My Classes</a>
   </li>
   <li class="nav-item">
-    <a href="{{ route('exams.index') }}" class="nav-link text-white">Exams</a>
+    <a href="{{ route('admin.exams.index') }}" class="nav-link text-white">Exams</a>
   </li>
   <li class="nav-item">
     <a href="{{ route('activities.index') }}" class="nav-link text-white">Activities</a>

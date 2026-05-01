@@ -12,14 +12,20 @@
 
     <h2>Student Dashboard</h2>
 
+
+
     @if($user->role==='student')
         {{-- <p class="text-muted">Welcome, {{ $student->first_name }} </p> --}}
-        <p class="text-muted">Welcome, {{ $user->first_name }} </p>
+        <p class="text-muted">Welcome, <strong>{{ $student->first_name }} </strong> </p>
+    @else
+        <h3>Welcome, {{ $student->name ?? 'Student' }}</h3>
+        <p>Your student profile is not linked yet.</p>
     @endif
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
+
 
     {{-- ================= PROFILE SUMMARY ================= --}}
     <div class="card shadow-sm mb-4">
@@ -34,12 +40,12 @@
                     style="border-radius:50%;">
             @endif
 
-            <h5>Your Profile</h5>
+            <h5>Your Profile </h5>
              <p>Fake Email: {{ $user->email ?? 'N/A' }}</p>
             <p><strong>Admission No:</strong> {{ $user->admission_no }}</p>
-            <p><strong>Student code :</strong> {{ $user->student_code }}</p>
-            <p><strong>Class:</strong> {{ $user->class->name ?? 'N/A' }}</p>
-            <p><strong>Parent Contact:</strong> {{ $user->parent_contact ?? 'N/A' }}</p>
+            <p><strong>Student code :</strong> {{ $student->student_code ?? 'N/A' }}</p>
+            <p><strong>Class:</strong> {{ $student->class->name ?? 'N/A' }}</p>
+            <p><strong>Parent Contact:</strong> {{ $student->parent_contact ?? 'N/A' }}</p>
             <a href="{{route('profile.show')}}" class="btn btn-info btn-sm">View Profile</a>
 
             @if(Route::has('student.profile'))
@@ -62,8 +68,11 @@
                             Duration: {{ $exam->duration }} minutes
 
                             <div class="mt-2">
-                                <a href="{{ route('student.exams.start', $exam->id) }}"
+                                {{-- <a href="{{ route('student.exams.start', $exam->id) }}"
+                                   class="btn btn-success btn-sm"> --}}
+                                   <a href="{{ route('student.exams.access', $exam->id) }}"
                                    class="btn btn-success btn-sm">
+
                                     Start Exam
                                 </a>
                             </div>
@@ -103,7 +112,7 @@
 </div>
 {{-- New End Here --}}
  /**
-<div class="container py-4" style="margin-top: 20px;">
+{{-- <div class="container py-4" style="margin-top: 20px;">
 
   <h2>Student Dashboard</h2>
 
@@ -132,7 +141,7 @@
           @endif
         </div>
       </div>
-    </div>
+    </div> --}}
 
 
 
@@ -141,7 +150,7 @@
 
 
 
-    <div class="col-md-4 mb-3">
+    {{-- <div class="col-md-4 mb-3">
       <div class="card shadow-sm">
         <div class="card-body text-center">
           <h5 class="card-title">My Exams</h5>---------------,,,,,,,,,,
@@ -166,9 +175,9 @@
               </div>
             @endforeach
           @else
-            <p class="text-muted">No exams available.</p>
+            <p class="text-muted">No exams available.</p> --}}
             {{-- If you have an exams list route, show it --}}
-            @if(Route::has('student.exams') || Route::has('student.exams.list'))
+            {{-- @if(Route::has('student.exams') || Route::has('student.exams.list'))
               <a href="{{ Route::has('student.exams') ? route('student.exams') : route('student.exams.list') }}" class="btn btn-outline-primary btn-sm">View Exams</a>
             @endif
           @endif
@@ -211,7 +220,7 @@
       <p class="mb-1"><strong>Class:</strong> {{ $student->schoolClass->name ?? ($student->class->name ?? 'N/A') }}</p> <br>
       <p class="mb-0"><strong>Parent Contact:</strong> {{ $student->parent_contact ?? 'N/A' }}</p>
     </div>
-  </div>
+  </div> --}}
 
 
 
@@ -219,7 +228,7 @@
 
   <!-- Not used But its Duplicating -->
     {{-- ================== PROFILE CARD ================== --}}
-    <div class="card shadow-sm mb-3">
+    {{-- <div class="card shadow-sm mb-3">
         <div class="card-body">
             <h5>Your Profile ====****</h5>
 
@@ -231,13 +240,13 @@
 
             <a href="{{route('profile.show')}}" class="btn btn-info btn-sm">View Profile</a>
         </div>
-    </div>
+    </div> --}}
 
 
     <div class="row">
 
         {{-- ================== MY EXAMS ================== --}}
-      <div class="col-md-4 mb-3">
+      {{-- <div class="col-md-4 mb-3">
             <div class="card shadow-sm">
                 <div class="card-body text-center">
                     <h5 class="card-title">My Exams</h5>
@@ -256,7 +265,7 @@
 
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         {{-- ================== START EXAM ================== --}}
         <div class="col-md-4 mb-3">

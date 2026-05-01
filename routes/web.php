@@ -184,7 +184,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('questions', QuestionController::class)->except(['create', 'store']);
 
         // Refactor Exam controller start here
-            Route::get('/exams', [AdminExamController::class,'index'])->name('admin.exams.index');
+            Route::get('/exams', [AdminExamController::class,'index'])->name('admin.exams.index'); //This used for admin
             Route::get('/exams/create', [AdminExamController::class,'create'])->name('admin.exams.create');
             Route::post('/exams', [AdminExamController::class,'store'])->name('admin.exams.store');
             // Route::get('/exams/{exam}', [AdminExamController::class,'show'])->name('admin.exams.show');
@@ -199,9 +199,31 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/results/{id}/edit', [App\Http\Controllers\Admin\AdminResultController::class, 'edit'])->name('admin.results.edit');
         // Route::post('/admin/results/{id}/update', [AdminResultController::class, 'update'])->name('admin.results.update');
         Route::post('/admin/results/{id}/update', [App\Http\Controllers\Admin\AdminResultController::class, 'update'])->name('admin.results.update');
+        Route::post('/admin/results/test-score', [App\Http\Controllers\Admin\AdminResultController::class, 'updateTestScore'])
+                ->name('admin.results.test_score');
 
+        //Admin Create CA Ends here..
 
-           //Admin Create CA Ends here..
+        // Admin Generate Code start here
+            Route::get('/admin/exams/{id}/generate-code', [AdminExamController::class, 'generateCode'])
+                    ->name('admin.exams.generate.code');
+
+                    // Not Reusable access code
+                    Route::get('/admin/exams/{exam}/student/{student}/generate-code',
+                            [AdminExamController::class, 'generateStudentCode']
+                        )->name('admin.exams.student.code');
+        // Admin Generate Code ends here
+
+        // Admin add Bulk Exam
+        Route::get('/admin/exams/{exam}/questions/bulk-create', function ($examId) {
+                $exam = \App\Models\Exam::findOrFail($examId);
+                return view('admin.questions.bulk_create', compact('exam'));
+            })->name('admin.questions.bulk.create');
+
+            Route::post('/admin/exams/{exam}/questions/bulk',
+                            [AdminExamController::class, 'storeBulkQuestions']
+                        )->name('admin.questions.bulk.store');
+        // Admin Bulk exam ends here
 
 
 
@@ -333,6 +355,12 @@ Route::middleware(['auth'])->group(function () {
         // Route::get('/parent/dashboard', [ParentController::class, 'index'])->name('parent.dashboard');
         Route::get('/parent/dashboard', [DashboardController::class, 'parentDashboard'])->name('parent.dashboard');
         Route::get('/parent/results', [ParentController::class, 'childResults'])->name('parent.results');
+        // new added with result checking for chil
+        Route::get('/child/{id}/results', [ParentController::class, 'viewResults'])->name('results');
+
+        Route::get('/child/{id}/books', [ParentController::class, 'books'])->name('books');
+
+        Route::get('/child/{id}/result/pdf', [ParentController::class, 'downloadPdf'])->name('result.pdf');
     });
 
 
@@ -347,7 +375,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/student/fees', [FeeController::class, 'studentHistory'])->name('student.fee.history')->middleware('role:student');
 
     // receipts ends
-}); //General auths admin ends here
+    }); //General auths admin ends here
 
 // Student with Admission No
     Route::middleware(['auth','role:student'])->group(function () {
@@ -363,6 +391,15 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/student/exam/{exam}/start', [ExamController::class, 'startExamCBT'])->name('student.exams.start');
 
             Route::post('/student/exam/submit', [ExamController::class, 'submitExam'])->name('student.exams.submit');
+
+
+            // Student Generate code Form
+                Route::get('/student/exam/{id}/access', [ExamController::class, 'showAccessForm'])
+                    ->name('student.exams.access');
+
+                Route::post('/student/exam/verify', [ExamController::class, 'verifyAccess'])
+                    ->name('student.exams.verify');
+            //  Student Generate Code form ends here
 
         // ************ This is to use clean ends here ************
         // Route::get('/student/dashboard', [DashboardController::class, 'index'])->name('dashboard.student');

@@ -35,4 +35,33 @@ class AdminResultController extends Controller
         return redirect()->route('admin.results.index')
             ->with('success','Result updated successfully');
     }
+
+
+
+    // New update test score
+    private function grade($score)
+    {
+        if ($score >= 70) return 'A';
+        if ($score >= 60) return 'B';
+        if ($score >= 50) return 'C';
+        if ($score >= 45) return 'D';
+        if ($score >= 40) return 'E';
+        return 'F';
+    }
+
+    public function updateTestScore(Request $request)
+    {
+        $result = ExamResult::findOrFail($request->result_id);
+
+        $result->test_score = $request->test_score;
+
+        // Recalculate
+        $result->total_score = $result->test_score + $result->exam_score;
+        $result->percentage = $result->total_score;
+        $result->grade = $this->grade($result->total_score);
+
+        $result->save();
+
+        return back()->with('success', 'Test score added successfully');
+    }
 }

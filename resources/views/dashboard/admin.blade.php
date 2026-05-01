@@ -18,6 +18,8 @@
    <div class="container py-4">
         <h2>Admin Dashboard</h2>
 
+
+
         <div class="row mt-3">
             <div class="col-md-3">
             <div class="card p-3">
@@ -79,12 +81,41 @@
 <a href="{{ route('admin.results.index') }}">Manage Results </a>
 {{-- <a href="{{route('admin.results.edit')}}"> Update Results</a> --}}
 
+{{-- <a href="{{ route('admin.questions.bulk.create', $exam->id) }}"
+   class="btn btn-primary">
+   Add 20 Questions
+</a> --}}
+{{-- This below is to be used --}}
+{{-- @foreach($exams as $exam)
+    <a href="{{ route('admin.questions.bulk.create', $exam->id) }}"
+       class="btn btn-primary mb-2">
+       Add Questions for {{ $exam->title }}
+    </a>
+@endforeach --}}
+{{-- Below ends here --}}
+
+
+{{-- Generat Not reusable cod --}}
+{{-- <a href="{{ route('admin.exams.student.code', [$exam->id, $student->id]) }}"
+   class="btn btn-warning btn-sm">
+   Generate Not Reusable Code
+</a> --}}
+{{-- Generate not reusable code ends here --}}
+
 
   <div class="row">
     <div class="col-md-3"><a href="{{ route('students.index') }}" class="btn btn-primary w-100 mb-2">Manage Students</a></div>
     <div class="col-md-3">
         <a href="{{ route('admin.results.index') }}" class="btn btn-primary w-100 mb-2">Manage Results</a>
     </div>
+
+    {{-- <div class="col-md-3">
+        <a href="{{ route('admin.exams.generate.code', $exam->id) }}" class="btn btn-warning w-100 mb-2">Generate Exam Code</a>
+        <p> Code: {{ $exam->access_code ?? 'Not generated'}}</p>
+
+    </div> --}}
+
+
     <div class="col-md-3"><a href="{{ route('teachers.index') }}" class="btn btn-secondary w-100 mb-2">Manage Teachers</a></div>
     <div class="col-md-3"><a href="{{ route('parents.index') }}" class="btn btn-success w-100 mb-2">Manage Parents</a></div>
     <div class="col-md-3"><a href="{{ route('classes.index') }}" class="btn btn-warning w-100 mb-2">Manage Classes</a></div>

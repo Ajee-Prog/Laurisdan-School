@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Exam;
+use App\Models\ExamAccess;
 use App\Models\SchoolClass;
 use App\Models\Term;
 
@@ -68,5 +69,60 @@ class AdminExamController extends Controller
         $exam->delete();
 
         return back()->with('success','Exam deleted.');
+    }
+
+    public function generateCode($id)
+    {
+        $exam = \App\Models\Exam::findOrFail($id);
+
+        $exam->access_code = strtoupper(substr(md5(time()), 0, 6)); // e.g 6-digit code
+        $exam->save();
+
+        return back()->with('success', 'Access code generated: '.$exam->access_code);
+    }
+
+    public function storeBulkQuestions(Request $request, $examId)
+    {
+        // $exams = Exam::all();
+
+
+        for ($i = 1; $i <= 20; $i++) {
+
+            if ($request->input("question_text_$i") && $request->input("correct_option_$i")) {
+
+                \App\Models\Question::create([
+                    'exam_id' => $examId,
+                    'subject' => $request->subject,
+                    'question_text' => $request->input("question_text_$i"),
+                    'option_a' => $request->input("option_a_$i"),
+                    'option_b' => $request->input("option_b_$i"),
+                    'option_c' => $request->input("option_c_$i"),
+                    'option_d' => $request->input("option_d_$i"),
+                    'correct_option' => $request->input("correct_option_$i"),
+                ]);
+            }
+        }
+
+        return back()->with('success', 'Questions added successfully!');
+        // return view('dashboard.admin', compact('exams'));
+    }
+
+    // Exam access code Table model
+    public function generateStudentCode($examId, $studentId)
+    {
+        $code = strtoupper(substr(md5(uniqid()), 0, 6));
+
+        ExamAccess::updateOrCreate(
+            [
+                'exam_id' => $examId,
+                'student_id' => $studentId
+            ],
+            [
+                'code' => $code,
+                'used' => false
+            ]
+        );
+
+        return back()->with('success', 'Code generated: '.$code);
     }
 }

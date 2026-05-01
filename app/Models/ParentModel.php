@@ -10,7 +10,7 @@ class ParentModel extends Model
     use HasFactory;
     protected $table = 'parents';
     protected $fillable = ['user_id','name','relation', 'email', 'phone', 'address', 'image', 'password'];
-    
+
 
 
     protected $hidden = ['password'];
@@ -18,11 +18,11 @@ class ParentModel extends Model
     protected $casts = [
         'student_id' => 'array',
     ];
-   
+
 
     // protected $hidden = ['password', 'remember_token'];
 
-    
+
     public function user(){
         return $this->belongsTo(User::class);
     }
@@ -31,5 +31,9 @@ class ParentModel extends Model
         return $this->hasMany(Student::class, 'parent_id');
     }
 
-    
+    public function children(){
+        return $this->hasMany(Student::class, 'parent_id');
+    }
+
+
 }
