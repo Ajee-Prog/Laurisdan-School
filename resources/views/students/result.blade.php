@@ -1,9 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-4 text-center" style="margin-top: 60px;">
-    {{-- ================= PROFILE SUMMARY ================= --}}
-    <div class="card shadow-sm mb-4">
+
+<div class="card shadow-sm mb-4">
         <div class="row align-center" style=" align-items: center; justify-content: center; ">
             <div class="col-4">
                 <img src="{{asset('assets/images/laurisdanLogo1.jpg')}}"  style="width: 40p; height:60px; " alt="">
@@ -26,8 +25,260 @@
             </div>
         </div>
 
-    </div>
+</div>
     {{-- New ends here --}}
+    {{-- Student details Start here --}}
+    {{-- New Result page design start here --}}
+    <section class="mt-4 mx-2">
+        <div class="row">
+            <div class="col-9">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <h3 class="bordered" style="border: 1px solid black">FIRST TERM</h3>
+                        <tr>
+                            <th>NAMES</th>
+                            <th>OKONKWO AMALACHUKWU</th>
+                            <th>TERM</th>
+                            <th>THIRD</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>CLASS</b></td>
+                            <td>PRIMARY 4</td>
+                            <td></td>
+                            <td><b> TIME SCHOOL OPENED</b></td>
+                            <td>110</td>
+                        </tr>
+                        <tr>
+                            <td><b>DATE OF BIRTH</b></td>
+                            <td>15TH MARCH 2011</td>
+                            <td></td>
+                            <td><b> TIME PRESENT</b></td>
+                            <td>110</td>
+                        </tr>
+                        <tr>
+                            <td><b>GENDER</b></td>
+                            <td>FEMALE</td>
+                            <td><b> WEIGHT</b></td>
+                            <td>54KG</td>
+                            <td>TIME ABSENT</td>
+                        </tr>
+                        <tr>
+                            <td><b>SESSION</b></td>
+                            <td>2024/2025</td>
+                            <td><b> HEIGHT</b></td>
+                            <td>5FT 3 INCH</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3 class="bordered text-center" style="border: 1px solid black; font-weight:bold; justify-content:center; margin-left: 30%; margin-top:0%">END OF TERM REPORT</h3>
+            </div>
+            {{-- Second Table start here --}}
+            <div class="col-3">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <h3 class="bordered" style="border: 1px solid black">SECOND TERM</h3>
+                        <tr>
+                            <th>MARKS OBTAINABLE</th>
+                            <th>5100</th>
+                            {{-- <th>1st Term Exam (60)</th>
+                            <th>% Marks obtain</th>
+                            <th>Grade</th> --}}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{-- @foreach ($subjects as $key => $subject) --}}
+
+                        <tr>
+                            <td>MARKS OBTAINABLE</td>
+                            <td>5100</td>
+                            {{-- <td>exam_score</td>
+                            <td>score</td>
+                            <td>
+                                Grading
+
+                            </td> --}}
+                        </tr>
+                        <tr>
+                            <td>MARKS OBTAINED</td>
+                            <td>3318</td>
+                            {{-- <td>50</td>
+                            <td>90</td>
+                            <td>
+                                A
+
+                            </td> --}}
+                        </tr>
+                        <tr>
+                            <td>PERCENTAGE</td>
+                            <td>65%</td>
+                            {{-- <td>50</td>
+                            <td>90</td>
+                            <td>
+                                A
+
+                            </td> --}}
+                        </tr>
+                        <tr>
+                            <td>OVERALL GRADE</td>
+                            <td>C</td>
+                            {{-- <td>49</td>
+                            <td>89</td>
+                            <td>
+                                B
+
+                            </td> --}}
+                        </tr>
+
+                        {{-- @endforeach --}}
+                    </tbody>
+                    <tbody>
+                        {{-- @foreach ($subjects as $key => $subject)
+
+                        <tr>
+                            <td>$subject->subject</td>
+                            <td>$subject->ca_score</td>
+                            <td>$subject->exam_score</td>
+                            <td>$subject->score</td>
+                            <td>
+                                @if ($subject->score >= 90 ?? )
+                                A
+                                @elseif ($subject->score >= 70 ?? )
+                                B
+                                @elseif ($subject->score >= 60 ?? )
+                                C
+                                @elseif ($subject->score >= 50 ?? )
+                                D
+
+                                @else
+                                NI
+
+                                @endif
+                            </td>
+                        </tr>
+
+                        {{-- @endforeach --}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    {{-- New Result page design Ends here --}}
+    {{-- Student details ends here --}}
+<div class="container py-4 text-center" style="margin-top: 60px;">
+    {{-- New Result page design start here --}}
+    <section class="mt-4">
+        <div class="row">
+            <div class="col-6">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <h3 class="bordered" style="border: 1px solid black">FIRST TERM</h3>
+                        <tr>
+                            <th>SUBJECTS</th>
+                            <th>1st Term C/A(40)</th>
+                            <th>1st Term Exam (60)</th>
+                            <th>% Marks obtain</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            {{-- Second Table start here --}}
+            <div class="col-4">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <h3 class="bordered" style="border: 1px solid black">SECOND TERM</h3>
+                        <tr>
+                            <th>SUBJECTS</th>
+                            <th>1st Term C/A(40)</th>
+                            <th>1st Term Exam (60)</th>
+                            <th>% Marks obtain</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{-- @foreach ($subjects as $key => $subject) --}}
+
+                        <tr>
+                            <td>subject</td>
+                            <td>ca_score</td>
+                            <td>exam_score</td>
+                            <td>score</td>
+                            <td>
+                                Grading
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Computer</td>
+                            <td>40</td>
+                            <td>50</td>
+                            <td>90</td>
+                            <td>
+                                A
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Maths</td>
+                            <td>40</td>
+                            <td>50</td>
+                            <td>90</td>
+                            <td>
+                                A
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Maths</td>
+                            <td>40</td>
+                            <td>49</td>
+                            <td>89</td>
+                            <td>
+                                B
+
+                            </td>
+                        </tr>
+
+                        {{-- @endforeach --}}
+                    </tbody>
+                    <tbody>
+                        {{-- @foreach ($subjects as $key => $subject)
+
+                        <tr>
+                            <td>$subject->subject</td>
+                            <td>$subject->ca_score</td>
+                            <td>$subject->exam_score</td>
+                            <td>$subject->score</td>
+                            <td>
+                                @if ($subject->score >= 90 ?? )
+                                A
+                                @elseif ($subject->score >= 70 ?? )
+                                B
+                                @elseif ($subject->score >= 60 ?? )
+                                C
+                                @elseif ($subject->score >= 50 ?? )
+                                D
+
+                                @else
+                                NI
+
+                                @endif
+                            </td>
+                        </tr>
+
+                        {{-- @endforeach --}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    {{-- New Result page design Ends here --}}
+    {{-- ================= PROFILE SUMMARY ================= --}}
+
   <h2>Exam Result</h2>
 
   @if(session('success'))
