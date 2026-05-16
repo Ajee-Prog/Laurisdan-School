@@ -16,7 +16,7 @@
 <table class="table table-bordered">
   <thead>
     <tr>
-      <th>ID</th>
+      <th>IDs</th>
       <th>Title</th>
       <th>Date</th>
       <th>Class</th>

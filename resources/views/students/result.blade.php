@@ -288,7 +288,8 @@
   {{-- ************* --}}
     <h2>Exam Completed</h2>
     <p><strong>{{ $exam->title ?? 'N/A'}}</strong></p>
-    <h3>Your Score: {{ $score }} / {{ $total ?? 'N/A'}}</h3>
+    {{-- <h3>Your Score: {{ $score }} / {{ $total ?? 'N/A'}}</h3> --}}
+    <h3>Your Score: {{ $results }} / {{ $total ?? 'N/A'}}</h3>
 
     <a href="{{ route('dashboard') }}" class="btn btn-success">
         Back to Dashboard
@@ -296,8 +297,9 @@
   {{-- ******************* --}}
 
   <p class="mt-3">
-    You scored <strong>{{ $score }}</strong> out of
-    {{-- <strong>{{ $total }}</strong>.</p> --}}
+    {{-- You scored <strong>{{ $score }}</strong> out of --}}
+    You scored <strong>{{ $results }}</strong> out of
+    <strong>{{ $total }}</strong>.</p>
 
   {{-- @if($score >= ($total/2))
     <div class="alert alert-success mt-3">Congratulations! You passed 🎉</div>
@@ -313,31 +315,31 @@
   <div class="col-md-3">
     <select name="session_id" class="form-control">
       <option value="">-- All Sessions --</option>
-      {{-- @foreach($sessions as $s)
+      @foreach($sessions as $s)
         <option value="{{ $s->id }}" {{ request('session_id') == $s->id ? 'selected' : '' }}>
           {{ $s->name }}
         </option>
-      @endforeach --}}
+      @endforeach
     </select>
   </div>
   <div class="col-md-3">
     <select name="term_id" class="form-control">
       <option value="">-- All Terms --</option>
-      {{-- @foreach($terms as $t)
+      @foreach($terms as $t)
         <option value="{{ $t->id }}" {{ request('term_id') == $t->id ? 'selected' : '' }}>
           {{ $t->name }}
         </option>
-      @endforeach --}}
+      @endforeach
     </select>
   </div>
   <div class="col-md-3">
     <select name="subject_id" class="form-control">
       <option value="">-- All Subjects --</option>
-      {{-- @foreach($subjects as $sub)
+      @foreach($subjects as $sub)
         <option value="{{ $sub->id }}" {{ request('subject_id') == $sub->id ? 'selected' : '' }}>
           {{ $sub->name }}
         </option>
-      @endforeach --}}
+      @endforeach
     </select>
   </div>
   <div class="col-md-3">
@@ -380,4 +382,74 @@
     </tr>
     @endforeach --}}
 </table>
+
+{{-- New correct but testing for latest design start here --}}
+<table class="table table-bordered">
+<thead>
+<tr>
+    <th>Subject</th>
+    <th>Test</th>
+    <th>Exam</th>
+    <th>Total</th>
+    <th>%</th>
+    <th>Grade</th>
+</tr>
+</thead>
+
+<tbody>
+@foreach($results as $result)
+<tr>
+    <td>{{ $result->exam->subject->name ?? '' }}</td>
+    <td>{{ $result->test_score }}</td>
+    <td>{{ $result->exam_score }}</td>
+    <td>{{ $result->total_score }}</td>
+    <td>{{ $result->percentage }}%</td>
+    <td>{{ $result->grade }}</td>
+</tr>
+@endforeach
+</tbody>
+</table>
+{{-- New correct but testing for latest design ends here --}}
+
+<!-- Just Testing Tbe table flow example-->
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Session</th>
+            <th>Term</th>
+            <th>Test Score</th>
+            <th>Exam Score</th>
+            <th>Total</th>
+            <th>Grade</th>
+            <th>Psychomotor</th>
+            <th>Teacher Comment</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @forelse($results as $res)
+        <tr>
+            <td>{{ $res->subject->name ?? '-' }}</td>
+            <td>{{ $res->session->name ?? '-' }}</td>
+            <td>{{ $res->term->name ?? '-' }}</td>
+            <td>{{ $res->test_score }}</td>
+            <td>{{ $res->exam_score }}</td>
+            <td><strong>{{ $res->total }}</strong></td>
+            <td>{{ $res->grade }}</td>
+            <td>{{ $res->psychomotor }}</td>
+            <td>{{ $res->teacher_comment }}</td>
+        </tr>
+        @empty
+        <tr>
+            <td colspan="9" class="text-center text-danger">
+                No results found
+            </td>
+        </tr>
+        @endforelse
+    </tbody>
+</table>
+
+<!-- Just Testing Ends here-->
+
 @endsection

@@ -27,17 +27,27 @@ class CreateExamResultsTable extends Migration
 
             // $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->integer('ca_score')->nullable()->default(0);
-            $table->integer('score')->default(0);
+            $table->integer('test_score')->default(0);
             $table->integer('exam_score')->default(0);
             // $table->integer('total_score')->default(0);
             $table->integer('total_questions')->default(0);
             $table->integer('total')->default(0);
-            $table->integer('percentage')->default(0);
+            // $table->integer('percentage')->default(0);
+            $table->decimal('percentage',5 ,2)->default(0);
+
+            $table->string('grade')->nullable();
             $table->string('status')->default('FAIL');
             $table->timestamp('started_at')->nullable();
             $table->timestamp('submitted_at')->nullable();
             $table->boolean('is_submitted')->default(false);
+            $table->string('psychomotor')->nullable();
+            $table->string('teacher_comment')->nullable();
             $table->timestamps();
+
+             $table->index('term_id');
+                $table->index('session_id');
+                $table->index('subject_id');
+
             $table->foreign('exam_id')->references('id')->on('exams')->onDelete('cascade');
             $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade');
         });

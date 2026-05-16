@@ -24,10 +24,10 @@
       <label>Middle Name</label>
       <input type="text" name="middle_name" class="form-control" placeholder=" Other Name " required>
     </div>
-    
+
   </div>
 
-  
+
 
   <!-- <div class="row mb-3">
     <div class="col">
@@ -62,7 +62,7 @@
       <input type="text" name="student_code" class="form-control" required>
     </div>
     <!-- <div class="col">
-      <label>admission No</label> 
+      <label>admission No</label>
     <input type="text" name="admission_no" class="form-control" required>
     <!\-- This is new Example for Admission Number....I will choose the best fitted ones -\->
      <div class="mb-3">
@@ -85,7 +85,7 @@
             <input type="hidden" name="admission_no" value="{{ $generatedAdmissionNo }}">
 
             <div class="mb-3">
-             
+
               <input type="text"
                     class="form-control"
                     value="Auto-generated"
@@ -114,31 +114,31 @@
       <label>Place Of Birth</label>
       <input type="text" name="place_birth" class="form-control" placeholder="Place OF Birth" required>
     </div>
-    
+
     <!-- Auto-generated admission number -->
         <div class="col">
             <label>Age Number (Auto-Calculated)</label>
             <input type="text" class="form-control" id="age" value="Auto-generated " readonly>
 
             <div class="mb-3">
-             
-              
+
+
               <small class="text-muted">
                   Admission number will be generated automatically
               </small>
             </div>
         </div>
 
-       
+
   </div>
    <!-- DOB ends -->
-    
+
   <div class="row mb-3">
     <div class="col">
       <label>Parent</label>
       <select name="parent_id" class="form-control">
         @foreach(App\Models\ParentModel::all() as $p)
-          <option value="{{ $p->id }}">{{ $p->full_name ?? ''}}</option>
+          <option value="{{ $p->id }}">{{ $p->name ?? ''}}</option>
         @endforeach
       </select>
     </div>
@@ -151,7 +151,7 @@
       </select>
     </div>
 
-    
+
 
     <!-- <div class="col">
       <label>User</label>
@@ -178,17 +178,17 @@
       <input type="text" name="lga" class="form-control" placeholder="Local Government" required>
     </div>
   </div>
-  
+
 
   <!-- 'user_id', 'class_id', 'parent_id','date_of_birth', 'email' ,'image', 'phone', 'gender', 'admission_no', 'state', 'nationality','address',  'parent_contact','religion' -->
   <div class="mb-3">
-    
+
   </div>
   <div class="mb-3">
-    
+
   </div>
   <div class="mb-3">
-    
+
   </div>
   <div class="mb-3">
     <label>Address</label>

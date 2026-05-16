@@ -24,6 +24,11 @@
             <a href="{{ route('exams.questions.create', $exam->id) }}" class="btn btn-primary btn-sm">
                 + Add Question
             </a>
+            <a href="{{ route('admin.questions.bulk.create', $exam->id) }}" class="btn btn-primary btn-sm">
+                + Add Question (Bulk)
+            </a>
+
+{{-- route('admin.questions.bulk.create', $exam->id) --}}
         </div>
     </div>
 

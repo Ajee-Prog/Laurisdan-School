@@ -38,9 +38,11 @@ class AdminExamController extends Controller
             'title'     => 'required|string|max:255',
             'class_id'  => 'required|exists:school_classes,id',
             'term_id'   => 'required|exists:terms,id',
+            'session_id'   => 'required|exists:sessions,id',
             'exam_date' => 'required|date',
             'duration'  => 'required|integer',
-            'subject'   => 'required|string'
+            'subject_id'   => 'required|exists:subjects,id',  //ADD
+            // 'subject'   => 'required|string'
         ]);
 
         Exam::create($data);
@@ -92,13 +94,19 @@ class AdminExamController extends Controller
 
                 \App\Models\Question::create([
                     'exam_id' => $examId,
-                    'subject' => $request->subject,
+                    // 'subject' => $request->subject,
+                    'subject_id' => $request->subject_id,
+                    'session_id' => $request->session_id,
+                    'term_id' => $request->term_id,
                     'question_text' => $request->input("question_text_$i"),
+                    'type' => $request->type,
                     'option_a' => $request->input("option_a_$i"),
                     'option_b' => $request->input("option_b_$i"),
                     'option_c' => $request->input("option_c_$i"),
                     'option_d' => $request->input("option_d_$i"),
                     'correct_option' => $request->input("correct_option_$i"),
+                    // 'correct_answer' => $request->correct_answer,
+                    'correct_answer' => $request->input("correct_answer_$i"),
                 ]);
             }
         }

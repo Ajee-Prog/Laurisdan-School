@@ -12,10 +12,10 @@
   <a href="{{ route('students.export.pdf') }}" class="btn btn-primary mb-3">Export PDF</a>
 </div>
 
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-sm table-striped">
   <thead>
     <tr>
-      <th>ID</th>
+      <th>S/N</th>
       <th>Admission No</th>
       <th>First Name</th>
       <th>Last Name</th>
@@ -43,7 +43,7 @@
         <td>{{ $student->class->name ?? 'N/A' }}</td>
         <td>{{ $student->age }} Years</td>
 
-        <td>{{ $student->parent->full_name ?? '  -  ' }}</td>
+        <td>{{ $student->parent->name ?? '  -  ' }}</td>
         <td>{{ $student->parent_contact }}</td>
         <td>@if($student->image)
           <img src="{{asset('storage/'.$student->image) }}" width="60" class="rounded" alt="">

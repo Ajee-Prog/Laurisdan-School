@@ -17,10 +17,10 @@
                 {{-- @foreach($exams as $ex) --}}
                     <option value="{{ $exam->id }}">{{ $exam->name }}</option>
                 {{-- @endforeach --}}
-                
+
             </select>
         </div>
-        
+
 
         <div class="mb-3">
             <label>Subject</label>
@@ -60,6 +60,13 @@
             </select>
         </div>
 
+        {{-- Qquestion type either fillable or not --}}
+            <select name="type" class="form-control mb-3">
+                <option value="mcq">Multiple Choice</option>
+                <option value="fill">Fill in the Gap</option>
+            </select>
+        {{-- Qquestion type either fillable or not --}}
+
         {{-- QUESTION --}}
         <div class="mb-3">
             <label class="form-label">Question</label>
@@ -88,6 +95,13 @@
             </select>
         </div>
 
+        {{-- New added testing correct answer --}}
+        <div id="fillAnswer" style="display:none;">
+            <label>Correct Answer</label>
+            <input type="text" name="correct_answer" class="form-control">
+        </div>
+        {{-- New added testing correct answer ends --}}
+
         <button class="btn btn-primary mt-2">Save Question</button>
 
     </form>
@@ -102,7 +116,7 @@
     <div class="mb-3">
         <label for="">Session</label>
         <select name="session_id" class="form-control" id="">
-            @foreach($sessions as $s) 
+            @foreach($sessions as $s)
                 <option value="{{$s->id}}">{{$s->name}}</option>
             @endforeach
         </select>
@@ -111,7 +125,7 @@
     <div class="mb-3">
         <label for="">Term</label>
         <select name="term_id" class="form-control" id="">
-            @foreach($terms as $t) 
+            @foreach($terms as $t)
                 <option value="{{$t->id}}">{{$t->name}}</option>
             @endforeach
         </select>
@@ -120,7 +134,7 @@
     <div class="mb-3">
         <label for="">Subject</label>
         <select name="subject_id" class="form-control" id="">
-            @foreach($subjects as $sub) 
+            @foreach($subjects as $sub)
                 <option value="{{$sub->id}}">{{$sub->name}}</option>
             @endforeach
         </select>
@@ -163,7 +177,7 @@
     <div class="mb-3">
         <label for="">Session</label>
         <select name="session_id" class="form-control" id="">
-            @foreach(\App\Models\SessionModel::all() as $s) 
+            @foreach(\App\Models\SessionModel::all() as $s)
                 <option value="{{$s->id}}">{{$s->name}}</option>
             @endforeach
         </select>
@@ -172,7 +186,7 @@
     <div class="mb-3">
         <label for="">Term</label>
         <select name="term_id" class="form-control" id="">
-            @foreach(\App\Models\Term::all() as $t) 
+            @foreach(\App\Models\Term::all() as $t)
                 <option value="{{$t->id}}">{{$t->name}}</option>
             @endforeach
         </select>
@@ -181,7 +195,7 @@
     <div class="mb-3">
         <label for="">Subject</label>
         <select name="subject_id" class="form-control" id="">
-            @foreach(\App\Models\Subject::all() as $sub) 
+            @foreach(\App\Models\Subject::all() as $sub)
                 <option value="{{$sub->id}}">{{$sub->name}}</option>
             @endforeach
         </select>
@@ -258,17 +272,17 @@
       <select name="exam_id" class="form-control">
         <option value=""> -- Select exam -- </option>
 
-                
+
                 {{-- {{ @foreach($exam as $e)
                 <option value="{{ $e->id }}" >{{ $e->title }}</option>
                 @endforeach }} --}}
-           
 
 
 
 
 
-        
+
+
       </select>
     </div>
 
@@ -316,5 +330,13 @@
   </form>
 </div>
 <!-- To choose ends here -->
+
+{{-- JS Function for correct fill answer display --}}
+<script>
+document.querySelector('[name="type"]').addEventListener('change', function () {
+    document.getElementById('fillAnswer').style.display =
+        this.value === 'fill' ? 'block' : 'none';
+});
+</script>
 @endsection
 

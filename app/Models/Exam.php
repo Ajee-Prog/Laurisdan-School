@@ -15,10 +15,16 @@ class Exam extends Model
     //     'teacher_id', 'class_id', 'title', 'subject', 'term', 'session'
     // ];
 
-    protected $fillable = ['title','teacher_id','class_id','term_id','duration','subject','term','session_id', 'exam_date'];
+    protected $fillable = ['title','teacher_id','class_id','term_id','duration','subject', 'subject_id','term','session_id', 'exam_date'];
 
     public function class(){
         return $this->belongsTo(SchoolClass::class, 'class_id');
+    }
+
+    // New added SUBJECT
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class);
     }
 
     public function term(){

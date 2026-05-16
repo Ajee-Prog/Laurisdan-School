@@ -21,6 +21,10 @@ class CreateFeesTable extends Migration
             // $table->integer('amount');
             // $table->timestamps();
             $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->unsignedBigInteger('term_id')->nullable();
+            $table->unsignedBigInteger('session_id')->nullable();
+
             $table->string('session');
             $table->string('term');
             $table->string('class');
@@ -35,6 +39,10 @@ class CreateFeesTable extends Migration
                 ->references('id')
                 ->on('students')
                 ->onDelete('cascade');
+
+                $table->index('term_id');
+                $table->index('session_id');
+                $table->index('parent_id');
         });
     }
 

@@ -10,7 +10,7 @@ class ExamResult extends Model
     use HasFactory;
     // protected $fillable = ['student_id','subject', 'score'];
      protected $fillable = [	'exam_id',	'student_id','subject_id','session_id','term_id',
-     	'ca_score','score','exam_score','total_score',	'total_questions',
+     	'ca_score','test_score','exam_score','total',	'total_questions',
      	'started_at',	'submitted_at',	'is_submitted',	'created_at',	'updated_at'];
     // protected $fillable = ['student_id', 'exam_id','subject_id','session_id','term_id','subject', 'score', 'total', 'taken_at'];
 
@@ -28,6 +28,12 @@ protected $casts = [
     {
         return $this->belongsTo(Exam::class);
     }
+
+    // New added
+    public function subject()
+{
+    return $this->belongsTo(Subject::class);
+}
 
     // New implementation
     public function session()

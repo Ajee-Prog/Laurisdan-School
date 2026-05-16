@@ -56,9 +56,12 @@ class AdminResultController extends Controller
         $result->test_score = $request->test_score;
 
         // Recalculate
-        $result->total_score = $result->test_score + $result->exam_score;
-        $result->percentage = $result->total_score;
-        $result->grade = $this->grade($result->total_score);
+        // $result->total_score = $result->test_score + $result->exam_score;
+        $result->total = $result->test_score + $result->exam_score;
+        // $result->percentage = $result->total_score;
+        $result->percentage = $result->total;
+        // $result->grade = $this->grade($result->total_score);
+        $result->grade = $this->grade($result->total);
 
         $result->save();
 

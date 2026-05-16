@@ -217,7 +217,11 @@ Route::middleware(['auth'])->group(function () {
         // Admin add Bulk Exam
         Route::get('/admin/exams/{exam}/questions/bulk-create', function ($examId) {
                 $exam = \App\Models\Exam::findOrFail($examId);
-                return view('admin.questions.bulk_create', compact('exam'));
+                $exams = \App\Models\Exam::all();
+                $subjects = \App\Models\Subject::all();
+                $sessions = \App\Models\SessionModel::all();
+                $terms = \App\Models\Term::all();
+                return view('admin.questions.bulk_create', compact('exam', 'exams', 'subjects', 'terms', 'sessions'));
             })->name('admin.questions.bulk.create');
 
             Route::post('/admin/exams/{exam}/questions/bulk',
@@ -397,8 +401,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/student/exam/{id}/access', [ExamController::class, 'showAccessForm'])
                     ->name('student.exams.access');
 
-                Route::post('/student/exam/verify', [ExamController::class, 'verifyAccess'])
-                    ->name('student.exams.verify');
+                Route::post('/student/exam/verify', [ExamController::class, 'verifyAccess'])->name('student.exams.verify');
             //  Student Generate Code form ends here
 
         // ************ This is to use clean ends here ************

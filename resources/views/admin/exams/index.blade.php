@@ -1,9 +1,13 @@
 @extends('layouts.dashboard')
 
 @section('content')
+<div class="row d-flex justify-content-between mb-3">
+    <div class="col"><h2>Exams</h2></div>
+    <div class="col"><a href="{{ route('exams.create') }}" class="btn btn-primary">Add Exam</a></div>
+  </div>
 <div class="d-flex justify-content-between mb-3">
-  <h2>Exams</h2>
-  <a href="{{ route('exams.create') }}" class="btn btn-primary">Add Exam</a>
+
+
   {{-- New Questions from here --}}
   {{-- <span>Add bulk questions for students exam</span> --}}
   <div class="container">
@@ -24,18 +28,22 @@
         {{--  --}}
             {{-- <span>Generate code for students exam</span> --}}
         <div class="col-6">
-            @foreach($exams as $exam)
-                <div class="col-md-3">
+            <div class="row mt-2">
+                <div class="d-flex">
+                    @foreach($exams as $exam)
+                        <div class="col-md-3">
 
-                    <a href="{{ route('admin.exams.generate.code', $exam->id) }}"
-                    class="btn btn-warning w-100 mb-2">
-                    Generate Code for {{ $exam->title }}
-                    </a>
+                            <a href="{{ route('admin.exams.generate.code', $exam->id) }}"
+                            class="btn btn-warning w-100 mb-2">
+                            Generate Code for {{ $exam->title }}
+                            </a>
 
-                    <p>Code: {{ $exam->access_code ?? 'Not generated' }}</p>
+                            <p>Code: {{ $exam->access_code ?? 'Not generated' }}</p>
 
+                        </div>
+                    @endforeach
                 </div>
-            @endforeach
+            </div>
         </div>
     </div>
   </div>

@@ -112,4 +112,50 @@
 </table>
 </div>
 
+
+{{-- New for Student result page --}}
+<table class="table table-bordered">
+<thead>
+<tr>
+    <th>Subject</th>
+    <th>Test</th>
+    <th>Exam</th>
+    <th>Total</th>
+    <th>%</th>
+    <th>Grade</th>
+</tr>
+</thead>
+
+<tbody>
+@foreach($results as $result)
+<tr>
+    <td>{{ $result->exam->subject->name ?? '' }}</td>
+    <td>{{ $result->test_score }}</td>
+    <td>{{ $result->exam_score }}</td>
+    <td>{{ $result->total_score }}</td>
+    <td>{{ $result->percentage }}%</td>
+    <td>{{ $result->grade }}</td>
+</tr>
+@endforeach
+</tbody>
+</table>
+{{-- New for Student result page Ends --}}
+
+{{--
+    Controller
+    $total = $results->sum('total_score');
+    $count = $results->count();
+
+    $average = $count ? $total / $count : 0;
+
+    $overallGrade = $this->getGrade($average);
+
+    Pass to blade:
+
+    return view('students.results', compact('results', 'average', 'overallGrade'));
+
+    //For Parent - PARENT VIEW
+    $results = ExamResult::whereIn('student_id', auth()->user()->children->pluck('id'))->get();
+ --}}
+
 @endsection

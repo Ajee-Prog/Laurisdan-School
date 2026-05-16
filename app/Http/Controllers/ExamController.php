@@ -11,6 +11,7 @@ use App\Models\ClassModel;
 use App\Models\SchoolClass;
 use App\Models\SessionModel;
 use App\Models\Student;
+use App\Models\Subject;
 use App\Models\Term;
 use Carbon\Carbon;
 // use PDF;
@@ -105,10 +106,11 @@ class ExamController extends Controller
 
     public function create()
     {
-        //  $classes = Session::all();
+         $sessions = SessionModel::all();
          $classes = SchoolClass::all();
         $terms = Term::all();
-        return view('exams.create', compact('classes','terms'));
+        $subjects = Subject::all(); //ADD
+        return view('exams.create', compact('classes','terms', 'sessions', 'subjects'));
 
     }
 
@@ -118,9 +120,13 @@ class ExamController extends Controller
         $data = $r->validate([
             'title'=>'required|string|max:255',
         'class_id'=>'nullable|exists:classes,id',
-        'term_id'=>'nullable|exists:terms,id',
+        'term_id'=>'required|exists:terms,id',
+        'session_id'=>'nullable|exists:sessions,id',
+        'subject_id'=>'nullable|exists:subjects,id',
+
         'exam_date'=>'nullable|date',
         'subject' => 'required|string',
+
     ]);
         Exam::create($data);
         return redirect()->route('admin.exams.index')->with('success','Exam created.');
@@ -139,7 +145,8 @@ class ExamController extends Controller
     {
         $classes = SchoolClass::all();
         $terms = Term::all();
-        return view('exams.edit', compact('exam','classes','terms'));
+        $sessions = SessionModel::all();
+        return view('exams.edit', compact('exam','classes','terms', 'sessions'));
     }
 
 
@@ -149,6 +156,8 @@ class ExamController extends Controller
             'title'=>'required',
             'class_id'=>'nullable',
             'term_id'=>'nullable',
+            'session_id'=>'nullable',
+            'subject_id'=>'nullable',
             'exam_date'=>'nullable|date'
         ]);
         $exam->update($data);
@@ -281,6 +290,10 @@ public function exportPdf(){
             [
                 'student_id' => $student->id,
                 'exam_id'    => $exam->id,
+                'subject_id' => $exam->subject_id, // ✅ FIX HERE
+                'term_id' => $exam->term_id,
+                'session_id' => $exam->session_id,
+
             ],
             [
                 'started_at' => now(),
@@ -332,8 +345,10 @@ private function grade($score)
 
 // New Submit Exam start here***********************************
 
-public function submitExam(Request $request, $examId)
+// public function submitExam(Request $request, $examId)
+public function submitExam(Request $request)
 {
+    $examId = $request->exam_id; //get from form
     $user = auth()->user();
 
     if (!$user || $user->role !== 'student') {
@@ -347,6 +362,9 @@ public function submitExam(Request $request, $examId)
     $exam = Exam::with('questions')
         ->findOrFail($request->exam_id);
 
+        // Convert to exam score (e.g out of 60)
+    // $examScore = ($score / $totalQuestions) * 60; //New added
+
     $result = ExamResult::where('student_id', $student->id)
         ->where('exam_id', $exam->id)
         ->firstOrFail();
@@ -357,9 +375,35 @@ public function submitExam(Request $request, $examId)
     }
 
     $score = 0;
+    // $totalQuestions = $exam->questions()->count();
+    $answers = $request->answers ?? [];
+
 
     foreach ($exam->questions as $question) {
         $answer = $request->input('question_'.$question->id);
+        // New
+        $studentAnswer = $answers[$question->id] ?? null;
+
+        if (!$studentAnswer) continue;
+
+        // ✅ MCQ
+        if ($question->type == 'mcq') {
+            if ($studentAnswer == $question->correct_option) {
+                $score++;
+            }
+        }
+
+        // ✅ FILL-IN-THE-GAP
+        if ($question->type == 'fill') {
+
+            $correct = strtolower(trim($question->correct_answer));
+            $student = strtolower(trim($studentAnswer));
+
+            if ($correct == $student) {
+                $score++;
+            }
+        }
+        // end new
 
         if ($answer === $question->correct_option) {
             $score++;
@@ -367,12 +411,22 @@ public function submitExam(Request $request, $examId)
     }
 
     // New added
+    $results = ExamResult::with(['exam.subject'])
+        ->where('student_id', $student->id)
+        ->get();
     $examScore = $score;
+    $totalQuestions = $exam->questions()->count();
+    // Convert to exam score (e.g out of 60)
+    $examScore = ($score / $totalQuestions) * 60; //New add
     // $testScore = $existing->test_score ?? 0;
     $testScore = $result->test_score ?? 0;
 
-    $total = $examScore + $testScore;
-    $percentage = $total; // assuming over 100
+    // $total = $examScore + $testScore;
+    $totalScore = $examScore + $testScore;
+    // $percentage = $total; // assuming over 100
+    $percentage = $totalScore; // since total is 100 //New calculation
+
+    $grade = $this->grade($percentage);
     // New added ended
 // ///////////////////////////
 
@@ -385,11 +439,14 @@ public function submitExam(Request $request, $examId)
         // 'score' => $score,
         // 'is_submitted' => true,
         // 'submitted_at' => now()
-        'exam_score' =>$examScore,
+        'exam_score' =>round($examScore),
         'test_score' => $testScore,
-        'total_score' => $total,  //Temporary (will be updated later)
-        'percentage' => $percentage,
-        'grade' => $this->grade($percentage),
+        // 'total_score' => $total,  //Temporary (will be updated later)
+        // 'total_score' => round($totalScore),  //Permanent (will be updated later, No)
+        'total' => round($totalScore),  //Permanent (will be updated later, No)
+        'percentage' => round($percentage),
+        // 'grade' => $this->grade($percentage),
+        'grade' => $grade,
         'is_submitted' => true,
         'submitted_at' => now()
     ]);
@@ -397,23 +454,71 @@ public function submitExam(Request $request, $examId)
     // return redirect()->route('student.exams')
     //     ->with('success','Exam submitted. Score: '.$score);
 
-        return view('students.result', compact('score','exam', 'student'));
+        // return view('students.result', compact('score','exam', 'student', 'results', 'examScore', 'testScore','totalQuestions', 'totalScore'));
+        return view('students.result', compact('exam', 'percentage', 'grade', 'student', 'results', 'examScore', 'testScore','totalQuestions', 'totalScore'));
 }
 
 
-        public function results()
+        public function results(Request $request)
         {
-            $student = auth()->user()->student;
+            // $student = auth()->user()->student;
+            // New correct way
+            $user = auth()->user();
 
-            $result = ExamResult::where('student_id', $student->id)->latest()->first();
+
+            if (!$user || $user->role !== 'student') {
+                abort(403);
+            }
+
+            $student = $user->student;
+            // New added for result to balance
+            $query = ExamResult::with(['subject', 'term', 'session', 'exam'])
+                ->where('student_id', $student->id);
+
+            // ✅ FILTERS
+            if ($request->term_id) {
+                $query->where('term_id', $request->term_id);
+            }
+
+            if ($request->session_id) {
+                $query->where('session_id', $request->session_id);
+            }
+
+            if ($request->subject_id) {
+                $query->where('subject_id', $request->subject_id);
+            }
+
+            $results = $query->get();
+
+            // Dropdown data
+            $terms = Term::all();
+            $sessions = SessionModel::all();
+            $subjects = Subject::all();
+            // New added for result to balance ends here
+
+            $results = ExamResult::with(['exam.subject'])->where('student_id', $student->id)
+                ->get();
+
+                // Calculate average
+                $total = $results->sum('total_score');
+                $count = $results->count();
+                $average = $count ? $total / $count : 0;
+
+                $overallGrade = $this->grade($average);
+
+                // New correct way ends here
+
+            // $result = ExamResult::where('student_id', $student->id)->latest()->first();
             $sessions = SessionModel::all();
 
-            return view('students.result', [
-                'score' => $result->score ?? 0,
-                'exam' => $result->exam ?? null,
-                'sessions' => $sessions
+            // return view('students.result', [
+            //     'score' => $result->score ?? 0,
+            //     'exam' => $result->exam ?? null,
+            //     'sessions' => $sessions
 
-            ]);
+            // ]);
+            return view('students.result', compact('results', 'total','count','average', 'terms',
+        'sessions','subjects','overallGrade', 'student'));
         }
 
         // Admin Generate exam code for student CBT
@@ -447,10 +552,7 @@ public function submitExam(Request $request, $examId)
                 return back()->withErrors(['access_code' => 'Invalid access code']);
             }
 
-            //  Check school fees (VERY IMPORTANT)
-            if ($student->fee_status !== 'paid') {
-                return back()->withErrors(['access_code' => 'You must pay school fees before taking exam']);
-            }
+            //
 
             //  Allow access
             return redirect()->route('student.exams.start', $exam->id);
@@ -494,5 +596,22 @@ public function submitExam(Request $request, $examId)
                 'overall_grade' => $this->getGrade($percentage),
             ]);
         } */
+
+            // update - ADMIN ADD TEST SCORE (CA)
+            public function updateTestScore(Request $request)
+            {
+                $result = ExamResult::findOrFail($request->result_id);
+
+                $result->test_score = $request->test_score;
+
+                $totalScore = $result->exam_score + $request->test_score;
+                $result->total_score = $totalScore;
+                $result->percentage = $totalScore;
+                $result->grade = $this->grade($totalScore);
+
+                $result->save();
+
+                return back()->with('success', 'Test score updated');
+            }
 
 }

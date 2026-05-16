@@ -8,15 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Question extends Model
 {
     use HasFactory;
-    // protected $fillable = ['subject','question', 'option_a', 'option_b', 'option_c', 'option_d', 'correct_answer'];
-    // protected $fillable = ['subject','question','subject_id','session_id','term_id', 'option_a', 'option_b', 'option_c', 'option_d', 'correct_answer'];
-    // protected $fillable = ['exam_id','question_text'];
+
     protected $fillable = [
-        'exam_id','subject', 'question_text', 'option_a', 'option_b', 'option_c', 'option_d', 'correct_option','subject_id'
+        'exam_id','subject', 'question_text', 'option_a', 'option_b', 'option_c', 'option_d', 'correct_option',
+        'subject_id','session_id','term_id','type','correct_answer'
     ];
-    // protected $fillable = [
-    //     'class_id', 'subject_id', 'question', 'correct_option'
-    // ];
+
 
 
     // public function options(){

@@ -23,9 +23,12 @@ class CreateBooksTable extends Migration
             $table->string('isbn')->nullable();
             $table->integer('quantity')->default(1);
             $table->longText('notes')->nullable();
+            $table->foreignId('term_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('session_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
 
             $table->index('class_id');
+            $table->index('student_id');
         });
     }
 

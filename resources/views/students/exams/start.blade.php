@@ -8,7 +8,7 @@
 
         <h3>{{ $exam->title }}</h3>
         <div id="timer" class="mb-3">
-            Time left: <span id="timeDisplay"></span>
+            Time left: <span id="timeDisplay"></span> minutes
         </div>
 
         {{-- ************* Correct and clean th Question file --}}
@@ -23,6 +23,37 @@
                 <div class="card-body">
 
                     <p><strong>{{ $index + 1 }}.</strong> {{ $q->question_text }}</p>
+                    {{-- New fill the gap question option --}}
+                    {{-- MCQ --}}
+                    @if($q->type == 'mcq')
+                        <label><input type="radio" name="answers[{{ $q->id }}]" value="A"> {{ $q->option_a }}</label><br>
+                        <label><input type="radio" name="answers[{{ $q->id }}]" value="B"> {{ $q->option_b }}</label><br>
+                        <label><input type="radio" name="answers[{{ $q->id }}]" value="C"> {{ $q->option_c }}</label><br>
+                        <label><input type="radio" name="answers[{{ $q->id }}]" value="D"> {{ $q->option_d }}</label>
+
+                    {{-- FILL --}}
+                    @elseif($q->type == 'fill')
+                        <input type="text"
+                            name="answers[{{ $q->id }}]"
+                            class="form-control"
+                            placeholder="Type your answer">
+                    @endif
+
+                    {{-- @if($q->type == 'mcq')
+                        @foreach($q->options as $opt)
+                            <label>
+                                <input type="radio" name="answers[{{ $q->id }}]" value="{{ $opt->id }}">
+                                {{ $opt->option }}
+                            </label><br>
+                        @endforeach
+
+                    @elseif($q->type == 'fill')
+                        <input type="text"
+                            name="answers[{{ $q->id }}]"
+                            class="form-control"
+                            placeholder="Type your answer here">
+                    @endif --}}
+                    {{-- New fill the gaps question options ends here --}}
 
                     <label>
                         <input type="radio" name="question_{{ $q->id }}" value="A">
