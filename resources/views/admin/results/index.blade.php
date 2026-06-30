@@ -42,11 +42,15 @@
 
 {{-- New result pattern --}}
 
-<div class="container" style="margin-top: 90px;">
-    <h3 class="mt-5" >All Student Results</h3>
+<div class="container-fluid" style="margin-top: 90px;">
+    <div class="row justify-content-between mb-3">
+        <h3 class="mt-5 text-primary" >All Student Results</h3>
     <a href="{{ route('dashboard') }}">Go back to Dashboard </a>
+    </div>
+    {{-- <h3 class="mt-5 text-primary" >All Student Results</h3>
+    <a href="{{ route('dashboard') }}">Go back to Dashboard </a> --}}
 
-    <table class="table table-bordered">
+    {{-- <table class="table table-bordered">
         <tr>
             <th>Student</th>
             <th>Exam</th>
@@ -56,11 +60,11 @@
 
         @foreach($results as $result)
         <tr>
-            {{-- <td>{{ $result->student->user->name }}</td> --}}
+            {{-- <td>{{ $result->student->user->name }}</td> -}}
             <td>{{ $result->student->user->name }}</td>
 
             <td>{{ $result->exam->title }}</td>
-            <td>{{ $result->score }}</td>
+            <td>{{ $result->exam_score }}</td>
             <td>
                 <a href="{{ route('admin.results.edit', $result->id) }}" class="btn btn-warning btn-sm">
                     Edit
@@ -68,7 +72,7 @@
             </td>
         </tr>
         @endforeach
-    </table>
+    </table> --}}
 
     {{-- New Table --}}
     <h3>Manage Student Results</h3>
@@ -77,16 +81,27 @@
     <tr>
         <th>Student</th>
         <th>Subject</th>
+        <th>Exam Term</th>
         <th>Exam Score</th>
         <th>Test Score</th>
         <th>Total</th>
+        <th>%</th>
+        <th>Grade</th>
+        <th>Affective/Psycho</th>
+        <th>Teacher Comment</th>
         <th>Action</th>
     </tr>
 
     @foreach($results as $result)
+    {{--
+    form action="{{ route('admin.results.test_score') }}" method="POST">
+                @csrf
+                 --}}
     <tr>
-        <td>{{ $result->student->name }}</td>
+        {{-- <td>{{ $result->student->first_name }}</td> --}}
+        <td>{{ $result->student->user->name }}</td>
         <td>{{ $result->exam->subject }}</td>
+        <td>{{ $result->exam->title }}</td>
         <td>{{ $result->exam_score }}</td>
 
         <td>
@@ -101,44 +116,43 @@
 
         </td>
 
-        <td>{{ $result->total_score }}</td>
+        <td>{{ $result->total }}</td>
+        <td>{{ $result->percentage }}%</td>
+        <td>{{ $result->grade }}</td>
+        <!-- Psychomotor -->
+        <td>
+            <select name="psychomotor">
+                <option value="1">Excellent</option>
+                <option value="2">Very Good</option>
+                <option value="3">Good</option>
+                <option value="4">Fair</option>
+                <option value="5">Poor</option>
+            </select>
+        </td>
+
+        <!-- Teacher Comment -->
+        <td>
+            <input type="text" name="teacher_comment" value="{{ $result->teacher_comment }}">
+        </td>
+        {{-- Teacher comment ends here. I need form to wrap psycho and comment --}}
 
         <td>
                 <button class="btn btn-success btn-sm">Save</button>
+                {{-- New added button --}}
+                <a href="{{ route('admin.results.edit', $result->id) }}" class="btn btn-warning btn-sm">
+                    Edit
+                </a>
             </form>
         </td>
     </tr>
+    {{-- </form> --}}
     @endforeach
 </table>
 </div>
 
 
 {{-- New for Student result page --}}
-<table class="table table-bordered">
-<thead>
-<tr>
-    <th>Subject</th>
-    <th>Test</th>
-    <th>Exam</th>
-    <th>Total</th>
-    <th>%</th>
-    <th>Grade</th>
-</tr>
-</thead>
 
-<tbody>
-@foreach($results as $result)
-<tr>
-    <td>{{ $result->exam->subject->name ?? '' }}</td>
-    <td>{{ $result->test_score }}</td>
-    <td>{{ $result->exam_score }}</td>
-    <td>{{ $result->total_score }}</td>
-    <td>{{ $result->percentage }}%</td>
-    <td>{{ $result->grade }}</td>
-</tr>
-@endforeach
-</tbody>
-</table>
 {{-- New for Student result page Ends --}}
 
 {{--
@@ -157,5 +171,48 @@
     //For Parent - PARENT VIEW
     $results = ExamResult::whereIn('student_id', auth()->user()->children->pluck('id'))->get();
  --}}
+ {{-- Coming back to this for use example--}}
+
+    {{-- @foreach($results as $result)
+    <form action="{{ route('admin.results.update', $result->id) }}" method="POST">
+        @csrf
+
+        <td>{{ $result->student->first_name }}</td>
+        <td>{{ $result->subject->name }}</td>
+
+        <td>
+            <input type="number" name="ca_score" value="{{ $result->ca_score }}">
+        </td>
+
+        <td>
+            <input type="number" name="test_score" value="{{ $result->test_score }}">
+        </td>
+
+        <td>
+            <input type="number" name="exam_score" value="{{ $result->exam_score }}">
+        </td>
+
+        <!-- Psychomotor -->
+        <td>
+            <select name="psychomotor">
+                <option value="1">Excellent</option>
+                <option value="2">Very Good</option>
+                <option value="3">Good</option>
+                <option value="4">Fair</option>
+                <option value="5">Poor</option>
+            </select>
+        </td>
+
+        <!-- Teacher Comment -->
+        <td>
+            <input type="text" name="teacher_comment" value="{{ $result->teacher_comment }}">
+        </td>
+
+        <td>
+            <button class="btn btn-success">Save</button>
+        </td>
+    </form>
+    @endforeach
+  --}}
 
 @endsection

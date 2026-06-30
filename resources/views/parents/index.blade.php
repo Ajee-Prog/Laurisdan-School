@@ -8,7 +8,7 @@
   <a href="{{ route('parents.create') }}" class="btn btn-success mb-3">Add Parent</a>
   <table class="table table-bordered">
     <tr>
-    <th>ID</th>
+    <th>S/N</th>
     <th>Full Name</th>
     <th>Photo</th>
     <th>Email</th>
@@ -23,13 +23,13 @@
       <td>{{ $p->name }}</td>
       <td>
       @if($p->image)
-                        <img src="{{ asset('storage/'.$p->image) }}" width="60" height="60" style="border-radius:50%;">
-                    @else
-                        <span>No Image</span>
-                    @endif
+        <img src="{{ asset('storage/'.$p->image) }}" width="60" height="60" style="border-radius:50%;">
+         @else
+            <span>No Image</span>
+        @endif
 
 
-      
+
       </td>
       <td>{{ $p->email }}</td>
       <td>{{ $p->phone }}</td>

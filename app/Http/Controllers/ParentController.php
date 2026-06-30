@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ExamResult;
 use App\Models\ParentModel;
 use App\Models\Student;
 use App\Models\User;
@@ -88,14 +89,6 @@ class ParentController extends Controller
 
         // Ends_-----------------
 
-        // $user = User::create([
-        //         'name' => $request->name,
-        //         'email' => $request->email,
-        //         'password' => Hash::make($request->password),
-        //         'role' => 'parent'
-        //         ]);
-
-
 
         // Student::create($validated);
        $parent = ParentModel::create([
@@ -125,23 +118,12 @@ class ParentController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         $parent = ParentModel::findOrFail($id);
@@ -151,13 +133,7 @@ class ParentController extends Controller
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         $parent = ParentModel::findOrFail($id);
@@ -189,12 +165,7 @@ class ParentController extends Controller
 
 
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         $parent = ParentModel::findOrFail($id);
@@ -221,6 +192,15 @@ class ParentController extends Controller
         $students = $parent->students()->with('results.exam')->get();
 
         return view('parents.results', compact('students'));
+    }
+
+    public function parentResult()
+    {
+        $student = Student::where('parent_id', auth()->id())->first();
+
+        $results = ExamResult::where('student_id', $student->id)->get();
+
+        return view('parents.result', compact('results'));
     }
 
     // New function implementation for result

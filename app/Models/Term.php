@@ -13,4 +13,8 @@ class Term extends Model
     public function session(){
         return $this->belongsTo(SessionModel::class, 'session_id');
     }
+    public function results()
+    {
+        return $this->hasMany(ExamResult::class);
+    }
 }

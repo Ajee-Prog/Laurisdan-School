@@ -37,6 +37,7 @@
       <tr>
         <td>{{ $student->id }}</td>
         <td>{{ $student->admission_no }}</td>
+
         <td>{{ $student->first_name }}</td>
         <td>{{ $student->last_name }}</td>
         <td>{{ $student->middle_name }}</td>
@@ -48,6 +49,7 @@
         <td>@if($student->image)
           <img src="{{asset('storage/'.$student->image) }}" width="60" class="rounded" alt="">
           @endif
+
         </td>
 
         <td>

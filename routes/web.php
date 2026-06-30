@@ -33,6 +33,7 @@ use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\AdminResultController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ParentAuthController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -198,6 +199,15 @@ Route::middleware(['auth'])->group(function () {
         // Route::get('/admin/results/{id}/edit', [AdminResultController::class, 'edit'])->name('admin.results.edit');
         Route::get('/admin/results/{id}/edit', [App\Http\Controllers\Admin\AdminResultController::class, 'edit'])->name('admin.results.edit');
         // Route::post('/admin/results/{id}/update', [AdminResultController::class, 'update'])->name('admin.results.update');
+        // Admin update Test score psycomotor and coment
+
+        /*
+        Route::get('/admin/results', [AdminResultController::class, 'index'])->name('admin.results.manage');
+        Route::post('/admin/results/update/{id}', [AdminResultController::class, 'update'])->name('admin.results.update');
+        */
+
+        // Admin update ends here for later use
+
         Route::post('/admin/results/{id}/update', [App\Http\Controllers\Admin\AdminResultController::class, 'update'])->name('admin.results.update');
         Route::post('/admin/results/test-score', [App\Http\Controllers\Admin\AdminResultController::class, 'updateTestScore'])
                 ->name('admin.results.test_score');
@@ -358,8 +368,10 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:parent'])->group(function () {
         // Route::get('/parent/dashboard', [ParentController::class, 'index'])->name('parent.dashboard');
         Route::get('/parent/dashboard', [DashboardController::class, 'parentDashboard'])->name('parent.dashboard');
-        Route::get('/parent/results', [ParentController::class, 'childResults'])->name('parent.results');
+        // Route::get('/parent/results', [ParentController::class, 'childResults'])->name('parent.results');
+        Route::get('/parent/results', [ParentController::class, 'parentResult'])->name('parent.results');
         // new added with result checking for chil
+
         Route::get('/child/{id}/results', [ParentController::class, 'viewResults'])->name('results');
 
         Route::get('/child/{id}/books', [ParentController::class, 'books'])->name('books');
@@ -428,6 +440,7 @@ Route::middleware(['auth'])->group(function () {
     //     Route::post('/student/exam/submit', [ExamController::class, 'submitExam'])->name('student.exams.submit');
     //     // Route::post('/student/exam/submit', [ExamController::class, 'submitExam'])->name('exam.submit');
         Route::get('/student/results', [ExamController::class, 'results'])->name('student.results');
+        Route::get('/student/print/results', [ExamController::class, 'printResults'])->name('student.print.results');
 
     //     // **************Refactors Exam against future bugs*************
     //     // Route::get('/exams', [StudentExamController::class,'index'])->name('student.exams');

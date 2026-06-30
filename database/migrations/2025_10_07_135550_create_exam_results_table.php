@@ -20,6 +20,7 @@ class CreateExamResultsTable extends Migration
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('subject_id');
             // $table->integer('score');
+
             // $table->integer('total');
             $table->unsignedBigInteger('term_id');
             $table->unsignedBigInteger('session_id');
@@ -36,6 +37,10 @@ class CreateExamResultsTable extends Migration
             $table->decimal('percentage',5 ,2)->default(0);
 
             $table->string('grade')->nullable();
+
+            $table->integer('marks_obtainable')->nullable();
+            $table->integer('marks_obtained')->nullable();
+
             $table->string('status')->default('FAIL');
             $table->timestamp('started_at')->nullable();
             $table->timestamp('submitted_at')->nullable();
@@ -44,9 +49,12 @@ class CreateExamResultsTable extends Migration
             $table->string('teacher_comment')->nullable();
             $table->timestamps();
 
-             $table->index('term_id');
+            //  $table->index('term_id');
                 $table->index('session_id');
-                $table->index('subject_id');
+                // $table->index('subject_id');
+
+                $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
+            $table->foreign('term_id')->references('id')->on('terms')->onDelete('cascade');
 
             $table->foreign('exam_id')->references('id')->on('exams')->onDelete('cascade');
             $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade');

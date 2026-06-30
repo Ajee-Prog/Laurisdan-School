@@ -6,7 +6,14 @@
   @csrf
   <div class="mb-3"><label>Title</label><input type="text" name="title" class="form-control" required></div>
   <div class="mb-3"><label>Description</label><textarea name="description" class="form-control"></textarea></div>
-  <div class="mb-3"><label>Date</label><input type="date" name="activity_date" class="form-control"></div>
+  <div class="mb-3">
+        <label>Date</label>
+        <input type="date" name="activity_date" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Upload Passport</label>
+      <input type="file" name="image" class="form-control-file" required>
+    </div>
   <button type="submit" class="btn btn-success">Save</button>
 </form>
 @endsection

@@ -24,13 +24,13 @@
       <input type="text" name="phone" class="form-control" placeholder="Parent Phone line">
     </div>
 
-    
+
     <div class="mb-3">
       <label>Address</label>
       <input type="text" name="address" class="form-control" placeholder="Home Address">
     </div>
 
-    
+
 
     <div class="mb-3">
       <label>Relation</label>
@@ -38,9 +38,9 @@
     </div>
 
     <div class="mb-3">
-    <label class="form-label">Upload Passport</label>
+        <label class="form-label">Upload Passport</label>
       <input type="file" name="image" class="form-control-file" required>
-  </div>
+    </div>
 
     <button class="btn btn-success">Save</button>
   </form>

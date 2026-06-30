@@ -55,13 +55,14 @@
             </select>
         </div>
 {{-- New added ends --}}
-<div class="mb-3">
+{{-- <div class="mb-3">
     <label>Subject</label>
     <input type="text" name="subject" class="form-control" required>
-</div>
+</div> --}}
 
 {{-- Qquestion type either fillable or not --}}
     <select name="type" class="form-control mb-3">
+        <option value="">-- Select type --</option>
         <option value="mcq">Multiple Choice</option>
         <option value="fill">Fill in the Gap</option>
     </select>

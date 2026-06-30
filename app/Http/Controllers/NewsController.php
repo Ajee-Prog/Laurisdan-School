@@ -48,6 +48,11 @@ class NewsController extends Controller
             $imageName = time().'.'.$request->image->extension();
             $request->image->move(public_path('news'), $imageName);
         }
+        // Upload image if exists
+        // $imagePath = null;
+        // if ($request->hasFile('image')) {
+        //     $imagePath = $request->file('image')->store('parents', 'public');
+        // }
 
         News::create([
             'title' => $request->title,

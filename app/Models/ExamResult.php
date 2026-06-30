@@ -13,7 +13,7 @@ class ExamResult extends Model
      	'ca_score','test_score','exam_score','total',	'total_questions',
      	'started_at',	'submitted_at',	'is_submitted',	'created_at',	'updated_at'];
     // protected $fillable = ['student_id', 'exam_id','subject_id','session_id','term_id','subject', 'score', 'total', 'taken_at'];
-
+protected $table = 'exam_results';
 protected $casts = [
     'started_at'   => 'datetime',
     'submitted_at'=> 'datetime',
@@ -28,12 +28,21 @@ protected $casts = [
     {
         return $this->belongsTo(Exam::class);
     }
+        public function term()
+    {
+        return $this->belongsTo(Term::class);
+    }
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class);
+    }
 
     // New added
-    public function subject()
-{
-    return $this->belongsTo(Subject::class);
-}
+//     public function subject()
+// {
+//     return $this->belongsTo(Subject::class);
+// }
 
     // New implementation
     public function session()
@@ -41,10 +50,10 @@ protected $casts = [
         return $this->belongsTo(SessionModel::class);
     }
 
-    public function term()
-    {
-        return $this->belongsTo(Term::class);
-    }
+    // public function term()
+    // {
+    //     return $this->belongsTo(Term::class);
+    // }
 
     public function teacher()
     {

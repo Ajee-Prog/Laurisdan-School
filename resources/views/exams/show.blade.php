@@ -18,8 +18,8 @@
         <div class="card-body">
             <h3 class="card-title">{{ $exam->title }}</h3>
             <p><strong>Subject:</strong> {{ $exam->subject ?? 'N/A' }}</p>
-            <p><strong>Session:</strong> {{ optional($exam->session)->name ?? 'N/A' }}</p>
-            <p><strong>Term:</strong> {{ optional($exam->term)->name ?? 'N/A'}}</p>
+            <p><strong>Session:</strong> {{ optional($exam->session)->name ?? 'N/A' }}  </p>
+            <p><strong>Term:</strong> {{ optional($exam->term)->name ?? 'N/A'}}  </p>
 
             <a href="{{ route('exams.questions.create', $exam->id) }}" class="btn btn-primary btn-sm">
                 + Add Question

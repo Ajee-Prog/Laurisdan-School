@@ -14,58 +14,46 @@ class ActivityController extends Controller
 {
     public function __construct(){ $this->middleware('auth'); }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $activities = Activity::orderBy('activity_date','desc')->paginate(12);
         return view('activities.index', compact('activities'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         return view('activities.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $r)
     {
-        $data = $r->validate(['title'=>'required','description'=>'nullable','activity_date'=>'nullable|date']);
+        $data = $r->validate([
+            'title'=>'required',
+            'description'=>'nullable',
+            'activity_date'=>'nullable|date',
+            'image' => 'nullable',
+            ]);
+            // Upload image if exists
+        $imagePath = null;
+        if ($r->hasFile('image')) {
+            $imagePath = $r->file('image')->store('activities', 'public');
+        }
+        $data['image'] = $imagePath;
         Activity::create($data);
         return redirect()->route('activities.index')->with('success','Activity created.');
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(Activity $activity)
     {
         return view('activities.edit', compact('activity'));
@@ -84,9 +72,9 @@ class ActivityController extends Controller
             'title'=>'required',
             'description'=>'nullable',
             'activity_date'=>'nullable|date'
-        ]); 
-        $activity->update($data); 
-        return redirect()->route('activities.index')->with('success','Activity updated.'); 
+        ]);
+        $activity->update($data);
+        return redirect()->route('activities.index')->with('success','Activity updated.');
     }
 
     /**
@@ -102,7 +90,7 @@ class ActivityController extends Controller
     }
 
 
-   
+
 public function exportPdf(){
     $activities = Activity::orderBy('activity_date','desc')->get();
         $pdf = PDF::loadView('activities.pdf', compact('activities'))->setPaper('a4','portrait');

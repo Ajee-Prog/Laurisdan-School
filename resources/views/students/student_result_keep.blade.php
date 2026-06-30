@@ -50,24 +50,217 @@
 
 <button onclick="window.print()" class="print-btn">Print</button>
 
+<h2>LAURISDAN NURSERY & PRIMARY SCHOOL</h2>
+<h4>STUDENT REPORT SHEET</h4>
 
+{{-- STUDENT DETAILS --}}
+@forelse($groupedResults as $termId => $termResults)
+<table class="no-border">
+    <tr>
+        <td><strong>Name:</strong> {{ $student->first_name }}</td>
+        <td><strong>Class:</strong> {{ $student->class->name }}</td>
+    </tr>
+
+    <tr>
+        <td><strong>Date of Birth:</strong> {{ $student->date_of_birth }}</td>
+        <td><strong>Gender:</strong> {{ $student->gender }}</td>
+    </tr>
+
+    <tr>
+         <td><strong>Session:{{--</strong> {{ $session->name }}   --}}</td>
+
+         <td><strong>Term: {{-- </strong> {{ $term->name }}   --}}</td>
+    </tr>
+</table>
+
+{{-- SUBJECT RESULTS --}}
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Subject</th>
+            <th>Score</th>
+            <th>Grade</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{-- @foreach($subjects as $key => $subject) --}}
+        @foreach($termResults as $result)
+        <tr>
+            {{-- <td>{{ $key + 1 }}</td> --}}
+            <td>{{ $result->subject->name }}</td>
+            <td>{{ $result->score }}</td>
+            <td>
+                @if($result->total >= 70) A
+                @elseif($result->total >= 60) B
+                @elseif($result->total >= 50) C
+                @elseif($result->total >= 45) D
+                @elseif($result->total >= 40) E
+                @else F
+                @endif
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+
+{{-- SUMMARY --}}
+<table>
+    {{-- @forelse($groupedResults as $termId => $termResults) --}}
+    @foreach($termResults as $result)
+    <tr>
+        <td><strong>Total Score:</strong> {{ $result->total }}</td>
+        <td><strong>Percentage:</strong> {{ $result->percentage }}%</td>
+    </tr>
+
+    <tr>
+        <td><strong>Marks Obtained:</strong> {{ $result->marks_obtained }}</td>
+        <td><strong>Grade:</strong> {{ $result->grade }}</td>
+    </tr>
+
+    <tr>
+        <td><strong>Overall Grade:</strong> {{ $result->overall_grade }}</td>
+        <td><strong>Time Present:</strong> {{ $result->time_present }}</td>
+    </tr>
+
+    <tr>
+        <td><strong>Time Absent:</strong> {{ $result->time_absent }}</td>
+        <td></td>
+    </tr>
+    @endforeach
+    @empty
+    @endforelse
+</table>
+
+{{-- AFFECTIVE & PSYCHOMOTOR --}}
+<table>
+    <thead>
+        <tr>
+            <th>Affective</th>
+            <th>Psychomotor</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>{{ $result->affective }}</td>
+            <td>{{ $result->psychomotor }}</td>
+        </tr>
+    </tbody>
+</table>
+
+{{-- TEACHER COMMENT --}}
+<table>
+    <tr>
+        <td><strong>Class Teacher Comment:</strong></td>
+    </tr>
+    <tr>
+        <td>{{ $result->teacher_comment }}</td>
+    </tr>
+</table>
+
+<br><br>
+
+{{-- SIGNATURE --}}
+<table class="no-border">
+    <tr>
+        <td><strong>Class Teacher:</strong> ______</td>
+        <td><strong>Principal:</strong> ______</td>
+    </tr>
+</table>
+
+</div>
+
+</body>
+</html>
+
+
+{{-- Another new one --}}
+    <!DOCTYPE html>
+<html>
+<head>
+    <title>Student Result</title>
+    <style>
+        body { font-family: Arial; }
+        .container { width: 90%; margin: auto; }
+        h2, h3 { text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        table, th, td { border: 1px solid black; }
+        th, td { padding: 8px; text-align: center; }
+        .summary { margin-top: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>YUSTECH COMPUTER SCHOOL</h2>
+    <h3>STUDENT RESULT SHEET</h3>
+
+    <p><strong>Name:</strong> {{ $student->user->name }}</p>
+    <p><strong>Class:</strong> {{ $student->class->name ?? 'N/A' }}</p>
+
+    @forelse($groupedResults as $termId => $termResults)
+
+        <h3>
+            {{ strtoupper(optional($termResults->first()->term)->name ?? 'TERM') }} RESULT
+        </h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>CA</th>
+                    <th>Test</th>
+                    <th>Exam</th>
+                    <th>Total</th>
+                    <th>Grade</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($termResults as $result)
+                    <tr>
+                        <td>{{ $result->subject->name ?? 'N/A' }}</td>
+                        <td>{{ $result->ca_score }}</td>
+                        <td>{{ $result->test_score }}</td>
+                        <td>{{ $result->exam_score }}</td>
+                        <td>{{ $result->total }}</td>
+                        <td>{{ $result->grade }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <div class="summary">
+             Total Score: {{-- {{ $termSummaries[$termId]['total'] }} --}}<br>
+
+             Average Score: {{-- {{ $termSummaries[$termId]['average'] }} --}}
+
+        </div>
+
+        <hr>
+
+    @empty
+        <p>No results available.</p>
+    @endforelse
+
+</div>
 
 {{-- Test the Original Result --}}
     <div class="card shadow-sm mb-4">
         <div class="row align-center" style=" align-items: center; justify-content: center; ">
-            <div class="col-2">
+            <div class="col-4">
                 <img src="{{asset('assets/images/laurisdanLogo1.jpg')}}"  style="width: 40p; height:60px; " alt="">
             </div>
             {{-- 8 section long --}}
-            <div class="col-8" >
+            <div class="col-8">
 
-                <div class="card-body" >
+                <div class="card-body">
 
-                    <h2 class="h2" style="margin-left: 0px; padding-left:0px;  "> LAURISDAN NURSERY AND PRIMARY SCHOOL </h2>
-                    <div class="ml-2 pl-5 justify-content-center ">
-                        <h6> ENGR. AWANBI BENSON STREET, OFFIRAN, ONOSA, IBEJU-LEKKI LGA, LAGOS.</h6>
-                        <h6> TEL: 09034345478, 07088800744. EMAIL: laurisdannpschool@gmail.com</h6>
-                    </div>
+                    <h5 class="" style="width: 100%"> LAURISDAN NURSERY AND PRIMARY SCHOOL </h5>
+                    <p> ENGR. AWANBI BENSON STREET, OFFIRAN, ONOSA, IBEJU-LEKKI LGA, LAGOS.</p>
+                    <p> TEL: 09034345478, 07088800744. EMAIL: laurisdannpschool@gmail.com</p>
 
 
                     @if(Route::has('student.profile'))

@@ -359,8 +359,10 @@ public function submitExam(Request $request)
 
 
 
-    $exam = Exam::with('questions')
-        ->findOrFail($request->exam_id);
+    // $exam = Exam::with('questions')->findOrFail($request->exam_id);
+    $exam = Exam::with(['questions','term'])->findOrFail($request->exam_id);
+    $term = $exam->term;
+
 
         // Convert to exam score (e.g out of 60)
     // $examScore = ($score / $totalQuestions) * 60; //New added
@@ -397,17 +399,19 @@ public function submitExam(Request $request)
         if ($question->type == 'fill') {
 
             $correct = strtolower(trim($question->correct_answer));
-            $student = strtolower(trim($studentAnswer));
+            // $student = strtolower(trim($studentAnswer));
+            $studentAnswerFormatted = strtolower(trim($studentAnswer));
 
-            if ($correct == $student) {
+            // if ($correct == $student) {
+            if ($correct == $studentAnswerFormatted) {
                 $score++;
             }
         }
         // end new
 
-        if ($answer === $question->correct_option) {
-            $score++;
-        }
+        // if ($answer === $question->correct_option) {
+        //     $score++;
+        // }
     }
 
     // New added
@@ -453,55 +457,273 @@ public function submitExam(Request $request)
 
     // return redirect()->route('student.exams')
     //     ->with('success','Exam submitted. Score: '.$score);
+    $groupedResults = collect($results)->groupBy('term_id');
 
         // return view('students.result', compact('score','exam', 'student', 'results', 'examScore', 'testScore','totalQuestions', 'totalScore'));
-        return view('students.result', compact('exam', 'percentage', 'grade', 'student', 'results', 'examScore', 'testScore','totalQuestions', 'totalScore'));
+        return view('students.result', compact('exam', 'term', 'groupedResults', 'percentage', 'grade', 'student', 'results', 'examScore', 'testScore','totalQuestions', 'totalScore'));
+}
+
+// New exam controller to clean start here
+public function results(Request $request)
+{
+    $student = auth()->user()->student;
+
+    if (!$student) {
+        return back()->with('error', 'Student not found');
+    }
+
+    // $results = ExamResult::with(['term', 'subject'])
+    //     ->where('student_id', auth()->id()) // ✅ THIS IS KEY
+    //     ->get();
+    $results = ExamResult::with(['term', 'subject'])
+        ->where('student_id', $student->id) // ✅ FIXED HERE
+        ->get();
+
+
+    // dd($results); // 🔥 SHOULD NOW SHOW DATA
+
+    $groupedResults = $results->groupBy('term_id');
+
+    $terms = Term::all();
+    $sessions = SessionModel::all();
+    $subjects = Subject::all();
+
+    return view('students.result', compact('groupedResults', 'student', 'terms', 'sessions', 'subjects'));
 }
 
 
-        public function results(Request $request)
-        {
-            // $student = auth()->user()->student;
-            // New correct way
-            $user = auth()->user();
+ /*public function results(Request $request)
+{
+    $user = auth()->user();
+
+    if (!$user || $user->role !== 'student') {
+        abort(403);
+    }
+
+    $student = $user->student;
+
+    $term_id = $request->term_id;
+    $session_id = $request->session_id;
+
+    $term = Term::find($term_id);
+
+    // ✅ FIRST / SECOND TERM
+    // if ($term && ($term->name === 'First Term' || $term->name === 'Second Term')) {
+    if ($term && in_array($term->name, ['First Term', 'Second Term'])) {
+
+        $results = ExamResult::with(['subject', 'term'])
+            // ->where('student_id', $student->id)
+            ->where('student_id', auth()->id)
+            ->where('term_id', $term_id)
+            ->when($session_id, fn($q) => $q->where('session_id', $session_id))
+            ->get();
+
+            dd($results);
+
+        $groupedResults = $results; // simple list
+
+        // $groupedResults = $results->groupBy('term_id'); // simple list
 
 
-            if (!$user || $user->role !== 'student') {
-                abort(403);
+    }
+
+    // ✅ THIRD TERM (CUMULATIVE)
+    elseif ($term && $term->name === 'Third Term') {
+
+        // $results = ExamResult::with(['subject', 'term'])
+        //     ->where('student_id', $student->id)
+        //     ->when($session_id, fn($q) => $q->where('session_id', $session_id))
+        //     ->get()
+        //     ->groupBy('subject_id'); // group by subject
+        $groupedResults = ExamResult::with(['subject', 'term'])
+            ->where('student_id', auth()->id)
+            ->when($session_id, fn($q) => $q->where('session_id', $session_id))
+            ->get()
+            ->groupBy('subject_id'); // group by subject
+
+
+        // $groupedResults = $results;
+        // $groupedResults = $results->groupBy('term_id');
+        dd($groupedResults);
+
+
+    }
+
+    else {
+        $groupedResults = collect();
+    }
+
+    // ✅ CALCULATIONS
+    $total = 0;
+    $count = 0;
+
+    if ($term && $term->name === 'Third Term') {
+        foreach ($groupedResults as $records) {
+            foreach ($records as $r) {
+                $total += $r->total;
+                $count++;
             }
+        }
+    } else {
+        // $total = $groupedResults->sum('total');
+        // $count = $groupedResults->count();
 
-            $student = $user->student;
+        $total = collect($groupedResults)->flatten()->sum('total');
+    $count = collect($groupedResults)->flatten()->count();
+    }
+dd($groupedResults);
+    $average = $count ? $total / $count : 0;
+    $overallGrade = $this->grade($average);
+
+    $terms = Term::all();
+    $sessions = SessionModel::all();
+    $subjects = Subject::all();
+
+
+    // return view('students.result', compact(
+    //     'groupedResults',
+    //     'student',
+    //     'term',
+    //     'total',
+    //     'average',
+    //     'overallGrade',
+    //     'terms',
+    //     'sessions',
+    //     'subjects'
+    // ));
+    return view('students.result', [
+        'groupedResults' => $groupedResults,
+        'student' => $student,
+        'term' => $term,
+        'total' => $total,
+        'average' => $average,
+        'overallGrade' => $overallGrade,
+        'terms' => Term::all(),
+        'sessions' => SessionModel::all(),
+        'subjects' => Subject::all(),
+    ]);
+}  */
+// New exam controller clean ends here
+       /**  public function results(Request $request)
+       * {
+        *    // $student = auth()->user()->student;
+        *    // New correct way
+         *   $user = auth()->user();
+         *   // $term = Term::find($term_id);
+
+
+           * if (!$user || $user->role !== 'student') {
+           *     abort(403);
+           * }
+
+           * $student = $user->student;
+            */
             // New added for result to balance
-            $query = ExamResult::with(['subject', 'term', 'session', 'exam'])
-                ->where('student_id', $student->id);
+          // * $term_id = $request->term_id;
+          // * $student_id = $student->id;
+          // * $query = ExamResult::with(['subject', 'term', 'session', 'exam'])->where('student_id', $student->id);
+           //* // $query = ExamResult::with(['subject', 'term', 'session', 'exam'])
+          // * *//         ->where('student_id', $student->id)->get()
+         //   *//             ->groupBy('term_id');
 
-            // ✅ FILTERS
-            if ($request->term_id) {
-                $query->where('term_id', $request->term_id);
-            }
+        //   * // ✅ FILTERS
+            //*if ($request->term_id) {
+           //     $query->where('term_id', $request->term_id);
+           // *}
 
-            if ($request->session_id) {
-                $query->where('session_id', $request->session_id);
-            }
+           // *if ($request->session_id) {
+             //   $query->where('session_id', $request->session_id);
+            //*}
 
-            if ($request->subject_id) {
-                $query->where('subject_id', $request->subject_id);
-            }
+           // *if ($request->subject_id) {
+           //  *   $query->where('subject_id', $request->subject_id);
+          // * }
 
-            $results = $query->get();
+           // *$results = $query->get();
+          // * $results = $results->groupBy('term_id');
 
-            // Dropdown data
-            $terms = Term::all();
-            $sessions = SessionModel::all();
-            $subjects = Subject::all();
-            // New added for result to balance ends here
+          //  *// Dropdown data
+           // *$terms = Term::all();
+            //*$sessions = SessionModel::all();
+           // *$subjects = Subject::all();
+          // *// New added for result to balance ends here
 
-            $results = ExamResult::with(['exam.subject'])->where('student_id', $student->id)
-                ->get();
+          //  *// $results = ExamResult::with(['exam.subject'])->where('student_id', $student->id)
+          //  *//     ->get()->groupBy('term_id');
+          // * // New to Old importan to make student results work
+           // */
+          /*
+            *$results = ExamResult::with(['subject','term','session'])
+           * ->where('student_id', $student->id)
+            *->when($request->term_id, fn($q)=>$q->where('term_id',$request->term_id))
+            *->when($request->session_id, fn($q)=>$q->where('session_id',$request->session_id))
+           * ->get()
+            *->groupBy('term_id'); /// ✅ IMPORTANT
+            // New to Old importants ends here
+
+            // New to importants result control First, 2ND Term, 3RD Term
+               * $term = Term::find($term_id);
+
+                /*
+                if ($term->name === 'First Term') {
+
+                    $results = ExamResult::with(['subject', 'term'])
+                        ->where('student_id', $student_id)
+                        ->where('term_id', $term_id)
+                        ->get();
+
+                }
+
+                elseif ($term->name === 'Second Term') {
+
+                    $results = ExamResult::with('subject')
+                        ->where('student_id', $student_id)
+                        ->where('term_id', $term_id)
+                        ->get();
+
+                }  */
+                // if (!$term) {
+                //     $results = collect();
+                // }
+
+                // elseif ($term->name === 'First Term' || $term->name === 'Second Term') {
+
+                //     $results = ExamResult::with(['subject', 'term'])
+                //         ->where('student_id', $student_id)
+                //         ->where('term_id', $term_id)
+                //         ->get();
+
+                // }
+
+                // elseif ($term->name === 'Third Term') {
+
+                //     $results = ExamResult::with('subject', 'term', 'session')
+                //         ->where('student_id', $student_id)
+                //         ->whereIn('term_id', function ($query) use ($term) {
+                //             $query->select('id')
+                //                 ->from('terms')
+                //                 ->where('session_id', $term->session_id);
+                //         })
+                //         ->get()
+                //         ->groupBy('subject_id');
+                // }
+            //  New to importants result control Ends Here
 
                 // Calculate average
-                $total = $results->sum('total_score');
-                $count = $results->count();
+                // $total = $results->sum('total_score');
+                /*$total = $results->sum('total');
+                $count = $results->count(); /*/ /*
+                if ($term && $term->name === 'Third Term') {
+
+                    $total = $results->flatten()->sum('total'); // grouped data
+                    $count = $results->flatten()->count();
+
+                } else {
+
+                    $total = $results->sum('total');
+                    $count = $results->count();
+                }
+
                 $average = $count ? $total / $count : 0;
 
                 $overallGrade = $this->grade($average);
@@ -509,7 +731,7 @@ public function submitExam(Request $request)
                 // New correct way ends here
 
             // $result = ExamResult::where('student_id', $student->id)->latest()->first();
-            $sessions = SessionModel::all();
+            // $sessions = SessionModel::all();
 
             // return view('students.result', [
             //     'score' => $result->score ?? 0,
@@ -517,9 +739,11 @@ public function submitExam(Request $request)
             //     'sessions' => $sessions
 
             // ]);
-            return view('students.result', compact('results', 'total','count','average', 'terms',
-        'sessions','subjects','overallGrade', 'student'));
-        }
+        //     return view('students.result', compact('results', 'student', 'total','count','average', 'terms',
+        // 'sessions','subjects','overallGrade'));
+        return view('students.result', compact('results', 'student', 'total',  'terms',
+        'sessions','subjects','overallGrade', 'term'));
+        } */
 
         // Admin Generate exam code for student CBT
 
@@ -612,6 +836,55 @@ public function submitExam(Request $request)
                 $result->save();
 
                 return back()->with('success', 'Test score updated');
+            }
+
+            // PARENT VIEW (ONLY THEIR CHILD)
+            public function parentResult()
+            {
+                $student = Student::where('parent_id', auth()->id())->first();
+
+                $results = ExamResult::where('student_id', $student->id)->get();
+
+                return view('parent.result', compact('results'));
+            }
+            // STUDENT RESULT DISPLAY
+            public function studentResult()
+            {
+                $student = auth()->user()->student;
+
+                $results = ExamResult::with('subject')
+                    ->where('student_id', $student->id)
+                    ->get()
+                    ->groupBy('term_id');
+
+                return view('student.result', compact('student', 'results'));
+            }
+
+            public function printResults(){
+                $student = auth()->user()->student;
+
+                if (!$student) {
+                    return back()->with('error', 'Student not found');
+                }
+
+                // $results = ExamResult::with(['term', 'subject'])
+                //     ->where('student_id', auth()->id()) // ✅ THIS IS KEY
+                //     ->get();
+                $results = ExamResult::with(['term', 'subject'])
+                    ->where('student_id', $student->id) // ✅ FIXED HERE
+                    ->get();
+
+
+                // dd($results); // 🔥 SHOULD NOW SHOW DATA
+
+                $groupedResults = $results->groupBy('term_id');
+
+                $terms = Term::all();
+                $sessions = SessionModel::all();
+                $subjects = Subject::all();
+
+                // return view('students.result', compact('groupedResults', 'student', 'terms', 'sessions', 'subjects'));
+                return view('students.student_results_download', compact('groupedResults', 'student', 'terms', 'sessions', 'subjects') );
             }
 
 }

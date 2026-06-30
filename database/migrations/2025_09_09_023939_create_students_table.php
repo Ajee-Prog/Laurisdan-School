@@ -26,8 +26,8 @@ class CreateStudentsTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('middle_name');
-            $table->date('date_of_birth')->nullable();   
-            $table->string('place_birth')->nullable();   
+            $table->date('date_of_birth')->nullable();
+            $table->string('place_birth')->nullable();
             $table->string('gender')->nullable();
             $table->string('password')->nullable();
             $table->string('state')->nullable();
@@ -38,6 +38,11 @@ class CreateStudentsTable extends Migration
             $table->string('parent_contact')->nullable();
             $table->string('religion')->nullable();
             $table->string('image')->nullable();
+            $table->integer('school_open')->nullable();
+            $table->integer('student_present')->nullable();
+            $table->integer('student_absent')->nullable();
+            $table->string('weight')->nullable();
+            $table->string('height')->nullable();
 
             $table->timestamps();
 
@@ -52,11 +57,11 @@ class CreateStudentsTable extends Migration
         });
     }
 
-    
+
 
     /**
-     * 
-    
+     *
+
      * Reverse the migrations.
      *
      * @return void
