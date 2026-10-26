@@ -10,10 +10,10 @@
     <input type="date" name="exam_date" class="form-control">
   </div>
 
-  <div class="form-group mb-3">
+  {{-- <div class="form-group mb-3">
     <label>Subject</label>
     <input type="text" name="subject" class="form-control" required>
-</div>
+    </div> --}}
 
 {{-- New add --}}
     <div class="mb-3">

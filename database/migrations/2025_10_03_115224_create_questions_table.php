@@ -15,14 +15,14 @@ class CreateQuestionsTable extends Migration
 
             $table->string('subject')->nullable();
             // $table->text('question');
-            $table->enum('type', ['mcq', 'fill'])->default('mcq');
+            $table->enum('type', ['mcq', 'fill', 'true_false'])->default('mcq');
             $table->string('correct_answer')->nullable(); // for fill-in
             $table->text('question_text');
-            $table->string('option_a');
-            $table->string('option_b');
-            $table->string('option_c');
-            $table->string('option_d');
-            $table->string('correct_option');
+            $table->string('option_a')->nullable();
+            $table->string('option_b')->nullable();
+            $table->string('option_c')->nullable();
+            $table->string('option_d')->nullable();
+            $table->string('correct_option')->nullable();
 
 
             // $table->unsignedBigInteger('subject_id')->nullable();

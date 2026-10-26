@@ -41,8 +41,11 @@ use App\Http\Controllers\Auth\StudentAuthController;
 use App\Http\Controllers\Auth\TeacherAuthController;
 use App\Http\Controllers\FeeController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\StudentAttendanceController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\TeacherAttendanceController;
+use App\Http\Controllers\TransporterController;
 
 // Route::get('/', function () {
 //     return view('laurisdan.welcomes');

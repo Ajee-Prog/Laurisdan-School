@@ -14,7 +14,16 @@
         body { font-family: Arial, sans-serif; }
         .container { width: 90%; margin: auto; }
 
-        h2, h4 { text-align: center; }
+        h2, h4, h6 { text-align: center;
+        /*font-size: 11px; */
+
+        }
+         h2{
+            font-size: 18px;
+        }
+         h6{
+            font-size: 11px;
+        }
 
         table {
             width: 100%;
@@ -27,7 +36,9 @@
         }
 
         th, td {
-            padding: 8px;
+            padding: 4px 6px; /* Reduces space inside cells */
+            font-size: 11px;
+            /*padding: 8px;*/
             text-align: center;
         }
 
@@ -40,6 +51,20 @@
 
         @media print {
             .print-btn { display: none; }
+        }
+
+        /* Optional: Print-specific adjustments */
+        @media print {
+          body {
+            margin: 0;
+          }
+          table {
+            font-size: 10pt;
+            width: 100%;
+          }
+          th, td {
+            padding: 3px 4px;
+          }
         }
     </style>
 </head>
@@ -59,15 +84,13 @@
                 <img src="{{asset('assets/images/laurisdanLogo1.jpg')}}"  style="width: 40p; height:60px; " alt="">
             </div>
             {{-- 8 section long --}}
-            <div class="col-8" >
+            <div class="col-8">
 
-                <div class="card-body" >
+                <div class="card-body">
 
-                    <h2 class="h2" style="margin-left: 0px; padding-left:0px;  "> LAURISDAN NURSERY AND PRIMARY SCHOOL </h2>
-                    <div class="ml-2 pl-5 justify-content-center ">
-                        <h6> ENGR. AWANBI BENSON STREET, OFFIRAN, ONOSA, IBEJU-LEKKI LGA, LAGOS.</h6>
-                        <h6> TEL: 09034345478, 07088800744. EMAIL: laurisdannpschool@gmail.com</h6>
-                    </div>
+                    <h2 class="" style="margin-left: 0px"> LAURISDAN NURSERY AND PRIMARY SCHOOL </h2>
+                    <h6> ENGR. AWANBI BENSON STREET, OFFIRAN, ONOSA, IBEJU-LEKKI LGA, LAGOS.</h6>
+                    <h6> TEL: 09034345478, 07088800744. EMAIL: laurisdannpschool@gmail.com</h6>
 
 
                     @if(Route::has('student.profile'))
@@ -81,6 +104,7 @@
 </div>
 
 <section class="mt-4 mx-2">
+    @forelse($groupedResults as $termId => $termResults)
         <div class="row">
             <div class="col-9">
                 <table class="table table-bordered">
@@ -90,8 +114,8 @@
                             <th>NAMES</th>
                             <th> {{ strtoupper($student->last_name) ?? '-' }} {{ strtoupper($student->first_name) ?? '-' }}  {{ strtoupper($student->middle_name) ?? '-' }}</th>
                             <th>TERM</th>
-                            <th>THIRD</th>
-                            <th>Grade</th>
+                            <th>{{ strtoupper(optional($termResults->first()->term)->name) ?? 'No Term Name' }}</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -100,28 +124,28 @@
                             <td>{{ $student->class->name ?? '-' }}</td>
                             <td></td>
                             <td><b> TIME SCHOOL OPENED</b></td>
-                            <td>110</td>
+                            <td>{{ $student->school_open ?? '**110*' }}</td>
                         </tr>
                         <tr>
                             <td><b>DATE OF BIRTH</b></td>
                             <td>{{ $student->date_of_birth ?? '-' }}</td>
                             <td></td>
                             <td><b> TIME PRESENT</b></td>
-                            <td>110</td>
+                            <td>{{ $student->student_present ?? '**110*' }}</td>
                         </tr>
                         <tr>
                             <td><b>GENDER</b></td>
                             <td>{{ strtoupper($student->gender) ?? '-' }}</td>
                             <td><b> WEIGHT</b></td>
-                            <td>54KG</td>
+                            <td>{{ $student->weight ?? '54' }}KG</td>
                             <td>TIME ABSENT</td>
                         </tr>
                         <tr>
                             <td><b>SESSION</b></td>
-                            <td>2024/2025 {{ $student->session->name ?? '-' }}</td>
+                            <td>{{$termResults->first()->session->name ?? '-'}}</td>
                             <td><b> HEIGHT</b></td>
-                            <td>5FT 3 INCH</td>
-                            <td></td>
+                            <td>{{ $student->height ?? '**5FT 3 INCH*' }}</td>
+                            <td>{{ $student->student_absent ?? '**NIL*' }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -134,7 +158,7 @@
                         {{--<h3 class="bordered" style="border: 1px solid black">SECOND TERM</h3>--}}
                         <tr>
                             <th>MARKS OBTAINABLE</th>
-                            <th>5100</th>
+                            <th>{{ $termResults->first()->marks_obtainable ?? "**5100*"}}</th>
                             {{-- <th>1st Term Exam (60)</th>
                             <th>% Marks obtain</th>
                             <th>Grade</th> --}}
@@ -145,7 +169,7 @@
 
                         <tr>
                             <td>MARKS OBTAINABLE</td>
-                            <td>5100</td>
+                            <td>{{ $termResults->first()->marks_obtainable ?? "**5100*"}}</td>
                             {{-- <td>exam_score</td>
                             <td>score</td>
                             <td>
@@ -155,7 +179,7 @@
                         </tr>
                         <tr>
                             <td>MARKS OBTAINED</td>
-                            <td>3318</td>
+                            <td>{{ $termResults->first()->marks_obtained ?? "**3318*"}}</td>
                             {{-- <td>50</td>
                             <td>90</td>
                             <td>
@@ -165,7 +189,7 @@
                         </tr>
                         <tr>
                             <td>PERCENTAGE</td>
-                            <td>65%</td>
+                            <td>{{ $termResults->first()->percentage ?? "**NIL*"}}%</td>
                             {{-- <td>50</td>
                             <td>90</td>
                             <td>
@@ -175,7 +199,7 @@
                         </tr>
                         <tr>
                             <td>OVERALL GRADE</td>
-                            <td>C</td>
+                            <td>{{$termResults->first()->grade  ?? "**NIL*"}}</td>
                             {{-- <td>49</td>
                             <td>89</td>
                             <td>
@@ -214,6 +238,9 @@
                         {{-- @endforeach --}}
                     </tbody>
                 </table>
+                @empty
+                <p>No results available.</p>
+            @endforelse
             </div>
         </div>
     </section>
@@ -221,12 +248,13 @@
 
     {{-- New ends here --}}
     {{-- New result design for new controller starts --}}
+     {{--
         <section class="mt-4">
             @forelse($groupedResults as $termId => $termResults)
-            {{-- @if($term && ($term->name === 'First Term' || $term->name === 'Second Term')) --}}
-            {{ strtoupper(optional($termResults->first()->term)->name) ?? 'No Term Name' }}
+            {{-- @if($term && ($term->name === 'First Term' || $term->name === 'Second Term')) -}}
+           {{-- {{ strtoupper(optional($termResults->first()->term)->name) ?? 'No Term Name' }} -}}
 
-            {{-- <h4>{{ $term->name }} Result</h4> --}}
+            {{-- <h4>{{ $term->name }} Result</h4> -}}
 
             <table class="table table-bordered">
                 <thead>
@@ -238,7 +266,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- @forelse($groupedResults as $result) --}}
+                     @forelse($groupedResults as $result)
                     @foreach($termResults as $result)
                     <tr>
                         <td>{{ $result->subject->name }}</td>
@@ -250,12 +278,13 @@
                     <tr>
                         <td colspan="4" class="text-center text-danger">No Result</td>
                     </tr>
-                    {{-- @endforelse --}}
+                    {{-- @endforelse -}}
                 </tbody>
             </table>
             @empty
                 <p>No results available.</p>
             @endforelse
+            --}}
 
 {{-- -----------------End of Working fine well-------------- --}}
 
@@ -483,6 +512,7 @@
     </section>
     {{-- AFFECTIVE & PSYCHOMOTOR GRADE KEY/ GRADING SYSTEM --}}
     <section>
+        @forelse($groupedResults as $termId => $termResults)
 
         {{-- AFFECTIVE & PSYCHOMOTOR --}}
         <table>
@@ -505,9 +535,11 @@
         <table>
             <tr>
                 <td><strong>Class Teacher Comment:</strong></td>
+                <td>{{ $result->teacher_comment }}</td>
             </tr>
             <tr>
                 <td>{{ $result->teacher_comment }}</td>
+
             </tr>
         </table>
 
@@ -516,10 +548,13 @@
         {{-- SIGNATURE --}}
         <table class="no-border">
             <tr>
-                <td><strong>Class Teacher:</strong> ______________</td>
-                <td><strong>Principal:</strong> __________________</td>
+                <td><strong>CLASS TEACHER:</strong> ______________</td>
+                <td><strong>HEAD OF SCHOOL:</strong> __________________</td>
             </tr>
         </table>
+            @empty
+                <p>No results available.</p>
+            @endforelse
 
     </section>
     {{-- Third Term result secti ends here --}}

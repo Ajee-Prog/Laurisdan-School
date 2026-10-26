@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Exam;
 use App\Models\ExamAccess;
+use App\Models\Question;
 use App\Models\SchoolClass;
 use App\Models\Term;
 
@@ -85,34 +86,187 @@ class AdminExamController extends Controller
 
     public function storeBulkQuestions(Request $request, $examId)
     {
-        // $exams = Exam::all();
+        $exam = Exam::findOrFail($examId);
 
+        $request->validate([
+        'subject_id' => 'required|exists:subjects,id',
+        'session_id' => 'required|exists:sessions,id',
+        'term_id' => 'required|exists:terms,id',
 
-        for ($i = 1; $i <= 20; $i++) {
+        'questions' => 'required|array|min:1',
 
-            if ($request->input("question_text_$i") && $request->input("correct_option_$i")) {
+        'questions.*.question_text' => 'required|string',
+        'questions.*.type' => 'required|in:mcq,fill,true_false',
 
-                \App\Models\Question::create([
-                    'exam_id' => $examId,
-                    // 'subject' => $request->subject,
-                    'subject_id' => $request->subject_id,
-                    'session_id' => $request->session_id,
-                    'term_id' => $request->term_id,
-                    'question_text' => $request->input("question_text_$i"),
-                    'type' => $request->type,
-                    'option_a' => $request->input("option_a_$i"),
-                    'option_b' => $request->input("option_b_$i"),
-                    'option_c' => $request->input("option_c_$i"),
-                    'option_d' => $request->input("option_d_$i"),
-                    'correct_option' => $request->input("correct_option_$i"),
-                    // 'correct_answer' => $request->correct_answer,
-                    'correct_answer' => $request->input("correct_answer_$i"),
-                ]);
+        'questions.*.option_a' => 'nullable|string',
+        'questions.*.option_b' => 'nullable|string',
+        'questions.*.option_c' => 'nullable|string',
+        'questions.*.option_d' => 'nullable|string',
+
+        'questions.*.correct_option' => 'nullable|string',
+        'questions.*.correct_answer' => 'nullable|string',
+    ]);
+
+    foreach ($request->questions as $questionData) {
+        $type = $questionData['type'];
+
+        if ($type === 'mcq') {
+            $request->validate([
+                'questions.*.option_a' => 'required|string',
+                'questions.*.option_b' => 'required|string',
+                'questions.*.option_c' => 'required|string',
+                'questions.*.option_d' => 'required|string',
+                'questions.*.correct_option' => 'required|in:A,B,C,D',
+            ]);
+        }
+
+        if ($type === 'fill') {
+            if (empty(trim($questionData['correct_answer'] ?? ''))) {
+                return back()
+                    ->withInput()
+                    ->withErrors([
+                        'questions' => 'Enter the correct answer for every fill-in-the-gap question.',
+                    ]);
             }
         }
 
+        if ($type === 'true_false') {
+            $request->validate([
+                'questions.*.correct_answer' => 'required|in:True,False',
+            ]);
+        }
+
+        \App\Models\Question::create([
+            'exam_id' => $exam->id,
+            'subject_id' => $request->subject_id,
+            'session_id' => $request->session_id,
+            'term_id' => $request->term_id,
+
+            'question_text' => $questionData['question_text'],
+            'type' => $type,
+
+            // Nullable options for fill and true/false questions
+            'option_a' => $type === 'mcq'
+                ? $questionData['option_a'] : null,
+            'option_b' => $type === 'mcq'
+                ? $questionData['option_b'] : null,
+            'option_c' => $type === 'mcq'
+                ? $questionData['option_c'] : null,
+            'option_d' => $type === 'mcq'
+                ? $questionData['option_d'] : null,
+
+            'correct_option' => $type === 'mcq'
+                ? $questionData['correct_option'] : null,
+
+            'correct_answer' => $type === 'mcq'
+                ? $questionData['correct_option']
+                : ($questionData['correct_answer'] ?? null),
+        ]);
+    }
+
+    return redirect()
+        ->route('admin.exams.index')
+        ->with('success', 'Questions added successfully!');
+        // $exams = Exam::all();
+
+
+        /*
+
+        for ($i = 1; $i <= 20; $i++) {
+
+        $questionText = $request->input("question_text_$i");
+        $type = $request->input("type_$i");
+
+        // Skip empty questions
+        if (!$questionText || !$type) {
+            continue;
+        }
+
+        $data = [
+            'exam_id' => $examId,
+
+            'subject_id' => $request->subject_id,
+
+            'session_id' => $request->session_id,
+
+            'term_id' => $request->term_id,
+
+            'question_text' => $questionText,
+
+            'type' => $type,
+
+            'option_a' => null,
+            'option_b' => null,
+            'option_c' => null,
+            'option_d' => null,
+
+            'correct_option' => null,
+
+            'correct_answer' => null,
+        ];
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | MULTIPLE CHOICE
+        |--------------------------------------------------------------------------
+        *
+
+        if ($type === 'mcq') {
+
+            $data['option_a'] =
+                $request->input("option_a_$i");
+
+            $data['option_b'] =
+                $request->input("option_b_$i");
+
+            $data['option_c'] =
+                $request->input("option_c_$i");
+
+            $data['option_d'] =
+                $request->input("option_d_$i");
+
+            $data['correct_option'] =
+                $request->input("correct_option_$i");
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILL IN THE GAP
+        |--------------------------------------------------------------------------
+        *
+
+        elseif ($type === 'fill') {
+
+            $data['correct_answer'] =
+                $request->input("correct_answer_$i");
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | TRUE / FALSE
+        |--------------------------------------------------------------------------
+        *
+
+        elseif ($type === 'true_false') {
+
+            $data['correct_answer'] =
+                $request->input("correct_answer_$i");
+        }
+
+
+        \App\Models\Question::create($data);
+    }
+
+    // return back()->with(
+    //     'success',
+    //     'Questions added successfully!'
+    // );
+
         return back()->with('success', 'Questions added successfully!');
-        // return view('dashboard.admin', compact('exams'));
+        // return view('dashboard.admin', compact('exams')); */
     }
 
     // Exam access code Table model

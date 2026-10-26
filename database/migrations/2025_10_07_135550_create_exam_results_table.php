@@ -37,6 +37,7 @@ class CreateExamResultsTable extends Migration
             $table->decimal('percentage',5 ,2)->default(0);
 
             $table->string('grade')->nullable();
+            $table->enum('grading', ['excellent','very_good', 'good', 'satisfactory', 'need_improvement'])->nullable()->default('need_improvement');
 
             $table->integer('marks_obtainable')->nullable();
             $table->integer('marks_obtained')->nullable();

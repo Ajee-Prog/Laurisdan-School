@@ -21,16 +21,11 @@ class CreateParentsTable extends Migration
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
-            
+
             $table->string('image')->nullable();
             $table->string('password')->nullable();
-            // $table->string('name');
-            // $table->string('email')->unique();
-            // $table->string('password');
-            // $table->string('phone')->nullable();
 
 
-            
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

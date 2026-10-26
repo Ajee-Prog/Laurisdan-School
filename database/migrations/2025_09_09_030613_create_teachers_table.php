@@ -21,23 +21,21 @@ class CreateTeachersTable extends Migration
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('subject')->nullable();
-            // // $table->string('employee_no')->nullable();
-            
+            $table->string('employee_no')->nullable();
+            $table->string('employee_date')->nullable();
+
             $table->string('image')->nullable();
             $table->string('address')->nullable();
-            
+
             $table->string('password')->nullable();
-            // $table->string('name');
-            // $table->string('email')->unique();
-            // $table->string('password');
-            // $table->string('subject')->nullable();
+
 
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade');
 
-            
+
         });
     }
 

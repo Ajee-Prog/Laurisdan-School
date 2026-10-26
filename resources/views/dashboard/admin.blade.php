@@ -7,7 +7,7 @@
 
 <!-- Admin Dashboard 2 blade -->
 
-@extends('layouts.app')
+{{-- @extends('layouts.app') --}}
 
 @extends('layouts.dashboard')
 @section('content')
@@ -22,11 +22,18 @@
 
         <div class="row mt-3">
             <div class="col-md-3">
-            <div class="card p-3">
-                <h5>Students</h5>
-                <p class="display-4">{{ $students ?? \App\Models\Student::count() }}</p>
-                <a href="{{ route('students.index') }}" class="btn btn-sm btn-outline-primary">Manage</a>
+                <div class="card p-3">
+                    <h5>Students</h5>
+                    <p class="display-4">{{ $students ?? \App\Models\Student::count() }}</p>
+                    <a href="{{ route('students.index') }}" class="btn btn-sm btn-outline-primary">Manage</a>
+                </div>
             </div>
+            <div class="col-md-3">
+                <div class="card p-3">
+                    <h5>Parents</h5>
+                    <p class="display-4">{{ $parents ?? \App\Models\ParentModel::count() }}</p>
+                    <a href="{{ route('parents.index') }}" class="btn btn-sm btn-outline-primary">Manage</a>
+                </div>
             </div>
             <div class="col-md-3">
             <div class="card p-3">
@@ -94,8 +101,101 @@
 @endforeach --}}
 {{-- Below ends here --}}
 
+{{-- Select an exam before managing its questions or access code --}}
+<div class="card mt-4 mb-4">
+    <div class="card-header">
+        <h5>Manage Exam Questions and Access Code</h5>
+    </div>
 
-{{-- Generat Not reusable cod --}}
+    <div class="card-body">
+        @php
+            $availableExams = \App\Models\Exam::latest()->get();
+        @endphp
+
+        @if($availableExams->isNotEmpty())
+            <form method="GET"
+                  action="{{ route('admin.dashboard') }}"
+                  class="mb-3">
+
+                <label for="exam_id" class="form-label">
+                    Select Examination
+                </label>
+
+                <select name="exam_id"
+                        id="exam_id"
+                        class="form-control mb-3"
+                        required>
+                    <option value="">-- Select an exam --</option>
+
+                    @foreach($availableExams as $item)
+                        <option value="{{ $item->id }}"
+                            {{ request('exam_id') == $item->id ? 'selected' : '' }}>
+                            {{ $item->title }}
+                        </option>
+                    @endforeach
+                </select>
+
+                <button type="submit" class="btn btn-primary">
+                    Select Exam
+                </button>
+            </form>
+
+            @php
+                $selectedExam = $availableExams->firstWhere(
+                    'id',
+                    (int) request('exam_id')
+                );
+            @endphp
+
+            @if($selectedExam)
+                <hr>
+
+                <h6>{{ $selectedExam->title }}</h6>
+
+                <p>
+                    Duration: {{ $selectedExam->duration }} minutes
+                    <br>
+                    Questions: {{ $selectedExam->questions()->count() }}
+                    <br>
+                    Access code:
+                    {{ $selectedExam->access_code ?? 'Not generated' }}
+                </p>
+
+                <a href="{{ route(
+                    'admin.questions.bulk.create',
+                    $selectedExam->id
+                ) }}"
+                   class="btn btn-success mb-2">
+                    Add Questions (Maximum 20)
+                </a>
+
+                <a href="{{ route(
+                    'admin.exams.generate.code',
+                    $selectedExam->id
+                ) }}"
+                   class="btn btn-warning mb-2">
+                    Generate Access Code
+                </a>
+            @else
+                <p class="text-muted">
+                    Select an exam above to manage its questions and access code.
+                </p>
+            @endif
+        @else
+            <p class="text-muted">
+                No exams found. Create an exam first.
+            </p>
+
+            <a href="{{ route('admin.exams.create') }}"
+               class="btn btn-primary">
+                Create Exam
+            </a>
+        @endif
+    </div>
+</div>
+
+
+{{-- Generat Not reusable code --}}
 {{-- <a href="{{ route('admin.exams.student.code', [$exam->id, $student->id]) }}"
    class="btn btn-warning btn-sm">
    Generate Not Reusable Code

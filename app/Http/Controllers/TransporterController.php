@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
+use App\Models\Transporter;
 use Illuminate\Http\Request;
 
 class TransporterController extends Controller

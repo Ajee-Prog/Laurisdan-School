@@ -125,7 +125,7 @@ class ExamController extends Controller
         'subject_id'=>'nullable|exists:subjects,id',
 
         'exam_date'=>'nullable|date',
-        'subject' => 'required|string',
+        // 'subject' => 'required|string',
 
     ]);
         Exam::create($data);
@@ -329,90 +329,90 @@ public function exportPdf(){
 
 
 
-// public function downloadPdf(ExamResult $result){ $pdf = Pdf::loadView('student.exams.result_pdf', compact('result')); return $pdf->download('result_'.$result->id.'.pdf'); }
-// */
+    // public function downloadPdf(ExamResult $result){ $pdf = Pdf::loadView('student.exams.result_pdf', compact('result')); return $pdf->download('result_'.$result->id.'.pdf'); }
+    // */
 
-private function grade($score)
-{
-    if ($score >= 70) return 'A';
-    if ($score >= 60) return 'B';
-    if ($score >= 50) return 'C';
-    if ($score >= 45) return 'D';
-    if ($score >= 40) return 'E';
-    return 'F';
-}
-
-
-// New Submit Exam start here***********************************
-
-// public function submitExam(Request $request, $examId)
-public function submitExam(Request $request)
-{
-    $examId = $request->exam_id; //get from form
-    $user = auth()->user();
-
-    if (!$user || $user->role !== 'student') {
-        abort(403);
+    private function grade($score)
+    {
+        if ($score >= 70) return 'A';
+        if ($score >= 60) return 'B';
+        if ($score >= 50) return 'C';
+        if ($score >= 45) return 'D';
+        if ($score >= 40) return 'E';
+        return 'F';
     }
 
-    $student = $user->student;
 
+    // New Submit Exam start here***********************************
 
+    // public function submitExam(Request $request, $examId)
+    public function submitExam(Request $request)
+    {
+        $examId = $request->exam_id; //get from form
+        $user = auth()->user();
 
-    // $exam = Exam::with('questions')->findOrFail($request->exam_id);
-    $exam = Exam::with(['questions','term'])->findOrFail($request->exam_id);
-    $term = $exam->term;
-
-
-        // Convert to exam score (e.g out of 60)
-    // $examScore = ($score / $totalQuestions) * 60; //New added
-
-    $result = ExamResult::where('student_id', $student->id)
-        ->where('exam_id', $exam->id)
-        ->firstOrFail();
-
-    if ($result->is_submitted) {
-        return redirect()->route('student.exams')
-            ->with('error','Exam already submitted.');
-    }
-
-    $score = 0;
-    // $totalQuestions = $exam->questions()->count();
-    $answers = $request->answers ?? [];
-
-
-    foreach ($exam->questions as $question) {
-        $answer = $request->input('question_'.$question->id);
-        // New
-        $studentAnswer = $answers[$question->id] ?? null;
-
-        if (!$studentAnswer) continue;
-
-        // ✅ MCQ
-        if ($question->type == 'mcq') {
-            if ($studentAnswer == $question->correct_option) {
-                $score++;
-            }
+        if (!$user || $user->role !== 'student') {
+            abort(403);
         }
 
-        // ✅ FILL-IN-THE-GAP
-        if ($question->type == 'fill') {
+        $student = $user->student;
 
-            $correct = strtolower(trim($question->correct_answer));
-            // $student = strtolower(trim($studentAnswer));
-            $studentAnswerFormatted = strtolower(trim($studentAnswer));
 
-            // if ($correct == $student) {
-            if ($correct == $studentAnswerFormatted) {
-                $score++;
-            }
+
+        // $exam = Exam::with('questions')->findOrFail($request->exam_id);
+        $exam = Exam::with(['questions','term'])->findOrFail($request->exam_id);
+        $term = $exam->term;
+
+
+            // Convert to exam score (e.g out of 60)
+        // $examScore = ($score / $totalQuestions) * 60; //New added
+
+        $result = ExamResult::where('student_id', $student->id)
+            ->where('exam_id', $exam->id)
+            ->firstOrFail();
+
+        if ($result->is_submitted) {
+            return redirect()->route('student.exams')
+                ->with('error','Exam already submitted.');
         }
-        // end new
 
-        // if ($answer === $question->correct_option) {
-        //     $score++;
-        // }
-    }
+        $score = 0;
+        // $totalQuestions = $exam->questions()->count();
+        $answers = $request->answers ?? [];
+
+
+        foreach ($exam->questions as $question) {
+            $answer = $request->input('question_'.$question->id);
+            // New
+            $studentAnswer = $answers[$question->id] ?? null;
+
+            if (!$studentAnswer) continue;
+
+            // ✅ MCQ
+            if ($question->type == 'mcq') {
+                if ($studentAnswer == $question->correct_option) {
+                    $score++;
+                }
+            }
+
+            // ✅ FILL-IN-THE-GAP
+            if ($question->type == 'fill') {
+
+                $correct = strtolower(trim($question->correct_answer));
+                // $student = strtolower(trim($studentAnswer));
+                $studentAnswerFormatted = strtolower(trim($studentAnswer));
+
+                // if ($correct == $student) {
+                if ($correct == $studentAnswerFormatted) {
+                    $score++;
+                }
+            }
+            // end new
+
+            // if ($answer === $question->correct_option) {
+            //     $score++;
+            // }
+        }
 
     // New added
     $results = ExamResult::with(['exam.subject'])
@@ -860,7 +860,7 @@ dd($groupedResults);
                 return view('student.result', compact('student', 'results'));
             }
 
-            public function printResults(){
+            public function printResults(Request $request){
                 $student = auth()->user()->student;
 
                 if (!$student) {
@@ -870,13 +870,22 @@ dd($groupedResults);
                 // $results = ExamResult::with(['term', 'subject'])
                 //     ->where('student_id', auth()->id()) // ✅ THIS IS KEY
                 //     ->get();
-                $results = ExamResult::with(['term', 'subject'])
+
+                // ✅ Step 1: Filter (single term + session)
+                $results = ExamResult::with(['term', 'subject', 'session'])
                     ->where('student_id', $student->id) // ✅ FIXED HERE
+                    ->where('term_id', $request->term_id)
+                    ->where('session_id', $request->session_id)
                     ->get();
 
 
-                // dd($results); // 🔥 SHOULD NOW SHOW DATA
+                    // ✅ Step 2: Extract SINGLE term & session (🔥 THIS IS WHAT YOU NEED)
+                    $term = $results->first()?->term;
+                    $session = $results->first()?->session;
 
+
+                // dd($results); // 🔥 SHOULD NOW SHOW DATA
+                // ✅ Step 3: Group if needed (e.g by subject category, or anything)
                 $groupedResults = $results->groupBy('term_id');
 
                 $terms = Term::all();
@@ -884,7 +893,7 @@ dd($groupedResults);
                 $subjects = Subject::all();
 
                 // return view('students.result', compact('groupedResults', 'student', 'terms', 'sessions', 'subjects'));
-                return view('students.student_results_download', compact('groupedResults', 'student', 'terms', 'sessions', 'subjects') );
+                return view('students.student_results_download', compact('groupedResults', 'results', 'term', 'session', 'student', 'terms', 'sessions', 'subjects') );
             }
 
 }
